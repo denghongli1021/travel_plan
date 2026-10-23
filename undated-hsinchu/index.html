@@ -202,6 +202,12 @@ table.hm{border-collapse:separate;border-spacing:3px;width:100%;min-width:620px;
 .rcard b{font-family:var(--f-display);font-size:17px;color:var(--c)}
 .rcard span{font-size:13px;color:var(--muted)}
 .rcard .mini{font-size:12px;color:var(--ink)}
+.rlist{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.rlist button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px;border-radius:8px}
+.rlist button:hover,.rlist button:focus-visible{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.rlist b{display:block;font-size:14px}
+.rlist small{display:block;font-size:12px;color:var(--muted)}
+.rlist em{font-style:normal;font-size:12px;font-weight:700;color:var(--accent-ink);white-space:nowrap}
 footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:16px}
 @media (prefers-reduced-motion:reduce){.route{transition:none}}
 </style>
@@ -306,8 +312,8 @@ const ROUTES=[
    tips:['好行班距約 1 小時，先抄好回程與轉乘時刻','古道全程步道與階梯，穿好走的鞋、帶水','台灣好行可刷悠遊卡／一卡通'],
    couple:'擂茶要兩個人輪流磨，是很適合合照的體驗。'},
   {t:'南庄老街・向天湖・回竹南',
-   segs:[S('nz','xth','taxi','約 20–25 分鐘','20分','計程車或請民宿接送（山路，無公車直達）',[[121.025,24.588]]),
-         S('xth','nz','taxi','約 20–25 分鐘','20分','回程請司機約好時間',[[121.022,24.594]]),
+   segs:[S('nz','xth','taxi','約 20–25 分鐘','20分','計程車或請民宿接送（山路，無公車直達）',[[121.028,24.582]]),
+         S('xth','nz','taxi','約 20–25 分鐘','20分','回程請司機約好時間',[[121.020,24.601]]),
          S('nz','zn','bus','約 60 分鐘','1h','台灣好行南庄線，經三灣、頭份',[[120.99,24.615],[120.96,24.64],[120.93,24.66],[120.90,24.675]]),
          S('zn','hcst','train','約 15–20 分鐘','20分','台鐵往北，區間車即可')],
    tl:[['08:30','早上的南庄老街：桂花巷、老郵局、康濟吊橋'],['10:00','計程車上向天湖，看湖、逛賽夏族文物館'],['12:00','回南庄午餐，吃桂花湯圓、粄條'],['14:00','台灣好行南庄線到竹南站'],['15:30','台鐵回新竹']],
@@ -330,8 +336,8 @@ const ROUTES=[
    tips:['住宿、接駁一定要先訂，現場沒有車','山上晚上很冷，四季都帶保暖外套','部落商店不多，零錢與常備藥自備'],
    couple:'合興車站有「愛情車站」的故事，月台上很適合拍照。'},
   {t:'巨木群步道・下山回新竹',
-   segs:[S('sm','jm','walk','約 2.5 小時','2.5h','巨木群步道去程，單程約 5 公里',[[121.326,24.566]]),
-         S('jm','sm','walk','約 2.5 小時','2.5h','原路返回部落',[[121.318,24.568]]),
+   segs:[S('sm','jm','walk','約 2.5 小時','2.5h','巨木群步道去程，單程約 5 公里',[[121.333,24.561]]),
+         S('jm','sm','walk','約 2.5 小時','2.5h','原路返回部落',[[121.311,24.574]]),
          S('sm','nw','shuttle','約 2.5–3 小時','3h','部落接駁下山（約 14:00 前出發）',[[121.31,24.60],[121.29,24.62],[121.26,24.64],[121.22,24.68]]),
          S('nw','hcst','train','約 1 小時','1h','台鐵內灣線回新竹',NW_LINE.slice(1,8).reverse())],
    tl:[['06:30','早餐後出發走巨木群步道'],['09:00','抵達巨木區，看「大老爺」神木'],['12:00','回部落吃午餐'],['13:30','部落接駁下山'],['16:30','抵達內灣，搭內灣線回新竹']],
@@ -556,7 +562,7 @@ function renderLegend(){
   if(st.r<0){
     legend.style.removeProperty('--c');
     legend.innerHTML=`<div><h3>四條路線</h3><p class="sub">全部從新竹出發、當天可回。點一條看細節。</p></div>
-    <div class="rgrid" style="grid-template-columns:1fr">${ROUTES.map((r,i)=>`<button class="rcard" type="button" data-r="${i}" style="--c:var(${r.c})"><b>${r.name}</b><span>${r.tag}</span><span class="mini">${st.m} 月：${RATE[r.rate[st.m-1]]}</span></button>`).join('')}</div>`+KEY;
+    <ul class="rlist">${ROUTES.map((r,i)=>`<li><button type="button" data-r="${i}"><span class="sw" style="background:var(${r.c})"></span><span><b>${r.short}</b><small>${r.tag}</small></span><em>${RATE[r.rate[st.m-1]]}</em></button></li>`).join('')}</ul>`+KEY;
     legend.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>go(+b.dataset.r,-1,true));
     return;}
   const r=ROUTES[st.r];legend.style.setProperty('--c',`var(${r.c})`);
@@ -599,10 +605,7 @@ function renderPane(){
     <h3 style="font-size:15px">注意事項</h3><ul class="warn">${d.tips.map(t=>`<li>${t}</li>`).join('')}</ul>
     <div class="couple">${d.couple}</div>
     <button class="tab" type="button" data-showd="${di}" style="justify-self:start">在地圖上看第 ${di+1} 天</button></article>`).join('')}</div>
-  <div class="pgrid">
-    <div class="card"><h3>${st.m} 月要注意</h3><p style="margin:0">${r.mnote[st.m-1]}</p></div>
-    <div class="card"><h3>出發前預訂</h3><ul>${r.book.map(t=>`<li>${t}</li>`).join('')}</ul></div>
-  </div></div>`;
+  <div class="card"><h3>出發前預訂</h3><ul>${r.book.map(t=>`<li>${t}</li>`).join('')}</ul></div></div>`;
   pane.querySelectorAll('[data-zs]').forEach(c=>{const s=SEG[+c.dataset.zs];c.onmouseenter=()=>hlSeg(s,true);c.onmouseleave=()=>hlSeg(s,false);c.onclick=()=>{animateTo(fit(s.pts,14));document.getElementById('map').scrollIntoView({behavior:reduce?'auto':'smooth'});};});
   pane.querySelectorAll('[data-showd]').forEach(b=>b.onclick=()=>{st.d=+b.dataset.showd;applyMap();renderLegend();document.getElementById('map').scrollIntoView({behavior:reduce?'auto':'smooth'});});
 }

@@ -36,6 +36,7 @@ a.trip:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .stamp b{display:block;font-family:var(--f-display);font-size:22px}
 .stamp span{display:block;font-size:11px;letter-spacing:.08em}
 .date{font-family:var(--f-mono);font-size:12px;color:var(--muted);letter-spacing:.04em}
+.count{font-family:var(--f-body);font-weight:700;color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent);border-radius:999px;padding:0 8px;margin-left:6px;white-space:nowrap}
 .info{min-width:0;display:grid;gap:4px}
 .info h2{font-family:var(--f-display);font-size:22px;margin:0;color:var(--c)}
 .info p{margin:0;color:var(--muted);font-size:14px}
@@ -55,9 +56,9 @@ footer{margin-top:28px;color:var(--muted);font-size:12px}
   <p class="lede">每一趟旅行的行程、路線圖與注意事項。點進去看細節。</p>
 </header>
 <div class="list">
-  <a class="trip" href="20270126-20270201-cebu/" style="--c:var(--t1)">
+  <a class="trip" href="20270126-20270201-cebu/" style="--c:var(--t1)" data-start="2027-01-26" data-end="2027-02-01">
     <div class="stamp"><b>01.26</b><span>– 02.01</span><span>2027 · 7D6N</span></div>
-    <div class="info"><span class="date">2027/01/26（二）→ 2027/02/01（一）・7 天 6 夜</span><h2>宿霧・薄荷島</h2><p>跳島浮潛、歐斯陸鯨鯊、卡瓦山瀑布、巧克力山與眼鏡猴，家庭七天六夜。</p>
+    <div class="info"><span class="date">2027/01/26（二）→ 2027/02/01（一）・7 天 6 夜 <b class="count" hidden></b></span><h2>宿霧・薄荷島</h2><p>跳島浮潛、歐斯陸鯨鯊、卡瓦山瀑布、巧克力山與眼鏡猴，家庭七天六夜。</p>
       <div class="tags"><span>菲律賓</span><span>家庭</span><span>互動路線圖</span></div></div>
     <span class="go" aria-hidden="true">→</span>
   </a>
@@ -68,7 +69,16 @@ footer{margin-top:28px;color:var(--muted);font-size:12px}
     <span class="go" aria-hidden="true">→</span>
   </a>
 </div>
-<footer>新增旅行：建立「開始日期-結束日期-地點」資料夾（例如 20270126-20270201-cebu）放 index.html，再在上面加一張卡片。日期未定用 undated-地點。</footer>
+<footer>行程內的價格、班次與季節資訊為大約值，出發前請再確認。</footer>
+<script>
+(function(){
+  document.querySelectorAll('[data-start]').forEach(function(a){
+    var s=new Date(a.dataset.start+'T00:00:00+08:00'),e=new Date(a.dataset.end+'T23:59:59+08:00'),n=new Date();
+    var d=Math.ceil((s-n)/864e5),t=a.querySelector('.count');if(!t)return;
+    t.textContent=n>e?'已結束':n>=s?'旅行中':'還有 '+d+' 天';t.hidden=false;
+  });
+})();
+</script>
 </div>
 </body>
 </html>
