@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>我們的旅行</title>
-<meta name="description" content="旅行計畫目錄：宿霧薄荷島、新竹兩天一夜。">
+<meta name="description" content="旅行計畫目錄：跨年、宿霧薄荷島、新竹兩天一夜、台中三四天。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;800&family=Noto+Sans+TC:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: 旅行護照目錄 — 標題＋一列列行程票卡（日期戳記在左） */
 :root{
   --bg:#f1f3f0; --paper:#fff; --ink:#1b2722; --muted:#5d6b64; --line:#d6ddd8; --accent:#d4901a;
-  --t1:#0f5b5f; --t2:#b4462b;
+  --t1:#0f5b5f; --t2:#b4462b; --t3:#b8325a; --t4:#2f7d4f;
   --f-display:"Noto Serif TC","Songti TC",serif;
   --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
   --f-mono:"DM Mono",ui-monospace,monospace;
@@ -19,7 +19,7 @@
 }
 @media (prefers-color-scheme: dark){:root{
   --bg:#0f1513; --paper:#161f1c; --ink:#e3ebe6; --muted:#97a69f; --line:#2a3833; --accent:#eaa93a;
-  --t1:#5fc2c4; --t2:#f0805f; color-scheme:dark}}
+  --t1:#5fc2c4; --t2:#f0805f; --t3:#f07a9c; --t4:#62c48a; color-scheme:dark}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7;
   padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-right,0px)) 64px max(16px,env(safe-area-inset-left,0px))}
@@ -56,6 +56,12 @@ footer{margin-top:28px;color:var(--muted);font-size:12px}
   <p class="lede">每一趟旅行的行程、路線圖與注意事項。點進去看細節。</p>
 </header>
 <div class="list">
+  <a class="trip" href="20261231-20270101-newyear/" style="--c:var(--t3)" data-start="2026-12-31" data-end="2027-01-01">
+    <div class="stamp"><b>12.31</b><span>– 01.01</span><span>2026 · 2D1N</span></div>
+    <div class="info"><span class="date">2026/12/31（四）→ 2027/01/01（五）・兩天一夜 <b class="count" hidden></b></span><h2>跨年兩天一夜</h2><p>台北爬象山看 101 煙火、元旦北投泡湯；或高雄港灣跨年、渡輪去旗津。</p>
+      <div class="tags"><span>台北／高雄</span><span>情侶</span><span>不開車</span></div></div>
+    <span class="go" aria-hidden="true">→</span>
+  </a>
   <a class="trip" href="20270126-20270201-cebu/" style="--c:var(--t1)" data-start="2027-01-26" data-end="2027-02-01">
     <div class="stamp"><b>01.26</b><span>– 02.01</span><span>2027 · 7D6N</span></div>
     <div class="info"><span class="date">2027/01/26（二）→ 2027/02/01（一）・7 天 6 夜 <b class="count" hidden></b></span><h2>宿霧・薄荷島</h2><p>跳島浮潛、歐斯陸鯨鯊、卡瓦山瀑布、巧克力山與眼鏡猴，家庭七天六夜。</p>
@@ -65,6 +71,12 @@ footer{margin-top:28px;color:var(--muted);font-size:12px}
   <a class="trip" href="undated-hsinchu/" style="--c:var(--t2)">
     <div class="stamp"><b>未定</b><span>2D1N</span><span>全年可去</span></div>
     <div class="info"><span class="date">日期未定・兩天一夜</span><h2>新竹出發兩天一夜</h2><p>客家老街、山林部落、海線單車、苗栗溫泉草莓，四條大眾運輸路線與每月推薦。</p>
+      <div class="tags"><span>台灣</span><span>情侶</span><span>不開車</span></div></div>
+    <span class="go" aria-hidden="true">→</span>
+  </a>
+  <a class="trip" href="undated-taichung/" style="--c:var(--t4)">
+    <div class="stamp"><b>未定</b><span>3D2N / 4D3N</span><span>2 個版本</span></div>
+    <div class="info"><span class="date">日期未定・3 天 2 夜或 4 天 3 夜</span><h2>台中 3 天或 4 天</h2><p>市區文創與夜市、東海大學、高美濕地夕陽，最後去鹿港，或多住一晚日月潭。</p>
       <div class="tags"><span>台灣</span><span>情侶</span><span>不開車</span></div></div>
     <span class="go" aria-hidden="true">→</span>
   </a>

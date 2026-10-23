@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>台中三四天</title>
+<meta name="description" content="台中 3 天 2 夜或 4 天 3 夜：市區文創、高美濕地夕陽、鹿港或日月潭，大眾運輸。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;800&family=Noto+Sans+TC:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: 側欄分頁（總覽＋各版本）；主區是可拖曳縮放的路線圖、逐站交通、逐日細節 */
+:root{
+  --bg:#f1f3f0; --paper:#ffffff; --ink:#1b2722; --muted:#5d6b64; --line:#d6ddd8;
+  --sea:#dfe9ec; --sea-deep:#a8c4cc; --land:#f4f2e6; --hill:#e6e6d2; --mtn:#d7dcc0; --land-edge:#b8bc9a; --lake:#cfe2e6;
+  --rail:#8b948f; --accent:#d4901a; --accent-ink:#7a4f00;
+  --r0:#b4462b; --r1:#2f7d4f;
+  --f-display:"Noto Serif TC","Songti TC",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-mono:"DM Mono",ui-monospace,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#0f1513; --paper:#161f1c; --ink:#e3ebe6; --muted:#97a69f; --line:#2a3833;
+  --sea:#13232a; --sea-deep:#2a4a55; --land:#1b2420; --hill:#212c24; --mtn:#283326; --land-edge:#4a5741; --lake:#1d3a42;
+  --rail:#7c8882; --accent:#eaa93a; --accent-ink:#f5cf86;
+  --r0:#f0805f; --r1:#62c48a;
+  color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7;
+  padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-right,0px)) 64px max(16px,env(safe-area-inset-left,0px))}
+[hidden]{display:none!important}
+.wrap{max-width:1180px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.3}
+button{font:inherit;color:inherit}
+header{padding-block:40px 22px;display:grid;gap:14px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(28px,5.5vw,48px);font-weight:800}
+h1 em{font-style:normal;color:var(--accent-ink)}
+.lede{max-width:64ch;color:var(--muted);margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.fact{background:var(--paper);padding:10px 14px;display:grid;gap:1px}
+.fact span{font-size:12px;color:var(--muted)}
+.fact b{font-size:15px}
+.app{display:grid;grid-template-columns:210px minmax(0,1fr);gap:22px;align-items:start}
+.main{min-width:0;display:grid;gap:22px}
+.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 14px);display:grid;gap:5px}
+.side-h{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--muted);padding:0 4px 2px}
+.tab{font:500 13px/1.35 var(--f-body);border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:8px 11px;border-radius:999px;cursor:pointer;display:inline-flex;gap:7px;align-items:center}
+.tab:hover{border-color:var(--ink)}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tab:focus-visible,.ctl:focus-visible,.hop:focus-visible,.stop button:focus-visible,.rcard:focus-visible,.rlist button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.side .tab{border-radius:10px;justify-content:flex-start;text-align:left;width:100%;padding:9px 11px}
+.side .tab small{display:block;font-size:12px;opacity:.75;font-weight:400}
+.sw{width:10px;height:10px;border-radius:3px;flex:none;display:inline-block}
+@media (max-width:880px){
+  .app{grid-template-columns:1fr;gap:0}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+  .side{top:env(safe-area-inset-top,0px);z-index:6;background:var(--bg);display:flex;overflow-x:auto;padding-block:10px;border-bottom:1px solid var(--line);scrollbar-width:none;margin-bottom:14px}
+  .side-h{display:none}
+  .side .tab{width:auto;flex:none}
+  .side .tab small{display:none}
+}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.sec-h h2{font-size:23px}
+.sec-h p{margin:0;color:var(--muted);font-size:13px}
+.mapbox{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:980px){.mapbox{grid-template-columns:1fr}}
+.chart{background:var(--sea);border:1px solid var(--line);border-radius:12px;overflow:hidden;position:relative;user-select:none;-webkit-user-select:none}
+.chart svg#svg{display:block;width:100%;aspect-ratio:600/500;max-width:100%;touch-action:none;cursor:grab}
+.chart svg.grabbing{cursor:grabbing}
+.ctls{position:absolute;top:10px;left:10px;display:grid;gap:4px}
+.ctl{min-width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--paper);cursor:pointer;font-size:18px;line-height:1;display:grid;place-items:center;padding:0 6px}
+.ctl.txt{font-size:11px;font-weight:700;white-space:nowrap}
+.compass{position:absolute;top:10px;right:12px;width:40px;height:52px;pointer-events:none}
+.scalebar{position:absolute;left:12px;bottom:10px;font:11px var(--f-mono);color:var(--muted);pointer-events:none}
+.scalebar div{height:6px;border:2px solid var(--muted);border-top:0;margin-top:2px}
+.hint{position:absolute;right:10px;bottom:8px;font-size:11px;color:var(--muted);background:color-mix(in srgb,var(--paper) 80%,transparent);padding:2px 8px;border-radius:6px;pointer-events:none}
+@media (max-width:520px){.hint{display:none}}
+.tip{position:absolute;z-index:5;pointer-events:none;background:var(--ink);color:var(--bg);font-size:13px;line-height:1.5;padding:8px 11px;border-radius:8px;max-width:260px;box-shadow:0 6px 20px rgb(0 0 0 / .22)}
+.tip b{display:block;font-size:14px}
+.tip .m{opacity:.78;font-size:12px}
+.tip .k{display:inline-block;font-size:11px;font-weight:700;padding:0 6px;border-radius:4px;background:var(--accent);color:#1a1200;margin-right:6px}
+.route{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:3;transition:opacity .25s,stroke-width .15s}
+.route.walk,.route.bike{stroke-dasharray:1 6;stroke-width:3.5}
+.route.shuttle,.route.taxi,.route.ferry,.route.boat{stroke-dasharray:7 5}
+.hit{fill:none;stroke:transparent;stroke-width:18;pointer-events:stroke;cursor:pointer}
+svg.dim .seg:not(.on) .route{opacity:.1}
+svg.dim .seg:not(.on) .hit{pointer-events:none}
+.seg.on .route{stroke-width:4.5}
+.seg.on .route.walk,.seg.on .route.bike{stroke-width:5}
+.seg.hl .route{stroke-width:7.5}
+svg.dim .pin:not(.on){opacity:.25}
+.pin{cursor:pointer}
+.pin text{font:500 11px var(--f-body);fill:var(--ink);paint-order:stroke;stroke:var(--land);stroke-width:3px;stroke-linejoin:round}
+.pin.major text{font-weight:700;font-size:12px}
+.pin circle{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+.pin.major circle{fill:var(--accent)}
+.pin.stn circle{fill:var(--paper);stroke-width:2.5}
+.pin:hover circle,.pin.hl circle{stroke-width:3.5}
+svg.far .pin.minor:not(.on) text{display:none}
+.badge{display:none;cursor:pointer}
+.badge.on{display:inline}
+.badge.tiny{display:none}
+.badge rect{fill:var(--paper);stroke:var(--bc);stroke-width:1.5}
+.badge text{font:700 10.5px var(--f-body);fill:var(--ink)}
+.badge.hl rect{fill:var(--bc)}
+.badge.hl text{fill:var(--paper)}
+.land{fill:var(--land);stroke:var(--land-edge);stroke-width:1.2}
+.hill{fill:var(--hill)} .mtn{fill:var(--mtn)} .lake{fill:var(--lake);stroke:var(--sea-deep);stroke-width:1}
+.river{fill:none;stroke:var(--sea-deep);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.railctx{fill:none;stroke:var(--rail);stroke-width:1.4;stroke-dasharray:6 3;opacity:.7}
+.hsrctx{fill:none;stroke:var(--rail);stroke-width:1;opacity:.55}
+.mrtctx{fill:none;stroke:var(--rail);stroke-width:2;opacity:.45}
+.region{font:600 13px var(--f-display);fill:var(--land-edge);letter-spacing:.35em}
+.sea-name{font:italic 12px var(--f-body);fill:var(--sea-deep);letter-spacing:.2em}
+.grid line{stroke:var(--sea-deep);stroke-width:.5;opacity:.45}
+svg#svg *{vector-effect:non-scaling-stroke}
+.pin *,.badge *,.lbl *{vector-effect:none}
+.legend{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:12px;align-content:start}
+@media (min-width:981px){.legend{max-height:560px;overflow:auto}}
+.legend h3{font-size:18px}
+.legend .sub{color:var(--muted);font-size:13px;margin:2px 0 0}
+.dayseg{display:flex;gap:6px;flex-wrap:wrap}
+.dayseg .tab{padding:6px 10px}
+.iti{list-style:none;margin:0;padding:0}
+.iti .dh{font-family:var(--f-mono);font-size:12px;color:var(--muted);letter-spacing:.08em;padding:8px 0 4px}
+.stop button{all:unset;cursor:pointer;display:flex;gap:10px;align-items:center;font-weight:500;padding:3px 6px 3px 0;border-radius:6px}
+.stop button:hover{color:var(--c)}
+.dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink);background:var(--paper);flex:none}
+.stop.major .dot{background:var(--accent)}
+.hop{margin-left:5px;border-left:2px dashed var(--line);padding:6px 8px 6px 16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 8px;font-size:13px;cursor:pointer;border-radius:0 8px 8px 0;align-items:baseline}
+.hop small{grid-column:2;color:var(--muted);font-size:12px}
+.hop:hover,.hop.hl{background:color-mix(in srgb,var(--c) 14%,transparent);border-left-color:var(--c)}
+.chip{font-size:11px;font-weight:700;padding:1px 7px;border-radius:4px;background:var(--ink);color:var(--bg);white-space:nowrap}
+.chip.walk,.chip.bike{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.chip.bus,.chip.lrt{background:var(--accent);color:#1a1200}
+.chip.mrt{background:color-mix(in srgb,var(--accent) 45%,var(--ink));color:var(--paper)}
+.chip.shuttle,.chip.taxi,.chip.ferry,.chip.boat{background:var(--muted);color:var(--paper)}
+.key{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.key span{display:inline-flex;align-items:center;gap:6px}
+.rlist{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.rlist button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center;padding:8px;border-radius:8px}
+.rlist button:hover{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.rlist b{display:block;font-size:14px}
+.rlist small{display:block;font-size:12px;color:var(--muted)}
+.rhead{border-bottom:2px solid var(--c);padding-bottom:12px;display:grid;gap:4px}
+.rhead h2{font-size:clamp(22px,3.4vw,30px);color:var(--c)}
+.rhead p{margin:0;color:var(--muted);font-size:14px;max-width:64ch}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.stat{background:var(--paper);padding:10px 14px;display:grid;gap:1px}
+.stat span{font-size:12px;color:var(--muted)}
+.stat b{font-size:15px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;align-items:start}
+@media (max-width:420px){.pgrid{grid-template-columns:1fr}}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0;display:grid;gap:10px;align-content:start}
+.card h3{font-size:17px}
+.card .ctag{font-family:var(--f-mono);font-size:12px;color:var(--c);letter-spacing:.06em}
+.card ul{margin:0;padding-left:18px;display:grid;gap:5px}
+.tl{list-style:none!important;margin:0;padding:0!important;display:grid;gap:7px}
+.tl li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:10px}
+.tl time{font-family:var(--f-mono);font-size:13px;color:var(--muted);padding-top:2px}
+.hops{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;color:var(--muted)}
+.hops span.h{border:1px solid var(--line);border-radius:6px;padding:2px 8px;display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.hops span.h:hover{border-color:var(--c)}
+.warn li::marker{color:var(--accent)}
+.couple{font-size:13px;background:color-mix(in srgb,var(--c) 10%,transparent);border-radius:8px;padding:8px 12px}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.rcard{all:unset;box-sizing:border-box;cursor:pointer;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:6px;position:relative;overflow:hidden}
+.rcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.rcard:hover{border-color:var(--c)}
+.rcard b{font-family:var(--f-display);font-size:17px;color:var(--c)}
+.rcard span{font-size:13px;color:var(--muted)}
+.rcard .mini{font-size:12px;color:var(--ink)}
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+#pane{display:grid;gap:22px}
+footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:16px}
+@media (prefers-reduced-motion:reduce){.route{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Taichung · 3D2N / 4D3N · 大眾運輸</div>
+  <h1>台中<em>3 天</em>或<em>4 天</em></h1>
+  <p class="lede">兩個人不開車，高鐵 25 分鐘就到。前兩天逛台中市區、東海大學、高美濕地看夕陽；3 天版最後去彰化與鹿港，4 天版多住一晚日月潭。</p>
+  <div class="facts">
+    <div class="fact"><span>日期</span><b>未定</b></div>
+    <div class="fact"><span>新竹 → 台中</span><b>高鐵約 25–30 分鐘</b></div>
+    <div class="fact"><span>市區交通</span><b>公車、捷運綠線、台鐵</b></div>
+    <div class="fact"><span>住宿</span><b>台中車站周邊</b></div>
+  </div>
+</header>
+<div class="app">
+  <nav class="side" id="side" aria-label="分頁"></nav>
+  <main class="main">
+    <section id="map">
+      <div class="sec-h"><h2 id="mapTitle">路線地圖</h2><p>拖曳、縮放地圖；滑過路線看搭什麼車、要多久</p></div>
+      <div class="mapbox">
+        <div class="chart" id="chart">
+          <svg id="svg" viewBox="0 0 600 500" role="img" aria-label="互動路線圖"></svg>
+          <div class="ctls">
+            <button class="ctl" id="zin" type="button" aria-label="放大">+</button>
+            <button class="ctl" id="zout" type="button" aria-label="縮小">−</button>
+            <button class="ctl txt" id="zfit" type="button">全覽</button>
+          </div>
+          <svg class="compass" viewBox="-20 -30 40 52" aria-hidden="true"><text y="-20" text-anchor="middle" style="font:600 11px var(--f-mono);fill:var(--muted)">N</text><circle r="16" fill="none" stroke="var(--sea-deep)"/><path d="M0,-14 L4,0 L0,14 L-4,0 Z" fill="var(--sea-deep)"/><path d="M0,-14 L4,0 L-4,0 Z" fill="var(--accent)"/></svg>
+          <div class="scalebar" id="scale"><span>5 km</span><div></div></div>
+          <div class="hint">拖曳移動・滾輪或雙指縮放</div>
+          <div class="tip" id="tip" hidden></div>
+        </div>
+        <aside class="legend" id="legend" aria-live="polite"></aside>
+      </div>
+    </section>
+    <div id="pane"></div>
+    <footer>公車路線、班次、票價與開放時間會變動，出發前請以台中市公車、台灣好行、台鐵與景點官網為準。花費為大約值，地圖為示意。</footer>
+  </main>
+</div>
+</div>
+<script>
+(function(){
+const S=(f,t,mode,dur,short,how,mid)=>({f,t,mode,dur,short,how,mid:mid||[]});
+const D1={label:'Day 1',t:'台中車站・審計新村・逢甲夜市',
+ segs:[S('nhsr','thsr','hsr','約 25–30 分鐘','25分','高鐵新竹站上車，直達車最快約 25 分鐘',[[120.68,24.25]]),
+       S('thsr','tcs','train','約 10 分鐘','10分','高鐵台中站旁的台鐵新烏日站，轉區間車到台中',[[120.65,24.12]]),
+       S('tcs','gy','walk','約 3 分鐘','3分','出站沿綠川走'),
+       S('gy','park','walk','約 12 分鐘','12分','經綠空鐵道、中山路',[[120.6855,24.1415]]),
+       S('park','mk2','walk','約 10 分鐘','10分','沿三民路往西'),
+       S('mk2','sj','bus','約 15 分鐘','15分','公車，或步行約 25 分鐘',[[120.671,24.143]]),
+       S('sj','cmw','walk','約 10 分鐘','10分','沿草悟道往北'),
+       S('cmw','opera','bus','約 15 分鐘','15分','台灣大道上的公車往西',[[120.652,24.157]]),
+       S('opera','fj','bus','約 20 分鐘','20分','公車往逢甲',[[120.643,24.171]]),
+       S('fj','tcs','bus','約 40 分鐘','40分','公車回台中車站（或叫車約 25 分鐘）',[[120.66,24.165],[120.676,24.148]])],
+ tl:[['09:00','高鐵新竹站出發'],['09:40','新烏日轉台鐵到台中車站，飯店寄放行李'],['10:00','宮原眼科（冰淇淋、伴手禮）'],['10:45','綠空鐵道散步到台中公園湖心亭'],['12:00','第二市場吃午餐'],['13:30','審計新村文創小店'],['15:00','草悟道、勤美誠品'],['16:30','國家歌劇院'],['18:30','逢甲夜市'],['21:30','回台中車站周邊飯店']],
+ tips:['宮原眼科假日排隊長，早上先去','台中公車與捷運都可刷悠遊卡、一卡通','歌劇院與文創園區開放時間以官網為準'],
+ couple:'國家歌劇院的空中花園傍晚很漂亮，適合拍照。'};
+const D2={label:'Day 2',t:'東海大學・高美濕地夕陽',
+ segs:[S('tcs','th','bus','約 40 分鐘','40分','台灣大道上的公車往東海大學（300–308 一帶）',[[120.66,24.155],[120.62,24.172]]),
+       S('th','qs','bus','約 45 分鐘','45分','303–306 往清水市區',[[120.58,24.22]]),
+       S('qs','gm','bus','約 30 分鐘','30分','178／179 到高美濕地（清水華南銀行一帶轉車）',[[120.556,24.29]]),
+       S('gm','tcs','bus','約 1.5 小時','1.5h','309 直達台中車站（班次少，先查時刻）',[[120.575,24.29],[120.60,24.22],[120.64,24.165],[120.672,24.145]])],
+ tl:[['09:30','台中車站搭公車往東海'],['10:15','路思義教堂、東海牧場鮮奶'],['12:00','東海藝術街午餐'],['13:30','公車到清水'],['14:30','轉 178／179 到高美濕地'],['15:00','風車步道、木棧道'],['日落','看夕陽（冬天約 17:20，夏天約 18:50）'],['18:30','搭 309 回台中'],['20:30','一中街宵夜']],
+ tips:['高美濕地風很大，帶外套與帽子','出發前查潮汐，退潮時水面倒影最漂亮','309 班次少，回程時刻要先查；錯過可叫車到清水站搭台鐵'],
+ couple:'高美濕地的夕陽倒影，是這趟最浪漫的時刻。'};
+const CFG={
+LON0:120.25,LAT1:24.40,K:800,W:600,H:500,grid:0.1,minFit:8,farW:240,maxW:1200,
+sideH:'天數版本',ovSub:'3 天和 4 天比較',ovTitle:'兩種玩法',ovText:'前兩天相同；3 天版最後一天去彰化與鹿港，4 天版多住一晚日月潭。',cmpTitle:'版本比較',infoTitle:'台中交通與準備',
+info:[
+ {h:'怎麼移動',items:['新竹到台中搭高鐵最快（約 25–30 分鐘），台鐵自強號約 1 小時','高鐵台中站旁的台鐵新烏日站可轉區間車到台中車站','捷運綠線從高鐵台中站經市政府一帶到北屯','公車路線多，用台中公車動態 App 或 Google 地圖查班次']},
+ {h:'3 天還是 4 天',items:['3 天：台中市區＋高美濕地＋鹿港，住同一間飯店，最省事','4 天：多一天日月潭，湖邊住一晚，步調比較慢','兩個版本都住台中車站周邊，搭車最方便']},
+ {h:'出發前預訂',items:['高鐵票（乘車日前 28 天開賣，假日早訂）','台中車站周邊飯店 2 晚；4 天版再加日月潭 1 晚','4 天版：台灣好行日月潭線來回票、遊湖船票']}
+],
+places:{
+ nhsr:{n:'往高鐵新竹站',lo:120.734,la:24.39,m:0,s:1,lp:'r',d:'高鐵新竹站 ⇄ 高鐵台中站，約 25–30 分鐘。'},
+ ntr:{n:'往新竹（台鐵）',lo:120.757,la:24.39,m:0,s:1,lp:'r',d:'台鐵彰化 → 新竹，自強號約 1 小時 10 分。'},
+ thsr:{n:'高鐵台中站',lo:120.616,la:24.112,m:1,s:1,lp:'l',d:'旁邊是台鐵新烏日站和捷運綠線。'},
+ tcs:{n:'台中車站',lo:120.6868,la:24.1372,m:1,s:1,lp:'r',d:'住在車站周邊，搭公車、台鐵都方便。'},
+ gy:{n:'宮原眼科',lo:120.6838,la:24.1380,m:0,lp:'l',d:'日治時期眼科診所改建，冰淇淋與伴手禮。'},
+ park:{n:'台中公園',lo:120.6848,la:24.1450,m:0,lp:'r',d:'湖心亭是台中的地標。'},
+ mk2:{n:'第二市場',lo:120.6795,la:24.1420,m:0,lp:'t',d:'百年市場，菜頭粿、肉燥飯等老店。'},
+ sj:{n:'審計新村',lo:120.6625,la:24.1440,m:0,lp:'b',d:'老宿舍改建的文創聚落，週末有市集。'},
+ cmw:{n:'草悟道・勤美',lo:120.6640,la:24.1515,m:0,lp:'r',d:'綠園道散步、勤美誠品。'},
+ opera:{n:'國家歌劇院',lo:120.6402,la:24.1628,m:1,lp:'l',d:'伊東豊雄設計的曲牆建築，有空中花園。'},
+ fj:{n:'逢甲夜市',lo:120.6460,la:24.1790,m:1,lp:'r',d:'台中最大的夜市。'},
+ th:{n:'東海大學',lo:120.5990,la:24.1810,m:1,lp:'r',d:'路思義教堂、東海牧場鮮奶。'},
+ qs:{n:'清水',lo:120.5630,la:24.2660,m:0,lp:'l',d:'轉搭 178／179 到高美濕地。'},
+ gm:{n:'高美濕地',lo:120.5490,la:24.3120,m:1,lp:'l',d:'木棧道、風車與夕陽倒影。'},
+ zh:{n:'彰化車站',lo:120.5385,la:24.0815,m:0,s:1,lp:'r',d:'往鹿港的公車在車站周邊搭。'},
+ fan:{n:'扇形車庫',lo:120.5398,la:24.0855,m:0,lp:'t',d:'台灣僅存的扇形火車頭車庫，可看轉車台。'},
+ lg:{n:'鹿港老街',lo:120.4340,la:24.0565,m:1,lp:'l',d:'天后宮、九曲巷、摸乳巷；蚵仔煎、牛舌餅、麵線糊。'},
+ smt:{n:'日月潭水社',lo:120.9090,la:23.8730,m:1,lp:'t',d:'水社碼頭與遊客中心，湖景旅館多。'},
+ xg:{n:'玄光寺',lo:120.8995,la:23.8510,m:0,lp:'l',d:'遊湖船第一站，有名的茶葉蛋。'},
+ ita:{n:'伊達邵',lo:120.9440,la:23.8510,m:1,lp:'r',d:'邵族部落與商店街，旁邊是日月潭纜車。'},
+ xs:{n:'向山遊客中心',lo:120.8890,la:23.8530,m:0,lp:'l',d:'清水模建築，沿湖自行車道的好去處。'}
+},
+routes:[
+{id:'d3',c:'--r0',name:'台中 3 天 2 夜',short:'3 天版',tag:'市區 → 高美夕陽 → 鹿港',
+ sub:'住：台中車站周邊 2 晚',desc:'市區文創與夜市、東海大學、高美濕地夕陽，最後一天到彰化扇形車庫與鹿港老街，從彰化搭台鐵回新竹。',
+ stats:[['交通','高鐵約 25–30 分鐘'],['參考花費','約 NT$6,000–8,500／人'],['住宿','台中車站周邊 2 晚'],['步行量','中']],
+ days:[D1,D2,
+  {label:'Day 3',t:'彰化扇形車庫・鹿港老街・回新竹',
+   segs:[S('tcs','zh','train','約 15 分鐘','15分','台鐵往南到彰化',[[120.65,24.12],[120.617,24.110],[120.58,24.09]]),
+         S('zh','fan','walk','約 10 分鐘','10分','扇形車庫在車站北側'),
+         S('fan','lg','bus','約 45 分鐘','45分','走回車站前搭彰化客運往鹿港',[[120.49,24.078]]),
+         S('lg','zh','bus','約 40 分鐘','40分','彰化客運回彰化車站',[[120.49,24.060]]),
+         S('zh','ntr','train','約 1 小時 10 分','1.2h','台鐵往北回新竹（自強號）',[[120.58,24.09],[120.617,24.110],[120.65,24.12],[120.6868,24.1372],[120.70,24.18],[120.718,24.254],[120.73,24.31]])],
+   tl:[['09:30','退房，台鐵到彰化'],['10:00','扇形車庫，看火車頭轉向'],['11:00','彰化客運到鹿港'],['12:00','天后宮、九曲巷、摸乳巷'],['13:00','蚵仔煎、肉圓、牛舌餅'],['15:30','公車回彰化'],['16:30','台鐵回新竹']],
+   tips:['扇形車庫有固定休館日，出發前查官網','鹿港老街假日人多，中午前到','從彰化回新竹搭自強號比區間車快很多'],
+   couple:'九曲巷、摸乳巷都很窄，兩個人走剛剛好。'}],
+ extra:[{h:'推薦小吃',items:['宮原眼科冰淇淋、第二市場老店','逢甲夜市、一中街','東海牧場鮮奶','鹿港：蚵仔煎、肉圓、麵線糊、牛舌餅']}]},
+{id:'d4',c:'--r1',name:'台中 4 天 3 夜',short:'4 天版',tag:'市區 → 高美夕陽 → 住日月潭',
+ sub:'住：台中車站周邊 2 晚＋日月潭 1 晚',desc:'前兩天和 3 天版一樣，第三天搭台灣好行到日月潭坐船遊湖、住湖邊，第四天騎環湖自行車後從高鐵台中站回新竹。',
+ stats:[['交通','高鐵＋台灣好行約 1.5 小時'],['參考花費','約 NT$9,000–13,000／人'],['住宿','台中 2 晚＋日月潭 1 晚'],['步行量','中']],
+ days:[D1,D2,
+  {label:'Day 3',t:'日月潭遊湖・住湖畔',
+   segs:[S('tcs','smt','bus','約 1 小時 40 分','1.7h','台灣好行日月潭線（6670），台中車站上車',[[120.72,24.10],[120.80,24.00],[120.87,23.93]]),
+         S('smt','xg','boat','約 15 分鐘','15分','日月潭遊湖船，水社碼頭上船',[[120.905,23.863]]),
+         S('xg','ita','boat','約 20 分鐘','20分','遊湖船到伊達邵',[[120.92,23.846]]),
+         S('ita','smt','boat','約 15 分鐘','15分','遊湖船回水社',[[120.928,23.864]])],
+   tl:[['08:30','退房，台中車站搭 6670'],['10:15','抵水社，飯店寄放行李'],['10:45','遊湖船到玄光寺'],['12:00','伊達邵午餐、逛商店街'],['14:00','（可選）日月潭纜車'],['16:00','遊湖船回水社'],['17:00','湖畔看夕陽'],['晚上','住水社湖景房']],
+   tips:['6670 假日人多，先買來回票','遊湖船可買多碼頭套票','湖邊晚上比市區冷，帶外套'],
+   couple:'訂湖景房，早上醒來就看到湖面。'},
+  {label:'Day 4',t:'環湖自行車・回新竹',
+   segs:[S('smt','xs','bike','約 20 分鐘','20分','水社租自行車，沿月潭自行車道往向山',[[120.898,23.867]]),
+         S('xs','smt','bike','約 20 分鐘','20分','騎回水社還車',[[120.895,23.861]]),
+         S('smt','thsr','bus','約 1.5 小時','1.5h','台灣好行日月潭線回高鐵台中站',[[120.87,23.93],[120.78,23.98],[120.70,24.05]]),
+         S('thsr','nhsr','hsr','約 25–30 分鐘','25分','高鐵回新竹',[[120.68,24.25]])],
+   tl:[['06:30','清晨看湖面霧氣、散步'],['08:30','早餐'],['09:30','租自行車騎到向山遊客中心'],['11:00','還車、退房'],['12:00','午餐'],['13:30','搭 6670 回高鐵台中站'],['15:30','高鐵回新竹']],
+   tips:['自行車道部分路段有坡度，可租電動自行車','回程 6670 可預約上車時段','高鐵回程先訂好，假日下午班次容易滿'],
+   couple:'清晨的日月潭最安靜，是整趟最放鬆的時候。'}],
+ extra:[{h:'推薦小吃',items:['宮原眼科冰淇淋、第二市場老店','逢甲夜市、一中街','日月潭：阿婆茶葉蛋、紅茶、湖鮮料理']}]}
+],
+base:{
+ polys:[
+  ['land',[[120.64,24.50],[120.64,24.45],[120.58,24.38],[120.545,24.32],[120.52,24.29],[120.49,24.25],[120.46,24.20],[120.43,24.13],[120.40,24.07],[120.37,24.00],[120.33,23.93],[120.29,23.86],[120.25,23.80],[120.20,23.70],[121.3,23.70],[121.3,24.50]]],
+  ['hill',[[120.60,24.32],[120.62,24.28],[120.62,24.20],[120.605,24.12],[120.585,24.06],[120.565,24.05],[120.56,24.12],[120.565,24.22],[120.58,24.30]]],
+  ['hill',[[120.56,24.08],[120.58,24.05],[120.60,23.95],[120.62,23.85],[120.60,23.83],[120.57,23.90],[120.545,24.00],[120.54,24.06]]],
+  ['hill',[[120.73,24.50],[121.3,24.50],[121.3,23.70],[120.70,23.70],[120.68,23.85],[120.72,24.00],[120.75,24.12],[120.74,24.25]]],
+  ['mtn',[[120.82,24.50],[121.3,24.50],[121.3,23.70],[120.80,23.70],[120.82,23.95],[120.85,24.15],[120.84,24.30]]],
+  ['lake',[[120.895,23.875],[120.915,23.876],[120.93,23.866],[120.942,23.853],[120.934,23.840],[120.915,23.837],[120.904,23.845],[120.896,23.855],[120.89,23.865]]]
+ ],
+ lines:[
+  ['river',[[120.90,24.25],[120.80,24.27],[120.72,24.29],[120.65,24.33],[120.58,24.36]]],
+  ['river',[[120.85,24.02],[120.75,24.05],[120.68,24.08],[120.62,24.095],[120.55,24.14],[120.47,24.18]]],
+  ['river',[[120.95,23.80],[120.80,23.80],[120.60,23.82],[120.40,23.84],[120.25,23.82]]],
+  ['railctx',[[120.76,24.42],[120.73,24.31],[120.718,24.254],[120.70,24.18],[120.6868,24.1372],[120.65,24.12],[120.617,24.110],[120.58,24.09],[120.5385,24.0815]]],
+  ['railctx',[[120.62,24.42],[120.60,24.35],[120.56,24.264],[120.555,24.20],[120.565,24.12],[120.5385,24.0815],[120.52,24.00],[120.50,23.90],[120.48,23.78]]],
+  ['hsrctx',[[120.78,24.50],[120.734,24.39],[120.68,24.25],[120.616,24.112],[120.58,23.95],[120.575,23.874],[120.50,23.75]]],
+  ['mrtctx',[[120.616,24.112],[120.62,24.12],[120.635,24.135],[120.645,24.150],[120.646,24.162],[120.66,24.170],[120.68,24.175],[120.70,24.18]]]
+ ],
+ labels:[['台中市',120.74,24.20,'region'],['彰化縣',120.47,23.97,'region'],['南投縣',120.95,23.98,'region'],['大肚山',120.592,24.24,'region',-80],['台灣海峽',120.32,24.20,'sea-name'],['日月潭',120.918,23.857,'sea-name']]
+}};
+
+const {LON0,LAT1,K,W,H}=CFG; const AR=W/H;
+const X=lo=>(lo-LON0)*K, Y=la=>(LAT1-la)*K;
+const NS='http://www.w3.org/2000/svg';
+const svg=document.getElementById('svg'), chart=document.getElementById('chart'), tip=document.getElementById('tip');
+const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e;};
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const MODE={hsr:'高鐵',train:'火車',mrt:'捷運',lrt:'輕軌',bus:'公車',walk:'步行',bike:'單車',shuttle:'接駁',taxi:'計程車',ferry:'渡輪',boat:'遊船'};
+const MS={hsr:'高鐵',train:'火車',mrt:'捷運',lrt:'輕軌',bus:'公車',walk:'走',bike:'騎',shuttle:'接駁',taxi:'車',ferry:'船',boat:'船'};
+const PL=CFG.places, ROUTES=CFG.routes;
+ROUTES.forEach(r=>{r.days=r.days.map(d=>JSON.parse(JSON.stringify(d)));});
+const SEG=[];
+ROUTES.forEach((r,ri)=>r.days.forEach((d,di)=>d.segs.forEach(s=>{
+  s.r=ri;s.d=di;s.id=SEG.length;
+  s.pts=[[PL[s.f].lo,PL[s.f].la],...(s.mid||[]),[PL[s.t].lo,PL[s.t].la]].map(p=>[X(p[0]),Y(p[1])]);
+  s.len=s.pts.slice(1).reduce((a,q,k)=>a+Math.hypot(q[0]-s.pts[k][0],q[1]-s.pts[k][1]),0);
+  SEG.push(s);})));
+ROUTES.forEach(r=>r.days.forEach(d=>{d.stops=[d.segs[0].f,...d.segs.map(s=>s.t)];}));
+
+/* base map */
+const P=pts=>pts.map(p=>X(p[0]).toFixed(1)+','+Y(p[1]).toFixed(1)).join(' ');
+const D=pts=>pts.map((p,i)=>(i?'L':'M')+X(p[0]).toFixed(1)+','+Y(p[1]).toFixed(1)).join(' ');
+el('rect',{x:-5000,y:-5000,width:12000,height:12000,fill:'var(--sea)'});
+const g=el('g',{class:'grid'});const GS=CFG.grid;
+for(let lo=Math.floor(LON0)-1;lo<=LON0+W/K+1;lo+=GS){const x=X(lo);el('line',{x1:x,y1:-5000,x2:x,y2:5000},g);}
+for(let la=Math.floor(LAT1-H/K)-1;la<=LAT1+1;la+=GS){const y=Y(la);el('line',{x1:-5000,y1:y,x2:5000,y2:y},g);}
+CFG.base.polys.forEach(([cls,pts])=>el('polygon',{class:cls,points:P(pts)}));
+CFG.base.lines.forEach(([cls,pts])=>el('path',{class:cls,d:D(pts)}));
+const scaled=[];const addS=(n,x,y,r)=>scaled.push({el:n,x,y,r:r||0});
+CFG.base.labels.forEach(([t,lo,la,c,rot])=>{const gg=el('g',{class:'lbl'});const e=el('text',{class:c,'text-anchor':'middle'},gg);e.textContent=t;addS(gg,X(lo),Y(la),rot);});
+
+/* routes */
+const pathD=pts=>pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+const midOf=pts=>{let L=[0];for(let i=1;i<pts.length;i++)L.push(L[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));const h=L[L.length-1]/2;for(let i=1;i<pts.length;i++)if(L[i]>=h){const t=(h-L[i-1])/(L[i]-L[i-1]||1);return[pts[i-1][0]+(pts[i][0]-pts[i-1][0])*t,pts[i-1][1]+(pts[i][1]-pts[i-1][1])*t];}return pts[0];};
+const rLayer=el('g',{}),pLayer=el('g',{}),bLayer=el('g',{});
+SEG.forEach(s=>{
+  const c=`var(${ROUTES[s.r].c})`;
+  const sg=el('g',{class:'seg'},rLayer);const d=pathD(s.pts);
+  el('path',{d,class:'route '+s.mode,stroke:c},sg);
+  const hit=el('path',{d,class:'hit'},sg);
+  s.g=sg;s.midW=midOf(s.pts);
+  const bg=el('g',{class:'badge',style:`--bc:${c}`},bLayer);
+  const label=`${MS[s.mode]} ${s.short}`;
+  const w=[...label].reduce((a,ch)=>a+(/[　-鿿]/.test(ch)?10.5:6.3),0)+12;
+  el('rect',{x:-w/2,y:-9.5,width:w,height:19,rx:9.5},bg);
+  const t=el('text',{'text-anchor':'middle',y:3.8},bg);t.textContent=label;
+  addS(bg,s.midW[0],s.midW[1]);s.badge=bg;
+  [hit,bg].forEach(n=>bindHover(n,ev=>segTip(s,ev.clientX,ev.clientY),()=>hlSeg(s,true),()=>hlSeg(s,false)));
+});
+const OFF={r:[8,4,'start'],l:[-8,4,'end'],t:[0,-9,'middle'],b:[0,17,'middle']};
+const pinEls={};
+for(const id in PL){const p=PL[id];const pg=el('g',{class:'pin '+(p.m?'major':'minor')+(p.s?' stn':'')},pLayer);
+  el('circle',{r:p.m?5.5:4},pg);const [dx,dy,an]=OFF[p.lp||'r'];const t=el('text',{x:dx,y:dy,'text-anchor':an},pg);t.textContent=p.n;
+  addS(pg,X(p.lo),Y(p.la));pinEls[id]=pg;
+  bindHover(pg,ev=>placeTip(id,ev.clientX,ev.clientY),()=>pg.classList.add('hl'),()=>pg.classList.remove('hl'));}
+
+/* tooltip */
+let tipLock=false;
+function showTip(html,cx,cy){const r=chart.getBoundingClientRect();tip.innerHTML=html;tip.hidden=false;
+  let x=cx-r.left,y=cy-r.top;const tw=tip.offsetWidth,th=tip.offsetHeight;
+  x=Math.max(tw/2+6,Math.min(r.width-tw/2-6,x));
+  tip.style.transform=(y-th-20<0)?'translate(-50%,16px)':'translate(-50%,calc(-100% - 14px))';
+  tip.style.left=x+'px';tip.style.top=y+'px';}
+function hideTip(){tip.hidden=true;tipLock=false;}
+function segTip(s,cx,cy){const r=ROUTES[s.r];showTip(`<b><span class="k">${MODE[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}</b><div>${s.dur}</div><div class="m">${s.how}</div><div class="m">${r.short}・${r.days[s.d].label||('第 '+(s.d+1)+' 天')}</div>`,cx,cy);}
+function placeTip(id,cx,cy){const p=PL[id];showTip(`<b>${p.n}</b><div class="m">${p.d}</div>`,cx,cy);}
+function worldToClient(wx,wy){const r=svg.getBoundingClientRect();return[r.left+(wx-view.x)/view.w*r.width,r.top+(wy-view.y)/view.h*r.height];}
+function bindHover(node,show,on,off){
+  node.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'||dragging)return;on();show(e);});
+  node.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||dragging||tipLock)return;show(e);});
+  node.addEventListener('pointerleave',e=>{if(e.pointerType!=='mouse')return;off();if(!tipLock)hideTip();});
+  node.addEventListener('click',e=>{if(moved)return;e.stopPropagation();on();show(e);tipLock=true;setTimeout(off,1500);});
+}
+function hlSeg(s,on){s.g.classList.toggle('hl',on);s.badge.classList.toggle('hl',on);document.querySelectorAll(`[data-s="${s.id}"]`).forEach(n=>n.classList.toggle('hl',on));}
+
+/* view */
+const allW=SEG.flatMap(s=>s.pts).concat(Object.values(PL).map(p=>[X(p.lo),Y(p.la)]));
+const BX=[Math.min(...allW.map(p=>p[0]))-150,Math.max(...allW.map(p=>p[0]))+150,Math.min(...allW.map(p=>p[1]))-150,Math.max(...allW.map(p=>p[1]))+150];
+let view={x:0,y:0,w:W,h:H},anim=0;
+const scaleEl=document.getElementById('scale');
+const KMU=111*Math.cos((LAT1-H/K/2)*Math.PI/180)/K;
+function setView(v){
+  const w=Math.max(6,Math.min(CFG.maxW||1400,v.w)),h=w/AR;
+  const cx=Math.max(BX[0],Math.min(BX[1],v.x+v.w/2)),cy=Math.max(BX[2],Math.min(BX[3],v.y+v.h/2));
+  view={x:cx-w/2,y:cy-h/2,w,h};
+  svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`);
+  const s=view.w/W;
+  scaled.forEach(o=>o.el.setAttribute('transform',`translate(${o.x},${o.y}) scale(${s})${o.r?` rotate(${o.r})`:''}`));
+  svg.classList.toggle('far',view.w>(CFG.farW||300));
+  const r=svg.getBoundingClientRect();if(!r.width)return;
+  const ppu=r.width/view.w;SEG.forEach(q=>q.badge.classList.toggle('tiny',q.len*ppu<56));
+  const pxPerKm=ppu/KMU;const nice=[0.2,0.5,1,2,5,10,20,50,100,200].find(n=>n*pxPerKm>=60)||200;
+  scaleEl.firstChild.textContent=(nice<1?nice*1000+' m':nice+' km');scaleEl.lastChild.style.width=(nice*pxPerKm).toFixed(0)+'px';
+}
+function animateTo(t){cancelAnimationFrame(anim);if(reduce){setView(t);return;}
+  const f={...view},t0=performance.now(),Dur=800,ease=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+  const step=now=>{const p=Math.min(1,(now-t0)/Dur),e=ease(p);setView({x:f.x+(t.x-f.x)*e,y:f.y+(t.y-f.y)*e,w:f.w+(t.w-f.w)*e,h:f.h+(t.h-f.h)*e});if(p<1)anim=requestAnimationFrame(step);};
+  anim=requestAnimationFrame(step);}
+function fit(pts,minW){let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;pts.forEach(([x,y])=>{x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);});
+  const bw=x1-x0,bh=y1-y0;const w=Math.max(bw*1.4+12,(bh*1.4+12)*AR,minW||16);return{x:(x0+x1)/2-w/2,y:(y0+y1)/2-w/AR/2,w,h:w/AR};}
+function zoomAt(cx,cy,f){const r=svg.getBoundingClientRect();const wx=view.x+(cx-r.left)/r.width*view.w,wy=view.y+(cy-r.top)/r.height*view.h;
+  const w=Math.max(6,Math.min(CFG.maxW||1400,view.w/f)),h=w/AR;setView({x:wx-(cx-r.left)/r.width*w,y:wy-(cy-r.top)/r.height*h,w,h});}
+const ptrs=new Map();let dragging=false,moved=false,start=null,lastPinch=null;
+svg.addEventListener('pointerdown',e=>{cancelAnimationFrame(anim);ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=false;start={x:e.clientX,y:e.clientY};if(ptrs.size===2)lastPinch=null;});
+svg.addEventListener('pointermove',e=>{if(!ptrs.has(e.pointerId))return;const p=ptrs.get(e.pointerId);const r=svg.getBoundingClientRect();
+  if(ptrs.size===1){if(!dragging&&Math.hypot(e.clientX-start.x,e.clientY-start.y)>4){dragging=moved=true;svg.setPointerCapture(e.pointerId);svg.classList.add('grabbing');hideTip();}
+    if(dragging)setView({...view,x:view.x-(e.clientX-p.x)*view.w/r.width,y:view.y-(e.clientY-p.y)*view.h/r.height});}
+  ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(ptrs.size===2){moved=true;hideTip();const [a,b]=[...ptrs.values()];const d=Math.hypot(a.x-b.x,a.y-b.y),mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+    if(lastPinch){setView({...view,x:view.x-(mx-lastPinch.mx)*view.w/r.width,y:view.y-(my-lastPinch.my)*view.h/r.height});zoomAt(mx,my,d/lastPinch.d);}lastPinch={d,mx,my};}});
+const endPtr=e=>{ptrs.delete(e.pointerId);if(ptrs.size<2)lastPinch=null;if(!ptrs.size){dragging=false;svg.classList.remove('grabbing');}};
+['pointerup','pointercancel'].forEach(t=>svg.addEventListener(t,endPtr));
+svg.addEventListener('click',()=>{if(!moved)hideTip();});
+svg.addEventListener('wheel',e=>{e.preventDefault();cancelAnimationFrame(anim);hideTip();zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*0.0018));},{passive:false});
+const cz=f=>{const c={...view};const w=view.w/f;animateTo({x:c.x+c.w/2-w/2,y:c.y+c.h/2-w/AR/2,w,h:w/AR});};
+document.getElementById('zin').onclick=()=>cz(1.6);
+document.getElementById('zout').onclick=()=>cz(1/1.6);
+document.getElementById('zfit').onclick=()=>applyMap();
+
+/* state & render */
+const st={r:-1,d:-1};
+const side=document.getElementById('side'),legend=document.getElementById('legend'),pane=document.getElementById('pane');
+side.innerHTML=`<div class="side-h">${CFG.sideH}</div>`;
+const sbtn=(html,i,color)=>{const b=document.createElement('button');b.type='button';b.className='tab';b.innerHTML=(color?`<span class="sw" style="background:var(${color})"></span>`:'')+`<span>${html}</span>`;b.onclick=()=>go(i,-1);side.appendChild(b);return b;};
+const sideBtns=[sbtn(`總覽<small>${CFG.ovSub}</small>`,-1),...ROUTES.map((r,i)=>sbtn(`${r.short}<small>${r.tag}</small>`,i,r.c))];
+const toMap=()=>document.getElementById('map').scrollIntoView({behavior:reduce?'auto':'smooth'});
+function go(r,d,noScroll){st.r=r;st.d=d;render();if(!noScroll&&matchMedia('(max-width:880px)').matches)toMap();}
+const KEY=`<div class="key"><span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/></svg>鐵路・捷運・公車</span><span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="var(--ink)" stroke-width="3" stroke-dasharray="7 5"/></svg>船・計程車</span><span><svg width="26" height="6"><line x1="2" y1="3" x2="25" y2="3" stroke="var(--ink)" stroke-width="3.5" stroke-dasharray="1 6" stroke-linecap="round"/></svg>步行・單車</span></div>`;
+function applyMap(){
+  hideTip();
+  const act=s=>st.r>=0&&s.r===st.r&&(st.d<0||s.d===st.d);
+  svg.classList.toggle('dim',st.r>=0);
+  SEG.forEach(s=>{const on=act(s);s.g.classList.toggle('on',on);s.badge.classList.toggle('on',on);s.g.classList.remove('hl');s.badge.classList.remove('hl');if(on)rLayer.append(s.g);});
+  const stops=new Set();if(st.r>=0)ROUTES[st.r].days.forEach((d,i)=>{if(st.d<0||st.d===i)d.stops.forEach(x=>stops.add(x));});
+  for(const id in pinEls)pinEls[id].classList.toggle('on',stops.has(id));
+  const actS=SEG.filter(act),loc=actS.filter(s=>s.mode!=='hsr');
+  const pts=st.r<0?SEG.flatMap(s=>s.pts):(loc.length?loc:actS).flatMap(s=>s.pts);
+  animateTo(fit(pts,CFG.minFit||16));
+}
+function renderLegend(){
+  if(st.r<0){
+    legend.innerHTML=`<div><h3>${CFG.ovTitle}</h3><p class="sub">${CFG.ovText}</p></div>
+    <ul class="rlist">${ROUTES.map((r,i)=>`<li><button type="button" data-r="${i}"><span class="sw" style="background:var(${r.c})"></span><span><b>${r.name}</b><small>${r.tag}</small></span></button></li>`).join('')}</ul>`+KEY;
+    legend.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>go(+b.dataset.r,-1,true));return;}
+  const r=ROUTES[st.r];legend.style.setProperty('--c',`var(${r.c})`);
+  let h=`<div><h3 style="color:var(${r.c})">${r.name}</h3><p class="sub">${r.sub||''}</p></div>
+  <div class="dayseg">${['全部',...r.days.map((d,i)=>d.label||('第 '+(i+1)+' 天'))].map((t,i)=>`<button class="tab" type="button" data-d="${i-1}" aria-pressed="${st.d===i-1}">${t}</button>`).join('')}</div><ol class="iti">`;
+  r.days.forEach((d,di)=>{if(st.d>=0&&st.d!==di)return;
+    const stop=id=>`<li class="stop ${PL[id].m?'major':''}"><button type="button" data-p="${id}"><span class="dot"></span>${PL[id].n}</button></li>`;
+    h+=`<li class="dh">${d.label?d.label.toUpperCase():'DAY '+(di+1)}・${d.t}</li>`+stop(d.segs[0].f);
+    d.segs.forEach(s=>{h+=`<li class="hop" tabindex="0" data-s="${s.id}"><span class="chip ${s.mode}">${MODE[s.mode]}</span><span>${s.dur}</span><small>${s.how}</small></li>`+stop(s.t);});});
+  legend.innerHTML=h+'</ol>'+KEY;
+  legend.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{st.d=+b.dataset.d;applyMap();renderLegend();});
+  legend.querySelectorAll('.hop').forEach(row=>{const s=SEG[+row.dataset.s];
+    const on=()=>{hlSeg(s,true);const [cx,cy]=worldToClient(...s.midW);const rc=chart.getBoundingClientRect();if(cx>rc.left&&cx<rc.right&&cy>rc.top&&cy<rc.bottom)segTip(s,cx,cy);};
+    const off=()=>{hlSeg(s,false);hideTip();};
+    row.addEventListener('mouseenter',on);row.addEventListener('mouseleave',off);row.addEventListener('focus',on);row.addEventListener('blur',off);
+    row.addEventListener('click',()=>{animateTo(fit(s.pts,10));setTimeout(on,reduce?0:850);});
+    row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();row.click();}});});
+  legend.querySelectorAll('[data-p]').forEach(b=>{const id=b.dataset.p,p=PL[id];
+    b.onmouseenter=()=>pinEls[id].classList.add('hl');b.onmouseleave=()=>pinEls[id].classList.remove('hl');
+    b.onclick=()=>{animateTo(fit([[X(p.lo),Y(p.la)]],10));setTimeout(()=>{const [cx,cy]=worldToClient(X(p.lo),Y(p.la));placeTip(id,cx,cy);tipLock=true;},reduce?0:850);};});
+}
+const list=(items,cls)=>`<ul${cls?` class="${cls}"`:''}>${items.map(t=>`<li>${t}</li>`).join('')}</ul>`;
+function renderPane(){
+  if(st.r<0){
+    pane.innerHTML=`<section><div class="sec-h"><h2>${CFG.cmpTitle}</h2><p>點一張卡片看細節</p></div><div class="rgrid">${ROUTES.map((r,i)=>`<button class="rcard" type="button" data-r="${i}" style="--c:var(${r.c})"><b>${r.name}</b><span>${r.desc}</span>${r.stats.map(([k,v])=>`<span class="mini">${k}：${v}</span>`).join('')}</button>`).join('')}</div></section>
+    ${CFG.info&&CFG.info.length?`<section><div class="sec-h"><h2>${CFG.infoTitle}</h2></div><div class="info">${CFG.info.map(c=>`<div class="card"><h3>${c.h}</h3>${list(c.items)}</div>`).join('')}</div></section>`:''}`;
+    pane.querySelectorAll('.rcard[data-r]').forEach(b=>b.onclick=()=>{go(+b.dataset.r,-1,true);toMap();});
+    return;}
+  const r=ROUTES[st.r];
+  pane.innerHTML=`<div style="--c:var(${r.c});display:grid;gap:16px">
+  <div class="rhead"><h2>${r.name}</h2><p>${r.desc}</p></div>
+  <div class="stats">${r.stats.map(([k,v])=>`<div class="stat"><span>${k}</span><b>${v}</b></div>`).join('')}</div>
+  <div class="pgrid">${r.days.map((d,di)=>`<article class="card"><span class="ctag">${d.label?d.label.toUpperCase():'DAY '+(di+1)}${d.date?'・'+d.date:''}</span><h3>${d.t}</h3>
+    <ul class="tl">${d.tl.map(([t,x])=>`<li><time>${t}</time><span>${x}</span></li>`).join('')}</ul>
+    <div class="hops">${d.segs.map(s=>`<span class="h" data-s="${s.id}" data-zs="${s.id}"><span class="chip ${s.mode}">${MODE[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}・${s.dur}</span>`).join('')}</div>
+    <h3 style="font-size:15px">注意事項</h3>${list(d.tips,'warn')}
+    ${d.couple?`<div class="couple">${d.couple}</div>`:''}
+    <button class="tab" type="button" data-showd="${di}" style="justify-self:start">在地圖上看這一天</button></article>`).join('')}</div>
+  <div class="info">${(r.extra||[]).map(c=>`<div class="card"><h3>${c.h}</h3>${list(c.items)}</div>`).join('')}</div></div>`;
+  pane.querySelectorAll('[data-zs]').forEach(c=>{const s=SEG[+c.dataset.zs];c.onmouseenter=()=>hlSeg(s,true);c.onmouseleave=()=>hlSeg(s,false);c.onclick=()=>{animateTo(fit(s.pts,10));toMap();};});
+  pane.querySelectorAll('[data-showd]').forEach(b=>b.onclick=()=>{st.d=+b.dataset.showd;applyMap();renderLegend();toMap();});
+}
+function render(){
+  sideBtns.forEach((b,j)=>b.setAttribute('aria-pressed',String(j===st.r+1)));
+  document.getElementById('mapTitle').textContent=st.r<0?'路線地圖':ROUTES[st.r].short+'路線圖';
+  applyMap();renderLegend();renderPane();
+}
+setView({x:0,y:0,w:W,h:H});
+const hm=new RegExp('^#('+ROUTES.map(r=>r.id).join('|')+')$').exec(location.hash);
+st.r=hm?ROUTES.findIndex(r=>r.id===hm[1]):-1;
+render();
+new ResizeObserver(()=>setView(view)).observe(svg);
+})();
+</script>
+</body>
+</html>

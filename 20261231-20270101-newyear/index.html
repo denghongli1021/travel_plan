@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>跨年兩天一夜</title>
+<meta name="description" content="2026/12/31–2027/1/1 跨年兩天一夜：台北 101 煙火或高雄港灣跨年，高鐵＋捷運。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;800&family=Noto+Sans+TC:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: 側欄分頁（總覽＋各版本）；主區是可拖曳縮放的路線圖、逐站交通、逐日細節 */
+:root{
+  --bg:#f1f3f0; --paper:#ffffff; --ink:#1b2722; --muted:#5d6b64; --line:#d6ddd8;
+  --sea:#dfe9ec; --sea-deep:#a8c4cc; --land:#f4f2e6; --hill:#e6e6d2; --mtn:#d7dcc0; --land-edge:#b8bc9a; --lake:#cfe2e6;
+  --rail:#8b948f; --accent:#d4901a; --accent-ink:#7a4f00;
+  --r0:#b8325a; --r1:#1f6fae;
+  --f-display:"Noto Serif TC","Songti TC",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-mono:"DM Mono",ui-monospace,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#0f1513; --paper:#161f1c; --ink:#e3ebe6; --muted:#97a69f; --line:#2a3833;
+  --sea:#13232a; --sea-deep:#2a4a55; --land:#1b2420; --hill:#212c24; --mtn:#283326; --land-edge:#4a5741; --lake:#1d3a42;
+  --rail:#7c8882; --accent:#eaa93a; --accent-ink:#f5cf86;
+  --r0:#f07a9c; --r1:#62aee8;
+  color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7;
+  padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-right,0px)) 64px max(16px,env(safe-area-inset-left,0px))}
+[hidden]{display:none!important}
+.wrap{max-width:1180px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.3}
+button{font:inherit;color:inherit}
+header{padding-block:40px 22px;display:grid;gap:14px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(28px,5.5vw,48px);font-weight:800}
+h1 em{font-style:normal;color:var(--accent-ink)}
+.lede{max-width:64ch;color:var(--muted);margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.fact{background:var(--paper);padding:10px 14px;display:grid;gap:1px}
+.fact span{font-size:12px;color:var(--muted)}
+.fact b{font-size:15px}
+.app{display:grid;grid-template-columns:210px minmax(0,1fr);gap:22px;align-items:start}
+.main{min-width:0;display:grid;gap:22px}
+.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 14px);display:grid;gap:5px}
+.side-h{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--muted);padding:0 4px 2px}
+.tab{font:500 13px/1.35 var(--f-body);border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:8px 11px;border-radius:999px;cursor:pointer;display:inline-flex;gap:7px;align-items:center}
+.tab:hover{border-color:var(--ink)}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tab:focus-visible,.ctl:focus-visible,.hop:focus-visible,.stop button:focus-visible,.rcard:focus-visible,.rlist button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.side .tab{border-radius:10px;justify-content:flex-start;text-align:left;width:100%;padding:9px 11px}
+.side .tab small{display:block;font-size:12px;opacity:.75;font-weight:400}
+.sw{width:10px;height:10px;border-radius:3px;flex:none;display:inline-block}
+@media (max-width:880px){
+  .app{grid-template-columns:1fr;gap:0}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+  .side{top:env(safe-area-inset-top,0px);z-index:6;background:var(--bg);display:flex;overflow-x:auto;padding-block:10px;border-bottom:1px solid var(--line);scrollbar-width:none;margin-bottom:14px}
+  .side-h{display:none}
+  .side .tab{width:auto;flex:none}
+  .side .tab small{display:none}
+}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.sec-h h2{font-size:23px}
+.sec-h p{margin:0;color:var(--muted);font-size:13px}
+.mapbox{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:980px){.mapbox{grid-template-columns:1fr}}
+.chart{background:var(--sea);border:1px solid var(--line);border-radius:12px;overflow:hidden;position:relative;user-select:none;-webkit-user-select:none}
+.chart svg#svg{display:block;width:100%;aspect-ratio:640/500;max-width:100%;touch-action:none;cursor:grab}
+.chart svg.grabbing{cursor:grabbing}
+.ctls{position:absolute;top:10px;left:10px;display:grid;gap:4px}
+.ctl{min-width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--paper);cursor:pointer;font-size:18px;line-height:1;display:grid;place-items:center;padding:0 6px}
+.ctl.txt{font-size:11px;font-weight:700;white-space:nowrap}
+.compass{position:absolute;top:10px;right:12px;width:40px;height:52px;pointer-events:none}
+.scalebar{position:absolute;left:12px;bottom:10px;font:11px var(--f-mono);color:var(--muted);pointer-events:none}
+.scalebar div{height:6px;border:2px solid var(--muted);border-top:0;margin-top:2px}
+.hint{position:absolute;right:10px;bottom:8px;font-size:11px;color:var(--muted);background:color-mix(in srgb,var(--paper) 80%,transparent);padding:2px 8px;border-radius:6px;pointer-events:none}
+@media (max-width:520px){.hint{display:none}}
+.tip{position:absolute;z-index:5;pointer-events:none;background:var(--ink);color:var(--bg);font-size:13px;line-height:1.5;padding:8px 11px;border-radius:8px;max-width:260px;box-shadow:0 6px 20px rgb(0 0 0 / .22)}
+.tip b{display:block;font-size:14px}
+.tip .m{opacity:.78;font-size:12px}
+.tip .k{display:inline-block;font-size:11px;font-weight:700;padding:0 6px;border-radius:4px;background:var(--accent);color:#1a1200;margin-right:6px}
+.route{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:3;transition:opacity .25s,stroke-width .15s}
+.route.walk,.route.bike{stroke-dasharray:1 6;stroke-width:3.5}
+.route.shuttle,.route.taxi,.route.ferry,.route.boat{stroke-dasharray:7 5}
+.hit{fill:none;stroke:transparent;stroke-width:18;pointer-events:stroke;cursor:pointer}
+svg.dim .seg:not(.on) .route{opacity:.1}
+svg.dim .seg:not(.on) .hit{pointer-events:none}
+.seg.on .route{stroke-width:4.5}
+.seg.on .route.walk,.seg.on .route.bike{stroke-width:5}
+.seg.hl .route{stroke-width:7.5}
+svg.dim .pin:not(.on){opacity:.25}
+.pin{cursor:pointer}
+.pin text{font:500 11px var(--f-body);fill:var(--ink);paint-order:stroke;stroke:var(--land);stroke-width:3px;stroke-linejoin:round}
+.pin.major text{font-weight:700;font-size:12px}
+.pin circle{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+.pin.major circle{fill:var(--accent)}
+.pin.stn circle{fill:var(--paper);stroke-width:2.5}
+.pin:hover circle,.pin.hl circle{stroke-width:3.5}
+svg.far .pin.minor:not(.on) text{display:none}
+.badge{display:none;cursor:pointer}
+.badge.on{display:inline}
+.badge.tiny{display:none}
+.badge rect{fill:var(--paper);stroke:var(--bc);stroke-width:1.5}
+.badge text{font:700 10.5px var(--f-body);fill:var(--ink)}
+.badge.hl rect{fill:var(--bc)}
+.badge.hl text{fill:var(--paper)}
+.land{fill:var(--land);stroke:var(--land-edge);stroke-width:1.2}
+.hill{fill:var(--hill)} .mtn{fill:var(--mtn)} .lake{fill:var(--lake);stroke:var(--sea-deep);stroke-width:1}
+.river{fill:none;stroke:var(--sea-deep);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.railctx{fill:none;stroke:var(--rail);stroke-width:1.4;stroke-dasharray:6 3;opacity:.7}
+.hsrctx{fill:none;stroke:var(--rail);stroke-width:1;opacity:.55}
+.mrtctx{fill:none;stroke:var(--rail);stroke-width:2;opacity:.45}
+.region{font:600 13px var(--f-display);fill:var(--land-edge);letter-spacing:.35em}
+.sea-name{font:italic 12px var(--f-body);fill:var(--sea-deep);letter-spacing:.2em}
+.grid line{stroke:var(--sea-deep);stroke-width:.5;opacity:.45}
+svg#svg *{vector-effect:non-scaling-stroke}
+.pin *,.badge *,.lbl *{vector-effect:none}
+.legend{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:12px;align-content:start}
+@media (min-width:981px){.legend{max-height:560px;overflow:auto}}
+.legend h3{font-size:18px}
+.legend .sub{color:var(--muted);font-size:13px;margin:2px 0 0}
+.dayseg{display:flex;gap:6px;flex-wrap:wrap}
+.dayseg .tab{padding:6px 10px}
+.iti{list-style:none;margin:0;padding:0}
+.iti .dh{font-family:var(--f-mono);font-size:12px;color:var(--muted);letter-spacing:.08em;padding:8px 0 4px}
+.stop button{all:unset;cursor:pointer;display:flex;gap:10px;align-items:center;font-weight:500;padding:3px 6px 3px 0;border-radius:6px}
+.stop button:hover{color:var(--c)}
+.dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink);background:var(--paper);flex:none}
+.stop.major .dot{background:var(--accent)}
+.hop{margin-left:5px;border-left:2px dashed var(--line);padding:6px 8px 6px 16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 8px;font-size:13px;cursor:pointer;border-radius:0 8px 8px 0;align-items:baseline}
+.hop small{grid-column:2;color:var(--muted);font-size:12px}
+.hop:hover,.hop.hl{background:color-mix(in srgb,var(--c) 14%,transparent);border-left-color:var(--c)}
+.chip{font-size:11px;font-weight:700;padding:1px 7px;border-radius:4px;background:var(--ink);color:var(--bg);white-space:nowrap}
+.chip.walk,.chip.bike{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.chip.bus,.chip.lrt{background:var(--accent);color:#1a1200}
+.chip.mrt{background:color-mix(in srgb,var(--accent) 45%,var(--ink));color:var(--paper)}
+.chip.shuttle,.chip.taxi,.chip.ferry,.chip.boat{background:var(--muted);color:var(--paper)}
+.key{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.key span{display:inline-flex;align-items:center;gap:6px}
+.rlist{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.rlist button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center;padding:8px;border-radius:8px}
+.rlist button:hover{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.rlist b{display:block;font-size:14px}
+.rlist small{display:block;font-size:12px;color:var(--muted)}
+.rhead{border-bottom:2px solid var(--c);padding-bottom:12px;display:grid;gap:4px}
+.rhead h2{font-size:clamp(22px,3.4vw,30px);color:var(--c)}
+.rhead p{margin:0;color:var(--muted);font-size:14px;max-width:64ch}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.stat{background:var(--paper);padding:10px 14px;display:grid;gap:1px}
+.stat span{font-size:12px;color:var(--muted)}
+.stat b{font-size:15px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;align-items:start}
+@media (max-width:420px){.pgrid{grid-template-columns:1fr}}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0;display:grid;gap:10px;align-content:start}
+.card h3{font-size:17px}
+.card .ctag{font-family:var(--f-mono);font-size:12px;color:var(--c);letter-spacing:.06em}
+.card ul{margin:0;padding-left:18px;display:grid;gap:5px}
+.tl{list-style:none!important;margin:0;padding:0!important;display:grid;gap:7px}
+.tl li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:10px}
+.tl time{font-family:var(--f-mono);font-size:13px;color:var(--muted);padding-top:2px}
+.hops{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;color:var(--muted)}
+.hops span.h{border:1px solid var(--line);border-radius:6px;padding:2px 8px;display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.hops span.h:hover{border-color:var(--c)}
+.warn li::marker{color:var(--accent)}
+.couple{font-size:13px;background:color-mix(in srgb,var(--c) 10%,transparent);border-radius:8px;padding:8px 12px}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.rcard{all:unset;box-sizing:border-box;cursor:pointer;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:6px;position:relative;overflow:hidden}
+.rcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.rcard:hover{border-color:var(--c)}
+.rcard b{font-family:var(--f-display);font-size:17px;color:var(--c)}
+.rcard span{font-size:13px;color:var(--muted)}
+.rcard .mini{font-size:12px;color:var(--ink)}
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+#pane{display:grid;gap:22px}
+footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:16px}
+@media (prefers-reduced-motion:reduce){.route{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">New Year's Eve · 2026.12.31 — 2027.01.01</div>
+  <h1>跨年<em>兩天一夜</em><br>台北或高雄</h1>
+  <p class="lede">兩個人不開車，從新竹搭高鐵出發。台北版爬象山看 101 煙火、元旦去北投泡湯；高雄版在港邊看夕陽、跨年晚會，元旦搭渡輪去旗津。</p>
+  <div class="facts">
+    <div class="fact"><span>日期</span><b>12/31（四）→ 1/1（五）</b></div>
+    <div class="fact"><span>元旦連假</span><b>1/1–1/3 連放三天</b></div>
+    <div class="fact"><span>交通</span><b>高鐵＋捷運／輕軌</b></div>
+    <div class="fact"><span>高鐵開賣</span><b>約 12/3（28 天前）</b></div>
+  </div>
+</header>
+<div class="app">
+  <nav class="side" id="side" aria-label="分頁"></nav>
+  <main class="main">
+    <section id="map">
+      <div class="sec-h"><h2 id="mapTitle">路線地圖</h2><p>拖曳、縮放地圖；滑過路線看搭什麼車、要多久</p></div>
+      <div class="mapbox">
+        <div class="chart" id="chart">
+          <svg id="svg" viewBox="0 0 640 500" role="img" aria-label="互動路線圖"></svg>
+          <div class="ctls">
+            <button class="ctl" id="zin" type="button" aria-label="放大">+</button>
+            <button class="ctl" id="zout" type="button" aria-label="縮小">−</button>
+            <button class="ctl txt" id="zfit" type="button">全覽</button>
+          </div>
+          <svg class="compass" viewBox="-20 -30 40 52" aria-hidden="true"><text y="-20" text-anchor="middle" style="font:600 11px var(--f-mono);fill:var(--muted)">N</text><circle r="16" fill="none" stroke="var(--sea-deep)"/><path d="M0,-14 L4,0 L0,14 L-4,0 Z" fill="var(--sea-deep)"/><path d="M0,-14 L4,0 L-4,0 Z" fill="var(--accent)"/></svg>
+          <div class="scalebar" id="scale"><span>5 km</span><div></div></div>
+          <div class="hint">拖曳移動・滾輪或雙指縮放</div>
+          <div class="tip" id="tip" hidden></div>
+        </div>
+        <aside class="legend" id="legend" aria-live="polite"></aside>
+      </div>
+    </section>
+    <div id="pane"></div>
+    <footer>跨年活動地點、煙火時間與捷運營運方式每年公告（多在 11–12 月），出發前以台北市、高雄市官方公告為準。價格與氣溫為大約值，地圖為示意。</footer>
+  </main>
+</div>
+</div>
+<script>
+(function(){
+const S=(f,t,mode,dur,short,how,mid)=>({f,t,mode,dur,short,how,mid:mid||[]});
+const HSR=[[121.0405,24.8081],[120.826,24.605],[120.616,24.112],[120.575,23.874],[120.416,23.736],[120.323,23.459],[120.286,22.925],[120.3077,22.6874]];
+const HSR_N=[[121.214,25.013],[121.463,25.014]];
+const RED_N=[[121.520,25.053],[121.519,25.063],[121.520,25.071],[121.526,25.094],[121.515,25.114],[121.498,25.132]];
+const CFG={
+LON0:119.9,LAT1:25.4,K:300,W:640,H:500,grid:0.5,minFit:7,farW:60,maxW:1600,
+sideH:'跨年版本',ovSub:'兩個城市比較',ovTitle:'兩種跨年',ovText:'都是 12/31 下午出發、1/1 傍晚回新竹，全程高鐵＋捷運。',cmpTitle:'版本比較',infoTitle:'跨年夜共同注意事項',
+info:[
+ {h:'訂票與住宿',items:['高鐵通常在乘車日前 28 天開放訂位，12/31 的票約 12/3 開賣，跨年與元旦連假很快賣完','跨年夜飯店房價高且早早額滿，越早訂越好','1/1（五）元旦起連放三天，回程高鐵也要先訂']},
+ {h:'跨年夜當晚',items:['晚會與煙火區周邊會交通管制，捷運站出入口也可能管制，提早到','往年跨年夜捷運會延長或通宵營運，以當年公告為準','人多時手機訊號差，先約好走散時的集合點','煙火結束後散場要排很久，不急的話晚 30–60 分鐘再走']},
+ {h:'穿著與攜帶',items:['夜晚室外站很久，帶厚外套、暖暖包','行動電源、輕便雨衣（不撐傘）','少量現金，小吃攤不一定能刷卡']}
+],
+places:{
+ hsr:{n:'高鐵新竹站',lo:121.0405,la:24.8081,m:1,s:1,lp:'r',d:'出發與回程都從這裡。'},
+ tpe:{n:'台北車站',lo:121.5170,la:25.0478,m:1,s:1,lp:'l',d:'住在台北車站周邊，往大稻埕、信義、北投都方便。'},
+ dh:{n:'迪化街',lo:121.5098,la:25.0585,m:0,lp:'l',d:'年貨大街前的老街，南北貨、老屋咖啡、永樂市場小吃。'},
+ dock:{n:'大稻埕碼頭',lo:121.5085,la:25.0560,m:0,lp:'l',d:'河岸看夕陽，旁邊有貨櫃市集。'},
+ xs:{n:'象山步道',lo:121.5755,la:25.0275,m:1,lp:'r',d:'看 101 煙火的熱門制高點，往年傍晚就擠滿人。'},
+ t101:{n:'台北 101',lo:121.5645,la:25.0340,m:1,lp:'b',d:'午夜倒數煙火從大樓本體施放。'},
+ ch:{n:'市政府站',lo:121.5675,la:25.0410,m:0,s:1,lp:'r',d:'跨年晚會在市府前廣場；散場後從這裡搭藍線。'},
+ xbt:{n:'新北投溫泉',lo:121.5030,la:25.1370,m:1,lp:'r',d:'地熱谷、北投溫泉博物館；可訂私人湯屋。'},
+ zy:{n:'高鐵左營站',lo:120.3077,la:22.6874,m:1,s:1,lp:'r',d:'高雄高鐵站，轉捷運紅線。'},
+ yc:{n:'鹽埕',lo:120.2870,la:22.6260,m:0,lp:'r',d:'住鹽埕埔站周邊，老字號小吃多，走路到駁二。'},
+ p2:{n:'駁二藝術特區',lo:120.2815,la:22.6200,m:1,lp:'b',d:'倉庫改建的藝文園區，大港橋就在旁邊。'},
+ xzw:{n:'西子灣',lo:120.2635,la:22.6250,m:1,lp:'l',d:'高雄看夕陽的老地方。'},
+ dream:{n:'夢時代',lo:120.3074,la:22.5952,m:1,lp:'r',d:'2026 年高雄跨年在夢時代時代大道舉辦；2027 年地點以公告為準。'},
+ gs:{n:'鼓山輪渡站',lo:120.2745,la:22.6205,m:0,lp:'t',d:'搭渡輪到旗津，約 5 分鐘。'},
+ cj:{n:'旗津老街',lo:120.2665,la:22.6145,m:1,lp:'l',d:'天后宮、海產街，現撈海鮮。'},
+ cjb:{n:'旗津海岸公園',lo:120.2675,la:22.6060,m:0,lp:'l',d:'黑沙灘、彩虹教堂，可租腳踏車沿海騎。'}
+},
+routes:[
+{id:'taipei',c:'--r0',name:'台北 101 煙火跨年',short:'台北',tag:'大稻埕夕陽 → 象山看煙火 → 北投泡湯',
+ sub:'住：台北車站周邊',desc:'最經典的跨年：白天逛大稻埕，晚上爬象山看 101 煙火，元旦睡飽去北投泡湯放鬆。',
+ stats:[['交通','高鐵約 35 分鐘'],['參考花費','約 NT$4,000–7,000／人'],['住宿','台北車站周邊'],['夜間氣溫','約 12–17°C']],
+ days:[
+  {label:'12/31',date:'週四',t:'大稻埕・象山看 101 煙火',
+   segs:[S('hsr','tpe','hsr','約 35 分鐘','35分','高鐵往北，直達車最快約 30 分',HSR_N),
+         S('tpe','dh','walk','約 15 分鐘','15分','沿塔城街往北，或捷運北門站步行'),
+         S('dh','dock','walk','約 5 分鐘','5分','往河邊走'),
+         S('dock','tpe','walk','約 20 分鐘','20分','回飯店休息、加衣服',[[121.512,25.052]]),
+         S('tpe','xs','mrt','約 25 分鐘','25分','捷運淡水信義線（紅線）直達象山站',[[121.518,25.032],[121.5435,25.033],[121.5645,25.033],[121.570,25.0325]]),
+         S('xs','t101','walk','約 15 分鐘','15分','煙火後下山，往 101 方向',[[121.570,25.030]]),
+         S('t101','ch','walk','約 10 分鐘','10分','走到市政府站，避開 101 站人潮'),
+         S('ch','tpe','mrt','約 15 分鐘','15分','捷運板南線（藍線）回台北車站',[[121.558,25.041],[121.544,25.041],[121.533,25.042]])],
+   tl:[['10:30','高鐵到台北，飯店寄放行李'],['11:30','迪化街、永樂市場吃午餐'],['14:00','回飯店休息，晚上要熬夜'],['16:30','大稻埕碼頭看夕陽'],['18:00','提早吃晚餐'],['19:30','捷運紅線到象山站'],['20:00','爬象山步道找位置（約 20–30 分鐘）'],['24:00','101 跨年煙火'],['00:30','下山走到市政府站搭捷運回飯店']],
+   tips:['象山步道是階梯，晚上人多，穿好走的鞋、帶頭燈或手機照明','象山觀景台很早就滿，想輕鬆可改在市府廣場晚會、國父紀念館一帶看','101 站散場最擠，走到市政府站或國父紀念館站比較快'],
+   couple:'象山上看著 101 倒數，是台北最經典的跨年畫面。'},
+  {label:'1/1',date:'週五・元旦',t:'睡飽・北投泡湯・回新竹',
+   segs:[S('tpe','xbt','mrt','約 35 分鐘','35分','紅線到北投站，轉新北投支線',RED_N),
+         S('xbt','tpe','mrt','約 35 分鐘','35分','原路回台北車站',RED_N.slice().reverse().map(p=>[p[0]+0.004,p[1]])),
+         S('tpe','hsr','hsr','約 35 分鐘','35分','高鐵回新竹',HSR_N.slice().reverse())],
+   tl:[['10:30','睡飽、退房、早午餐'],['12:30','捷運到新北投'],['13:15','地熱谷、北投溫泉博物館'],['14:30','湯屋泡湯（建議先預約）'],['17:00','回台北車站'],['18:00','高鐵回新竹']],
+   tips:['元旦湯屋人多，私人湯屋先預約','北投溫泉博物館開放時間以官網為準','元旦清晨總統府前有升旗典禮，想參加要很早出門'],
+   couple:'熬夜後泡私人湯屋，是最好的元旦行程。'}
+ ],
+ extra:[{h:'出發前預訂',items:['台北車站周邊飯店（越早越好）','12/31 去程、1/1 回程高鐵票','新北投私人湯屋']},
+        {h:'推薦小吃',items:['永樂市場、迪化街周邊老店','跨年夜：信義區早點吃，晚上餐廳都滿','北投：溫泉蛋、市場小吃']}]},
+{id:'kaohsiung',c:'--r1',name:'高雄港灣跨年',short:'高雄',tag:'駁二 → 西子灣夕陽 → 夢時代跨年 → 旗津',
+ sub:'住：鹽埕埔站周邊',desc:'南部比較暖，晚上不用穿太多。白天在駁二和西子灣，晚上跨年晚會看煙火，元旦搭渡輪去旗津吃海鮮。',
+ stats:[['交通','高鐵約 1 小時 30 分'],['參考花費','約 NT$4,500–7,500／人'],['住宿','鹽埕・駁二周邊'],['夜間氣溫','約 17–22°C']],
+ days:[
+  {label:'12/31',date:'週四',t:'駁二・西子灣夕陽・跨年晚會',
+   segs:[S('hsr','zy','hsr','約 1 小時 30 分','1.5h','高鐵往南，直達車約 1 小時 20 分',HSR.slice(1,-1)),
+         S('zy','yc','mrt','約 25 分鐘','25分','捷運紅線到美麗島站，轉橘線到鹽埕埔站',[[120.302,22.666],[120.302,22.631],[120.295,22.629]]),
+         S('yc','p2','walk','約 5 分鐘','5分','走到駁二'),
+         S('p2','xzw','lrt','約 20 分鐘','20分','輕軌到哈瑪星站，再步行到西子灣',[[120.274,22.622],[120.268,22.624]]),
+         S('xzw','yc','walk','約 20 分鐘','20分','走回鹽埕吃晚餐',[[120.276,22.626]]),
+         S('yc','dream','lrt','約 25 分鐘','25分','輕軌沿港灣到夢時代站',[[120.286,22.620],[120.290,22.617],[120.296,22.612],[120.300,22.605]]),
+         S('dream','yc','lrt','約 30 分鐘','30分','散場後輕軌或捷運回飯店（人多需排隊）',[[120.302,22.603],[120.298,22.614],[120.292,22.620]])],
+   tl:[['10:00','高鐵到左營'],['11:30','鹽埕放行李，吃午餐'],['13:00','駁二藝術特區、大港橋'],['15:30','輕軌到哈瑪星，走到西子灣'],['17:00','西子灣看夕陽'],['18:30','鹽埕老店晚餐'],['20:00','輕軌到夢時代跨年晚會'],['24:00','倒數煙火'],['01:00','輕軌或捷運回飯店']],
+   tips:['2027 年高雄跨年地點通常 11–12 月公布，出發前確認','輕軌散場排隊很久，可以先散步到下一站再上車','高雄晚上約 17–22°C，帶件薄外套就好'],
+   couple:'西子灣的夕陽配上港口船隻，很適合拍照。'},
+  {label:'1/1',date:'週五・元旦',t:'渡輪去旗津・回新竹',
+   segs:[S('yc','gs','walk','約 12 分鐘','12分','往哈瑪星方向走到鼓山輪渡站',[[120.280,22.624]]),
+         S('gs','cj','ferry','約 5 分鐘','5分','鼓山—旗津渡輪，可刷卡',[[120.271,22.618]]),
+         S('cj','cjb','bike','約 10 分鐘','10分','租腳踏車沿海岸往南',[[120.265,22.610]]),
+         S('cjb','cj','bike','約 10 分鐘','10分','騎回渡輪站',[[120.270,22.611]]),
+         S('cj','gs','ferry','約 5 分鐘','5分','渡輪回鼓山',[[120.270,22.619]]),
+         S('gs','zy','mrt','約 30 分鐘','30分','西子灣站搭橘線，美麗島轉紅線到左營',[[120.271,22.621],[120.295,22.629],[120.302,22.631],[120.302,22.666]]),
+         S('zy','hsr','hsr','約 1 小時 30 分','1.5h','高鐵回新竹',HSR.slice(1,-1).reverse())],
+   tl:[['10:00','睡飽、退房'],['11:00','鼓山輪渡站搭渡輪到旗津'],['11:30','旗津老街海鮮午餐'],['13:00','租腳踏車到旗津海岸公園、彩虹教堂'],['15:00','渡輪回鼓山'],['16:00','捷運到左營'],['17:00','高鐵回新竹']],
+   tips:['元旦旗津渡輪排隊人多，早點出發','海產店先問清楚秤重價格','回程高鐵連假很滿，先訂好'],
+   couple:'渡輪只要 5 分鐘，站在船尾看港口很舒服。'}
+ ],
+ extra:[{h:'出發前預訂',items:['鹽埕或駁二周邊飯店','12/31 去程、1/1 回程高鐵票','確認當年高雄跨年地點與交通（官方活動網站）']},
+        {h:'推薦小吃',items:['鹽埕：老字號鴨肉飯、牛肉麵、冰店','旗津：海產街、烤小卷','駁二周邊咖啡廳']}]}
+],
+base:{
+ polys:[
+  ['land',[[121.51,25.30],[121.60,25.29],[121.75,25.15],[121.87,25.12],[122.00,25.01],[121.90,24.95],[121.83,24.85],[121.86,24.70],[121.86,24.58],[121.75,24.37],[121.68,24.15],[121.62,23.98],[121.55,23.70],[121.48,23.45],[121.40,23.15],[121.25,22.90],[121.15,22.75],[120.98,22.55],[120.90,22.33],[120.86,22.10],[120.85,21.90],[120.73,21.93],[120.70,22.05],[120.62,22.27],[120.58,22.37],[120.42,22.42],[120.34,22.52],[120.325,22.56],[120.31,22.585],[120.30,22.60],[120.285,22.614],[120.272,22.621],[120.26,22.628],[120.255,22.645],[120.22,22.72],[120.17,22.85],[120.10,23.00],[120.10,23.20],[120.12,23.45],[120.18,23.70],[120.25,23.85],[120.33,23.95],[120.40,24.07],[120.50,24.27],[120.57,24.38],[120.66,24.47],[120.75,24.58],[120.86,24.69],[120.92,24.80],[121.00,24.90],[121.05,24.95],[121.20,25.05],[121.30,25.10],[121.40,25.17],[121.43,25.18],[121.45,25.21]]],
+  ['land',[[120.258,22.622],[120.266,22.618],[120.290,22.590],[120.312,22.566],[120.318,22.556],[120.310,22.553],[120.283,22.586],[120.256,22.615]]],
+  ['hill',[[121.62,25.12],[121.90,25.00],[121.80,24.50],[121.60,24.00],[121.45,23.45],[121.20,22.95],[120.95,22.50],[120.80,22.05],[120.65,22.35],[120.52,22.95],[120.55,23.45],[120.70,23.95],[120.85,24.40],[121.05,24.75],[121.30,24.95],[121.45,24.97],[121.58,25.00]]],
+  ['mtn',[[121.50,24.85],[121.75,24.90],[121.75,24.55],[121.50,24.05],[121.35,23.55],[121.10,23.05],[120.90,22.55],[120.80,22.20],[120.72,22.35],[120.62,22.90],[120.68,23.40],[120.80,23.90],[121.00,24.40],[121.25,24.70]]]
+ ],
+ lines:[
+  ['river',[[121.42,25.18],[121.47,25.12],[121.495,25.08],[121.505,25.06],[121.50,25.03],[121.485,25.00],[121.47,24.97]]],
+  ['river',[[121.505,25.07],[121.53,25.08],[121.56,25.075],[121.59,25.07],[121.62,25.06]]],
+  ['river',[[120.287,22.618],[120.292,22.628],[120.297,22.64],[120.30,22.66],[120.302,22.675]]],
+  ['river',[[120.43,22.48],[120.47,22.62],[120.50,22.80],[120.55,23.00]]],
+  ['river',[[120.22,23.83],[120.45,23.82],[120.65,23.82],[120.90,23.80]]],
+  ['hsrctx',[[121.607,25.053],[121.517,25.048],[121.463,25.014],[121.214,25.013],...HSR]],
+  ['mrtctx',[[121.570,25.0325],[121.5645,25.033],[121.5435,25.033],[121.518,25.032],[121.517,25.046],...RED_N,[121.503,25.137]]],
+  ['mrtctx',[[121.508,25.042],[121.517,25.046],[121.533,25.042],[121.544,25.041],[121.558,25.041],[121.5675,25.041]]],
+  ['mrtctx',[[120.3077,22.6874],[120.302,22.666],[120.302,22.631],[120.301,22.624],[120.305,22.613],[120.31,22.58],[120.33,22.56]]],
+  ['mrtctx',[[120.271,22.621],[120.284,22.624],[120.295,22.629],[120.302,22.631],[120.33,22.63]]],
+  ['mrtctx',[[120.274,22.622],[120.286,22.620],[120.290,22.617],[120.296,22.612],[120.300,22.605],[120.307,22.596]]]
+ ],
+ labels:[['台北',121.55,25.075,'region'],['新竹',121.00,24.76,'region'],['台中',120.68,24.16,'region'],['高雄',120.33,22.65,'region'],['中央山脈',121.05,23.60,'region',-68],['台灣海峽',120.15,24.30,'sea-name'],['高雄港',120.28,22.605,'sea-name',-50]]
+}};
+
+const {LON0,LAT1,K,W,H}=CFG; const AR=W/H;
+const X=lo=>(lo-LON0)*K, Y=la=>(LAT1-la)*K;
+const NS='http://www.w3.org/2000/svg';
+const svg=document.getElementById('svg'), chart=document.getElementById('chart'), tip=document.getElementById('tip');
+const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e;};
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const MODE={hsr:'高鐵',train:'火車',mrt:'捷運',lrt:'輕軌',bus:'公車',walk:'步行',bike:'單車',shuttle:'接駁',taxi:'計程車',ferry:'渡輪',boat:'遊船'};
+const MS={hsr:'高鐵',train:'火車',mrt:'捷運',lrt:'輕軌',bus:'公車',walk:'走',bike:'騎',shuttle:'接駁',taxi:'車',ferry:'船',boat:'船'};
+const PL=CFG.places, ROUTES=CFG.routes;
+ROUTES.forEach(r=>{r.days=r.days.map(d=>JSON.parse(JSON.stringify(d)));});
+const SEG=[];
+ROUTES.forEach((r,ri)=>r.days.forEach((d,di)=>d.segs.forEach(s=>{
+  s.r=ri;s.d=di;s.id=SEG.length;
+  s.pts=[[PL[s.f].lo,PL[s.f].la],...(s.mid||[]),[PL[s.t].lo,PL[s.t].la]].map(p=>[X(p[0]),Y(p[1])]);
+  s.len=s.pts.slice(1).reduce((a,q,k)=>a+Math.hypot(q[0]-s.pts[k][0],q[1]-s.pts[k][1]),0);
+  SEG.push(s);})));
+ROUTES.forEach(r=>r.days.forEach(d=>{d.stops=[d.segs[0].f,...d.segs.map(s=>s.t)];}));
+
+/* base map */
+const P=pts=>pts.map(p=>X(p[0]).toFixed(1)+','+Y(p[1]).toFixed(1)).join(' ');
+const D=pts=>pts.map((p,i)=>(i?'L':'M')+X(p[0]).toFixed(1)+','+Y(p[1]).toFixed(1)).join(' ');
+el('rect',{x:-5000,y:-5000,width:12000,height:12000,fill:'var(--sea)'});
+const g=el('g',{class:'grid'});const GS=CFG.grid;
+for(let lo=Math.floor(LON0)-1;lo<=LON0+W/K+1;lo+=GS){const x=X(lo);el('line',{x1:x,y1:-5000,x2:x,y2:5000},g);}
+for(let la=Math.floor(LAT1-H/K)-1;la<=LAT1+1;la+=GS){const y=Y(la);el('line',{x1:-5000,y1:y,x2:5000,y2:y},g);}
+CFG.base.polys.forEach(([cls,pts])=>el('polygon',{class:cls,points:P(pts)}));
+CFG.base.lines.forEach(([cls,pts])=>el('path',{class:cls,d:D(pts)}));
+const scaled=[];const addS=(n,x,y,r)=>scaled.push({el:n,x,y,r:r||0});
+CFG.base.labels.forEach(([t,lo,la,c,rot])=>{const gg=el('g',{class:'lbl'});const e=el('text',{class:c,'text-anchor':'middle'},gg);e.textContent=t;addS(gg,X(lo),Y(la),rot);});
+
+/* routes */
+const pathD=pts=>pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+const midOf=pts=>{let L=[0];for(let i=1;i<pts.length;i++)L.push(L[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));const h=L[L.length-1]/2;for(let i=1;i<pts.length;i++)if(L[i]>=h){const t=(h-L[i-1])/(L[i]-L[i-1]||1);return[pts[i-1][0]+(pts[i][0]-pts[i-1][0])*t,pts[i-1][1]+(pts[i][1]-pts[i-1][1])*t];}return pts[0];};
+const rLayer=el('g',{}),pLayer=el('g',{}),bLayer=el('g',{});
+SEG.forEach(s=>{
+  const c=`var(${ROUTES[s.r].c})`;
+  const sg=el('g',{class:'seg'},rLayer);const d=pathD(s.pts);
+  el('path',{d,class:'route '+s.mode,stroke:c},sg);
+  const hit=el('path',{d,class:'hit'},sg);
+  s.g=sg;s.midW=midOf(s.pts);
+  const bg=el('g',{class:'badge',style:`--bc:${c}`},bLayer);
+  const label=`${MS[s.mode]} ${s.short}`;
+  const w=[...label].reduce((a,ch)=>a+(/[　-鿿]/.test(ch)?10.5:6.3),0)+12;
+  el('rect',{x:-w/2,y:-9.5,width:w,height:19,rx:9.5},bg);
+  const t=el('text',{'text-anchor':'middle',y:3.8},bg);t.textContent=label;
+  addS(bg,s.midW[0],s.midW[1]);s.badge=bg;
+  [hit,bg].forEach(n=>bindHover(n,ev=>segTip(s,ev.clientX,ev.clientY),()=>hlSeg(s,true),()=>hlSeg(s,false)));
+});
+const OFF={r:[8,4,'start'],l:[-8,4,'end'],t:[0,-9,'middle'],b:[0,17,'middle']};
+const pinEls={};
+for(const id in PL){const p=PL[id];const pg=el('g',{class:'pin '+(p.m?'major':'minor')+(p.s?' stn':'')},pLayer);
+  el('circle',{r:p.m?5.5:4},pg);const [dx,dy,an]=OFF[p.lp||'r'];const t=el('text',{x:dx,y:dy,'text-anchor':an},pg);t.textContent=p.n;
+  addS(pg,X(p.lo),Y(p.la));pinEls[id]=pg;
+  bindHover(pg,ev=>placeTip(id,ev.clientX,ev.clientY),()=>pg.classList.add('hl'),()=>pg.classList.remove('hl'));}
+
+/* tooltip */
+let tipLock=false;
+function showTip(html,cx,cy){const r=chart.getBoundingClientRect();tip.innerHTML=html;tip.hidden=false;
+  let x=cx-r.left,y=cy-r.top;const tw=tip.offsetWidth,th=tip.offsetHeight;
+  x=Math.max(tw/2+6,Math.min(r.width-tw/2-6,x));
+  tip.style.transform=(y-th-20<0)?'translate(-50%,16px)':'translate(-50%,calc(-100% - 14px))';
+  tip.style.left=x+'px';tip.style.top=y+'px';}
+function hideTip(){tip.hidden=true;tipLock=false;}
+function segTip(s,cx,cy){const r=ROUTES[s.r];showTip(`<b><span class="k">${MODE[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}</b><div>${s.dur}</div><div class="m">${s.how}</div><div class="m">${r.short}・${r.days[s.d].label||('第 '+(s.d+1)+' 天')}</div>`,cx,cy);}
+function placeTip(id,cx,cy){const p=PL[id];showTip(`<b>${p.n}</b><div class="m">${p.d}</div>`,cx,cy);}
+function worldToClient(wx,wy){const r=svg.getBoundingClientRect();return[r.left+(wx-view.x)/view.w*r.width,r.top+(wy-view.y)/view.h*r.height];}
+function bindHover(node,show,on,off){
+  node.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'||dragging)return;on();show(e);});
+  node.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||dragging||tipLock)return;show(e);});
+  node.addEventListener('pointerleave',e=>{if(e.pointerType!=='mouse')return;off();if(!tipLock)hideTip();});
+  node.addEventListener('click',e=>{if(moved)return;e.stopPropagation();on();show(e);tipLock=true;setTimeout(off,1500);});
+}
+function hlSeg(s,on){s.g.classList.toggle('hl',on);s.badge.classList.toggle('hl',on);document.querySelectorAll(`[data-s="${s.id}"]`).forEach(n=>n.classList.toggle('hl',on));}
+
+/* view */
+const allW=SEG.flatMap(s=>s.pts).concat(Object.values(PL).map(p=>[X(p.lo),Y(p.la)]));
+const BX=[Math.min(...allW.map(p=>p[0]))-150,Math.max(...allW.map(p=>p[0]))+150,Math.min(...allW.map(p=>p[1]))-150,Math.max(...allW.map(p=>p[1]))+150];
+let view={x:0,y:0,w:W,h:H},anim=0;
+const scaleEl=document.getElementById('scale');
+const KMU=111*Math.cos((LAT1-H/K/2)*Math.PI/180)/K;
+function setView(v){
+  const w=Math.max(6,Math.min(CFG.maxW||1400,v.w)),h=w/AR;
+  const cx=Math.max(BX[0],Math.min(BX[1],v.x+v.w/2)),cy=Math.max(BX[2],Math.min(BX[3],v.y+v.h/2));
+  view={x:cx-w/2,y:cy-h/2,w,h};
+  svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`);
+  const s=view.w/W;
+  scaled.forEach(o=>o.el.setAttribute('transform',`translate(${o.x},${o.y}) scale(${s})${o.r?` rotate(${o.r})`:''}`));
+  svg.classList.toggle('far',view.w>(CFG.farW||300));
+  const r=svg.getBoundingClientRect();if(!r.width)return;
+  const ppu=r.width/view.w;SEG.forEach(q=>q.badge.classList.toggle('tiny',q.len*ppu<56));
+  const pxPerKm=ppu/KMU;const nice=[0.2,0.5,1,2,5,10,20,50,100,200].find(n=>n*pxPerKm>=60)||200;
+  scaleEl.firstChild.textContent=(nice<1?nice*1000+' m':nice+' km');scaleEl.lastChild.style.width=(nice*pxPerKm).toFixed(0)+'px';
+}
+function animateTo(t){cancelAnimationFrame(anim);if(reduce){setView(t);return;}
+  const f={...view},t0=performance.now(),Dur=800,ease=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+  const step=now=>{const p=Math.min(1,(now-t0)/Dur),e=ease(p);setView({x:f.x+(t.x-f.x)*e,y:f.y+(t.y-f.y)*e,w:f.w+(t.w-f.w)*e,h:f.h+(t.h-f.h)*e});if(p<1)anim=requestAnimationFrame(step);};
+  anim=requestAnimationFrame(step);}
+function fit(pts,minW){let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;pts.forEach(([x,y])=>{x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);});
+  const bw=x1-x0,bh=y1-y0;const w=Math.max(bw*1.4+12,(bh*1.4+12)*AR,minW||16);return{x:(x0+x1)/2-w/2,y:(y0+y1)/2-w/AR/2,w,h:w/AR};}
+function zoomAt(cx,cy,f){const r=svg.getBoundingClientRect();const wx=view.x+(cx-r.left)/r.width*view.w,wy=view.y+(cy-r.top)/r.height*view.h;
+  const w=Math.max(6,Math.min(CFG.maxW||1400,view.w/f)),h=w/AR;setView({x:wx-(cx-r.left)/r.width*w,y:wy-(cy-r.top)/r.height*h,w,h});}
+const ptrs=new Map();let dragging=false,moved=false,start=null,lastPinch=null;
+svg.addEventListener('pointerdown',e=>{cancelAnimationFrame(anim);ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=false;start={x:e.clientX,y:e.clientY};if(ptrs.size===2)lastPinch=null;});
+svg.addEventListener('pointermove',e=>{if(!ptrs.has(e.pointerId))return;const p=ptrs.get(e.pointerId);const r=svg.getBoundingClientRect();
+  if(ptrs.size===1){if(!dragging&&Math.hypot(e.clientX-start.x,e.clientY-start.y)>4){dragging=moved=true;svg.setPointerCapture(e.pointerId);svg.classList.add('grabbing');hideTip();}
+    if(dragging)setView({...view,x:view.x-(e.clientX-p.x)*view.w/r.width,y:view.y-(e.clientY-p.y)*view.h/r.height});}
+  ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(ptrs.size===2){moved=true;hideTip();const [a,b]=[...ptrs.values()];const d=Math.hypot(a.x-b.x,a.y-b.y),mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+    if(lastPinch){setView({...view,x:view.x-(mx-lastPinch.mx)*view.w/r.width,y:view.y-(my-lastPinch.my)*view.h/r.height});zoomAt(mx,my,d/lastPinch.d);}lastPinch={d,mx,my};}});
+const endPtr=e=>{ptrs.delete(e.pointerId);if(ptrs.size<2)lastPinch=null;if(!ptrs.size){dragging=false;svg.classList.remove('grabbing');}};
+['pointerup','pointercancel'].forEach(t=>svg.addEventListener(t,endPtr));
+svg.addEventListener('click',()=>{if(!moved)hideTip();});
+svg.addEventListener('wheel',e=>{e.preventDefault();cancelAnimationFrame(anim);hideTip();zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*0.0018));},{passive:false});
+const cz=f=>{const c={...view};const w=view.w/f;animateTo({x:c.x+c.w/2-w/2,y:c.y+c.h/2-w/AR/2,w,h:w/AR});};
+document.getElementById('zin').onclick=()=>cz(1.6);
+document.getElementById('zout').onclick=()=>cz(1/1.6);
+document.getElementById('zfit').onclick=()=>applyMap();
+
+/* state & render */
+const st={r:-1,d:-1};
+const side=document.getElementById('side'),legend=document.getElementById('legend'),pane=document.getElementById('pane');
+side.innerHTML=`<div class="side-h">${CFG.sideH}</div>`;
+const sbtn=(html,i,color)=>{const b=document.createElement('button');b.type='button';b.className='tab';b.innerHTML=(color?`<span class="sw" style="background:var(${color})"></span>`:'')+`<span>${html}</span>`;b.onclick=()=>go(i,-1);side.appendChild(b);return b;};
+const sideBtns=[sbtn(`總覽<small>${CFG.ovSub}</small>`,-1),...ROUTES.map((r,i)=>sbtn(`${r.short}<small>${r.tag}</small>`,i,r.c))];
+const toMap=()=>document.getElementById('map').scrollIntoView({behavior:reduce?'auto':'smooth'});
+function go(r,d,noScroll){st.r=r;st.d=d;render();if(!noScroll&&matchMedia('(max-width:880px)').matches)toMap();}
+const KEY=`<div class="key"><span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/></svg>鐵路・捷運・公車</span><span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="var(--ink)" stroke-width="3" stroke-dasharray="7 5"/></svg>船・計程車</span><span><svg width="26" height="6"><line x1="2" y1="3" x2="25" y2="3" stroke="var(--ink)" stroke-width="3.5" stroke-dasharray="1 6" stroke-linecap="round"/></svg>步行・單車</span></div>`;
+function applyMap(){
+  hideTip();
+  const act=s=>st.r>=0&&s.r===st.r&&(st.d<0||s.d===st.d);
+  svg.classList.toggle('dim',st.r>=0);
+  SEG.forEach(s=>{const on=act(s);s.g.classList.toggle('on',on);s.badge.classList.toggle('on',on);s.g.classList.remove('hl');s.badge.classList.remove('hl');if(on)rLayer.append(s.g);});
+  const stops=new Set();if(st.r>=0)ROUTES[st.r].days.forEach((d,i)=>{if(st.d<0||st.d===i)d.stops.forEach(x=>stops.add(x));});
+  for(const id in pinEls)pinEls[id].classList.toggle('on',stops.has(id));
+  const actS=SEG.filter(act),loc=actS.filter(s=>s.mode!=='hsr');
+  const pts=st.r<0?SEG.flatMap(s=>s.pts):(loc.length?loc:actS).flatMap(s=>s.pts);
+  animateTo(fit(pts,CFG.minFit||16));
+}
+function renderLegend(){
+  if(st.r<0){
+    legend.innerHTML=`<div><h3>${CFG.ovTitle}</h3><p class="sub">${CFG.ovText}</p></div>
+    <ul class="rlist">${ROUTES.map((r,i)=>`<li><button type="button" data-r="${i}"><span class="sw" style="background:var(${r.c})"></span><span><b>${r.name}</b><small>${r.tag}</small></span></button></li>`).join('')}</ul>`+KEY;
+    legend.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>go(+b.dataset.r,-1,true));return;}
+  const r=ROUTES[st.r];legend.style.setProperty('--c',`var(${r.c})`);
+  let h=`<div><h3 style="color:var(${r.c})">${r.name}</h3><p class="sub">${r.sub||''}</p></div>
+  <div class="dayseg">${['全部',...r.days.map((d,i)=>d.label||('第 '+(i+1)+' 天'))].map((t,i)=>`<button class="tab" type="button" data-d="${i-1}" aria-pressed="${st.d===i-1}">${t}</button>`).join('')}</div><ol class="iti">`;
+  r.days.forEach((d,di)=>{if(st.d>=0&&st.d!==di)return;
+    const stop=id=>`<li class="stop ${PL[id].m?'major':''}"><button type="button" data-p="${id}"><span class="dot"></span>${PL[id].n}</button></li>`;
+    h+=`<li class="dh">${d.label?d.label.toUpperCase():'DAY '+(di+1)}・${d.t}</li>`+stop(d.segs[0].f);
+    d.segs.forEach(s=>{h+=`<li class="hop" tabindex="0" data-s="${s.id}"><span class="chip ${s.mode}">${MODE[s.mode]}</span><span>${s.dur}</span><small>${s.how}</small></li>`+stop(s.t);});});
+  legend.innerHTML=h+'</ol>'+KEY;
+  legend.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{st.d=+b.dataset.d;applyMap();renderLegend();});
+  legend.querySelectorAll('.hop').forEach(row=>{const s=SEG[+row.dataset.s];
+    const on=()=>{hlSeg(s,true);const [cx,cy]=worldToClient(...s.midW);const rc=chart.getBoundingClientRect();if(cx>rc.left&&cx<rc.right&&cy>rc.top&&cy<rc.bottom)segTip(s,cx,cy);};
+    const off=()=>{hlSeg(s,false);hideTip();};
+    row.addEventListener('mouseenter',on);row.addEventListener('mouseleave',off);row.addEventListener('focus',on);row.addEventListener('blur',off);
+    row.addEventListener('click',()=>{animateTo(fit(s.pts,10));setTimeout(on,reduce?0:850);});
+    row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();row.click();}});});
+  legend.querySelectorAll('[data-p]').forEach(b=>{const id=b.dataset.p,p=PL[id];
+    b.onmouseenter=()=>pinEls[id].classList.add('hl');b.onmouseleave=()=>pinEls[id].classList.remove('hl');
+    b.onclick=()=>{animateTo(fit([[X(p.lo),Y(p.la)]],10));setTimeout(()=>{const [cx,cy]=worldToClient(X(p.lo),Y(p.la));placeTip(id,cx,cy);tipLock=true;},reduce?0:850);};});
+}
+const list=(items,cls)=>`<ul${cls?` class="${cls}"`:''}>${items.map(t=>`<li>${t}</li>`).join('')}</ul>`;
+function renderPane(){
+  if(st.r<0){
+    pane.innerHTML=`<section><div class="sec-h"><h2>${CFG.cmpTitle}</h2><p>點一張卡片看細節</p></div><div class="rgrid">${ROUTES.map((r,i)=>`<button class="rcard" type="button" data-r="${i}" style="--c:var(${r.c})"><b>${r.name}</b><span>${r.desc}</span>${r.stats.map(([k,v])=>`<span class="mini">${k}：${v}</span>`).join('')}</button>`).join('')}</div></section>
+    ${CFG.info&&CFG.info.length?`<section><div class="sec-h"><h2>${CFG.infoTitle}</h2></div><div class="info">${CFG.info.map(c=>`<div class="card"><h3>${c.h}</h3>${list(c.items)}</div>`).join('')}</div></section>`:''}`;
+    pane.querySelectorAll('.rcard[data-r]').forEach(b=>b.onclick=()=>{go(+b.dataset.r,-1,true);toMap();});
+    return;}
+  const r=ROUTES[st.r];
+  pane.innerHTML=`<div style="--c:var(${r.c});display:grid;gap:16px">
+  <div class="rhead"><h2>${r.name}</h2><p>${r.desc}</p></div>
+  <div class="stats">${r.stats.map(([k,v])=>`<div class="stat"><span>${k}</span><b>${v}</b></div>`).join('')}</div>
+  <div class="pgrid">${r.days.map((d,di)=>`<article class="card"><span class="ctag">${d.label?d.label.toUpperCase():'DAY '+(di+1)}${d.date?'・'+d.date:''}</span><h3>${d.t}</h3>
+    <ul class="tl">${d.tl.map(([t,x])=>`<li><time>${t}</time><span>${x}</span></li>`).join('')}</ul>
+    <div class="hops">${d.segs.map(s=>`<span class="h" data-s="${s.id}" data-zs="${s.id}"><span class="chip ${s.mode}">${MODE[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}・${s.dur}</span>`).join('')}</div>
+    <h3 style="font-size:15px">注意事項</h3>${list(d.tips,'warn')}
+    ${d.couple?`<div class="couple">${d.couple}</div>`:''}
+    <button class="tab" type="button" data-showd="${di}" style="justify-self:start">在地圖上看這一天</button></article>`).join('')}</div>
+  <div class="info">${(r.extra||[]).map(c=>`<div class="card"><h3>${c.h}</h3>${list(c.items)}</div>`).join('')}</div></div>`;
+  pane.querySelectorAll('[data-zs]').forEach(c=>{const s=SEG[+c.dataset.zs];c.onmouseenter=()=>hlSeg(s,true);c.onmouseleave=()=>hlSeg(s,false);c.onclick=()=>{animateTo(fit(s.pts,10));toMap();};});
+  pane.querySelectorAll('[data-showd]').forEach(b=>b.onclick=()=>{st.d=+b.dataset.showd;applyMap();renderLegend();toMap();});
+}
+function render(){
+  sideBtns.forEach((b,j)=>b.setAttribute('aria-pressed',String(j===st.r+1)));
+  document.getElementById('mapTitle').textContent=st.r<0?'路線地圖':ROUTES[st.r].short+'路線圖';
+  applyMap();renderLegend();renderPane();
+}
+setView({x:0,y:0,w:W,h:H});
+const hm=new RegExp('^#('+ROUTES.map(r=>r.id).join('|')+')$').exec(location.hash);
+st.r=hm?ROUTES.findIndex(r=>r.id===hm[1]):-1;
+render();
+new ResizeObserver(()=>setView(view)).observe(svg);
+})();
+</script>
+</body>
+</html>
