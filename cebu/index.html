@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="2027/1/26–2/1 宿霧與薄荷島七天六夜行程，互動路線圖與每日注意事項。">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>宿霧薄荷島家庭之旅</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;800&family=Noto+Sans+TC:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: 航海圖式頁面 — 摘要 → 可拖曳縮放的互動海圖（右側逐站交通）→ 逐日行程卡 → 實用資訊 */
+:root{
+  --bg:#f3f6f4; --paper:#ffffff; --ink:#12302f; --muted:#5a706d; --line:#d5e0dc;
+  --sea:#d7ebee; --sea-deep:#a9d2d8; --land:#eef0dc; --land-edge:#b9c08f;
+  --accent:#e2a21b; --accent-ink:#7a5300; --deep:#0f5b5f;
+  --d1:#0f5b5f; --d2:#1e88a8; --d3:#c2410c; --d4:#7c3aed; --d5:#15803d; --d6:#0891b2; --d7:#64748b;
+  --f-display:"Noto Serif TC","Songti TC",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-mono:"DM Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b1a1b; --paper:#112526; --ink:#e4efec; --muted:#93aaa6; --line:#23403f;
+  --sea:#0e2c33; --sea-deep:#1d4f59; --land:#1d2a20; --land-edge:#56683f;
+  --accent:#f0b43a; --accent-ink:#f6cf7c; --deep:#5fc2c4;
+  --d1:#5fc2c4; --d2:#5ab8d8; --d3:#fb8a52; --d4:#b394f7; --d5:#5fd18a; --d6:#4fd0e6; --d7:#a5b2c3;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b1a1b; --paper:#112526; --ink:#e4efec; --muted:#93aaa6; --line:#23403f;
+  --sea:#0e2c33; --sea-deep:#1d4f59; --land:#1d2a20; --land-edge:#56683f;
+  --accent:#f0b43a; --accent-ink:#f6cf7c; --deep:#5fc2c4;
+  --d1:#5fc2c4; --d2:#5ab8d8; --d3:#fb8a52; --d4:#b394f7; --d5:#5fd18a; --d6:#4fd0e6; --d7:#a5b2c3;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.3}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit}
+header{padding-block:44px 28px;display:grid;gap:18px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(30px,6vw,52px);font-weight:800}
+h1 em{font-style:normal;color:var(--deep)}
+.lede{max-width:62ch;color:var(--muted);margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.fact{background:var(--paper);padding:12px 14px;display:grid;gap:2px}
+.fact b{font-size:16px}
+.fact span{font-size:12px;color:var(--muted)}
+section{padding-block:26px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.sec-h h2{font-size:24px}
+.sec-h p{margin:0;color:var(--muted);font-size:13px}
+
+/* ---------- map ---------- */
+.toolbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;align-items:center}
+.tab{font:500 13px/1 var(--f-body);border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:8px 11px;border-radius:999px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.tab i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tab:hover{border-color:var(--ink)}
+.tab:focus-visible,.ctl:focus-visible,.hop:focus-visible,.stop button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tab.play{margin-left:auto}
+.tab.play[aria-pressed="true"]{background:var(--accent);color:#1a1200;border-color:var(--accent)}
+.mapbox{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:860px){.mapbox{grid-template-columns:1fr}}
+.chart{background:var(--sea);border:1px solid var(--line);border-radius:12px;overflow:hidden;position:relative;user-select:none;-webkit-user-select:none}
+.chart svg{display:block;width:100%;aspect-ratio:610/525;max-width:100%;touch-action:none;cursor:grab}
+.chart svg.grabbing{cursor:grabbing}
+.ctls{position:absolute;top:10px;left:10px;display:grid;gap:4px}
+.ctl{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--paper);cursor:pointer;font-size:18px;line-height:1;display:grid;place-items:center}
+.ctl.txt{font-size:11px;font-weight:700;width:auto;padding:0 6px;white-space:nowrap}
+.badge.tiny{display:none}
+@media (max-width:520px){.hint{display:none}}
+.compass{position:absolute;top:10px;right:12px;width:40px;height:52px;pointer-events:none}
+.scalebar{position:absolute;left:12px;bottom:10px;font:11px var(--f-mono);color:var(--muted);pointer-events:none}
+.scalebar div{height:6px;border:2px solid var(--muted);border-top:0;margin-top:2px}
+.hint{position:absolute;right:10px;bottom:8px;font-size:11px;color:var(--muted);background:color-mix(in srgb,var(--paper) 80%,transparent);padding:2px 8px;border-radius:6px;pointer-events:none}
+.tip{position:absolute;z-index:5;pointer-events:none;background:var(--ink);color:var(--bg);font-size:13px;line-height:1.5;padding:8px 11px;border-radius:8px;max-width:250px;transform:translate(-50%,calc(-100% - 14px));box-shadow:0 6px 20px rgb(0 0 0 / .22)}
+.tip b{display:block;font-size:14px}
+.tip .m{opacity:.75;font-size:12px}
+.tip .k{display:inline-block;font-size:11px;font-weight:700;padding:0 6px;border-radius:4px;background:var(--accent);color:#1a1200;margin-right:6px}
+
+.route{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:3;transition:opacity .25s,stroke-width .15s}
+.route.boat{stroke-dasharray:6 6}
+.hit{fill:none;stroke:transparent;stroke-width:18;pointer-events:stroke;cursor:pointer}
+svg.dim .seg:not(.on) .route{opacity:.12}
+svg.dim .seg:not(.on) .hit{pointer-events:none}
+.seg.on .route{stroke-width:4.5}
+.seg.hl .route{stroke-width:7}
+svg.dim .pin:not(.on){opacity:.28}
+.pin{cursor:pointer}
+.pin text{font:500 11px var(--f-body);fill:var(--ink);paint-order:stroke;stroke:var(--sea);stroke-width:3px;stroke-linejoin:round}
+.pin.major text{font-weight:700;font-size:12px}
+.pin circle{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+.pin.major circle{fill:var(--accent)}
+.pin:hover circle,.pin.hl circle{stroke-width:3}
+svg.far .pin.minor:not(.on) text{display:none}
+.badge{display:none;cursor:pointer}
+.badge.on{display:inline}
+.badge rect{fill:var(--paper);stroke:var(--bc);stroke-width:1.5}
+.badge text{font:700 10.5px var(--f-body);fill:var(--ink)}
+.badge.hl rect{fill:var(--bc)}
+.badge.hl text{fill:var(--paper)}
+.island{fill:var(--land);stroke:var(--land-edge);stroke-width:1.2}
+.isl-name{font:600 15px var(--f-display);fill:var(--land-edge);letter-spacing:.3em}
+.sea-name{font:italic 12px var(--f-body);fill:var(--sea-deep);letter-spacing:.2em}
+.grid line{stroke:var(--sea-deep);stroke-width:.6;opacity:.6}
+svg *{vector-effect:non-scaling-stroke}
+.pin *,.badge *,.lbl *{vector-effect:none}
+
+.legend{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:12px;align-content:start}
+@media (min-width:861px){.legend{max-height:620px;overflow:auto}}
+.legend h3{font-size:18px}
+.legend .sub{color:var(--muted);font-size:13px;margin:2px 0 0}
+.daylist{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.daylist button{all:unset;cursor:pointer;display:flex;gap:10px;align-items:baseline;padding:6px 8px;border-radius:8px;width:100%;box-sizing:border-box}
+.daylist button:hover,.daylist button:focus-visible{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.daylist b{font-family:var(--f-mono);min-width:40px}
+.iti{list-style:none;margin:0;padding:0}
+.stop button{all:unset;cursor:pointer;display:flex;gap:10px;align-items:center;font-weight:500;padding:3px 6px 3px 0;border-radius:6px}
+.stop button:hover{color:var(--deep)}
+.dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink);background:var(--paper);flex:none}
+.stop.major .dot{background:var(--accent)}
+.hop{margin-left:5px;border-left:2px dashed var(--line);padding:6px 8px 6px 16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 8px;font-size:13px;cursor:pointer;border-radius:0 8px 8px 0;align-items:baseline}
+.hop small{grid-column:2;color:var(--muted);font-size:12px}
+.hop:hover,.hop.hl{background:color-mix(in srgb,var(--c) 14%,transparent);border-left-color:var(--c)}
+.chip{font-size:11px;font-weight:700;padding:1px 7px;border-radius:4px;background:var(--ink);color:var(--bg);white-space:nowrap}
+.chip.boat{background:var(--deep);color:var(--paper)}
+.key{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.key span{display:inline-flex;align-items:center;gap:6px}
+
+/* ---------- app shell ---------- */
+.app{display:grid;grid-template-columns:200px minmax(0,1fr);gap:22px;align-items:start}
+.main{min-width:0}
+.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 14px);display:grid;gap:4px;padding-block:26px}
+.side .tab{border-radius:10px;justify-content:flex-start;padding:9px 11px;text-align:left;line-height:1.35;width:100%}
+.side .tab small{display:block;font-size:12px;opacity:.75;font-weight:400}
+.side .tab .dd{font-family:var(--f-mono);font-size:12px}
+.side .tab.play{margin-top:8px;justify-content:center}
+.side-h{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--muted);padding:0 4px 4px}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr;gap:0}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+  .side{top:env(safe-area-inset-top,0px);z-index:6;background:var(--bg);display:flex;overflow-x:auto;padding-block:10px;border-bottom:1px solid var(--line);scrollbar-width:none}
+  .side-h{display:none}
+  .side .tab{width:auto;flex:none}
+  .side .tab small{display:none}
+  .side .tab.play{margin:0}
+}
+.ovgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.ovd{all:unset;cursor:pointer;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:2px;position:relative;overflow:hidden;box-sizing:border-box}
+.ovd::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.ovd:hover{border-color:var(--c)}
+.ovd:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ovd .mono{font-size:12px;color:var(--muted)}
+.ovd b{font-family:var(--f-display);font-size:16px}
+.ovd span:last-child{font-size:12px;color:var(--muted)}
+.pane-head{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap;border-bottom:2px solid var(--c);padding-bottom:12px;margin-bottom:16px}
+.pane-head .big{font-family:var(--f-display);font-size:40px;font-weight:800;line-height:1;color:var(--c)}
+.pane-head h2{font-size:24px}
+.pane-head p{margin:0;color:var(--muted);font-size:13px}
+.pgrid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:760px){.pgrid{grid-template-columns:1fr}}
+.pcol{display:grid;gap:14px;min-width:0}
+.warn li::marker{color:var(--accent)}
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:16px;flex-wrap:wrap}
+/* ---------- days ---------- */
+.days{display:grid;gap:14px}
+.day{background:var(--paper);border:1px solid var(--line);border-radius:12px;display:grid;grid-template-columns:120px minmax(0,1fr);overflow:hidden;transition:box-shadow .2s}
+.day.cur{box-shadow:0 0 0 2px var(--c)}
+@media (max-width:620px){.day{grid-template-columns:1fr}}
+.day-side{padding:16px;border-right:1px solid var(--line);display:grid;align-content:start;gap:4px;position:relative}
+@media (max-width:620px){.day-side{border-right:0;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}}
+.day-side::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.day-n{font-family:var(--f-mono);font-size:12px;color:var(--muted);letter-spacing:.08em}
+.day-date{font-family:var(--f-display);font-size:24px;font-weight:800}
+.day-wk{font-size:13px;color:var(--muted)}
+.day-main{padding:16px 18px;display:grid;gap:10px;min-width:0}
+.day-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.day-main h3{font-size:19px}
+.day-main .stay{font-size:13px;color:var(--muted)}
+.tl{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.tl li{display:grid;grid-template-columns:72px minmax(0,1fr);gap:10px}
+.tl time{font-family:var(--f-mono);font-size:13px;color:var(--muted);padding-top:2px}
+.hops{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;color:var(--muted)}
+.hops span{border:1px solid var(--line);border-radius:6px;padding:2px 8px;display:inline-flex;gap:6px;align-items:center}
+.note{font-size:13px;background:color-mix(in srgb,var(--accent) 14%,transparent);border-radius:8px;padding:8px 12px}
+.note b{color:var(--accent-ink)}
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0}
+.card h3{font-size:17px;margin-bottom:8px}
+.card ul{margin:0;padding-left:18px;display:grid;gap:5px}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:500}
+td.num{font-family:var(--f-mono);white-space:nowrap}
+footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:16px;margin-top:20px}
+@media (prefers-reduced-motion:reduce){.route,.day{transition:none}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Cebu · Bohol · 2027.01.26 — 02.01</div>
+  <h1><em>宿霧</em>與<em>薄荷島</em><br>七天六夜</h1>
+  <p class="lede">跳島浮潛、歐斯陸看鯨鯊、卡瓦山瀑布、巧克力山與眼鏡猴，加上宿霧市區的烤乳豬。長途車程拆成兩段、在墨寶多住一晚，每天下午留了休息時間，全家都能玩得輕鬆。</p>
+  <div class="facts">
+    <div class="fact"><span>天數</span><b>7 天 6 夜</b></div>
+    <div class="fact"><span>住宿</span><b>麥克坦 2・墨寶 1・市區 1・邦勞 2</b></div>
+    <div class="fact"><span>航程</span><b>桃園 ⇄ 宿霧 直飛約 2.5–3 小時</b></div>
+    <div class="fact"><span>時差</span><b>無（同 UTC+8）</b></div>
+    <div class="fact"><span>一月天氣</span><b>約 24–30°C，乾季初</b></div>
+  </div>
+</header>
+
+<div class="app">
+<nav class="side" id="tabs" aria-label="行程分頁"></nav>
+<main class="main">
+<section id="map">
+  <div class="sec-h">
+    <h2>路線海圖</h2>
+    <p>選日期自動縮放；滑過路線或右側交通看車程與船程</p>
+  </div>
+  <div class="mapbox">
+    <div class="chart" id="chart">
+      <svg id="svg" viewBox="0 0 610 525" role="img" aria-label="宿霧與薄荷島互動路線圖"></svg>
+      <div class="ctls">
+        <button class="ctl" id="zin" type="button" aria-label="放大">+</button>
+        <button class="ctl" id="zout" type="button" aria-label="縮小">−</button>
+        <button class="ctl txt" id="zfit" type="button" aria-label="回到當天範圍">全覽</button>
+      </div>
+      <svg class="compass" viewBox="-20 -30 40 52" aria-hidden="true"><text y="-20" text-anchor="middle" style="font:600 11px var(--f-mono);fill:var(--muted)">N</text><circle r="16" fill="none" stroke="var(--sea-deep)"/><path d="M0,-14 L4,0 L0,14 L-4,0 Z" fill="var(--sea-deep)"/><path d="M0,-14 L4,0 L-4,0 Z" fill="var(--accent)"/></svg>
+      <div class="scalebar" id="scale"><span>20 km</span><div></div></div>
+      <div class="hint">拖曳移動・滾輪或雙指縮放</div>
+      <div class="tip" id="tip" hidden></div>
+    </div>
+    <aside class="legend" id="legend" aria-live="polite"></aside>
+  </div>
+</section>
+
+<section id="dayPane" hidden></section>
+<div id="ov">
+<section id="ovdays">
+  <div class="sec-h"><h2>七天一覽</h2><p>點任一天，看當天細節與注意事項</p></div>
+  <div class="ovgrid" id="ovDays"></div>
+</section>
+
+<section id="info">
+  <div class="sec-h"><h2>出發前準備</h2></div>
+  <div class="info">
+    <div class="card">
+      <h3>入境與證件</h3>
+      <ul>
+        <li>台灣護照目前可免簽入境菲律賓 14 天，此措施已延長至 2027 年 6 月，行程在期限內。</li>
+        <li>出發前 72 小時內上 eTravel 官網填寫入境資料，取得 QR code（免費，小心收費的假網站）。</li>
+        <li>護照效期需超過 6 個月，並準備回程機票證明。</li>
+        <li>建議投保含海上活動與醫療後送的旅平險。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>行程小提醒</h3>
+      <ul>
+        <li>包車（含司機）最省力，南部行程與薄荷島一日遊都可請飯店或當地包車業者安排。</li>
+        <li>鯨鯊與跳島都會提供救生衣，不會游泳也能參加；可帶防滑涼鞋與防水袋。</li>
+        <li>卡瓦山瀑布從停車處步行約 15–20 分鐘平緩步道，不需要做溯溪。</li>
+        <li>常備藥、暈船藥（船程前 30 分鐘服用）、防曬與帽子一定要帶。</li>
+        <li>一月東北季風期偶有大浪，船班可能取消，最後一天提早回宿霧較保險。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>交通方式</h3>
+      <ul>
+        <li><b>機票：</b>星宇航空、菲律賓航空有桃園直飛宿霧（麥克坦機場 CEB），價格與時刻以訂位當下為準。</li>
+        <li><b>宿霧 ⇄ 薄荷島：</b>OceanJet、SuperCat 等快船約 2 小時，建議提早上網訂票並選 Tourist/Business 艙。</li>
+        <li><b>市區移動：</b>Grab 叫車方便，價格透明。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="budget">
+  <div class="sec-h"><h2>參考花費與住宿</h2><p>價格為大約值，以現場公告為準</p></div>
+  <div class="info">
+    <div class="card tbl-wrap">
+      <h3>主要活動</h3>
+      <table>
+        <thead><tr><th>項目</th><th>大約費用 / 人</th></tr></thead>
+        <tbody>
+          <tr><td>歐斯陸鯨鯊浮潛（外國人）</td><td class="num">₱1,000 上下</td></tr>
+          <tr><td>麥克坦跳島（包船含午餐）</td><td class="num">₱2,500–4,000</td></tr>
+          <tr><td>卡瓦山瀑布門票</td><td class="num">₱50 左右</td></tr>
+          <tr><td>宿霧 → 薄荷島快船</td><td class="num">₱800–1,500</td></tr>
+          <tr><td>羅博河遊船自助午餐</td><td class="num">₱800–1,000</td></tr>
+          <tr><td>巴里卡薩島浮潛（含船）</td><td class="num">₱1,500–2,500</td></tr>
+          <tr><td>南部包車一日（整車）</td><td class="num">₱5,000–7,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>住宿建議</h3>
+      <ul>
+        <li><b>麥克坦（2 晚）：</b>選有私人沙灘與泳池的度假村，例如香格里拉、Crimson、JPark（有水上樂園）。</li>
+        <li><b>墨寶（1 晚）：</b>Panagsama 海灘一帶的小型度假村，步行就能看沙丁魚風暴。</li>
+        <li><b>宿霧市區（1 晚）：</b>IT Park 或 Ayala 商圈附近，方便吃飯與購物，碼頭約 20–30 分鐘。</li>
+        <li><b>邦勞島（2 晚）：</b>Alona 海灘周邊，Henann、Amorita、Bellevue 等都適合家庭。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>必吃清單</h3>
+      <ul>
+        <li><b>宿霧烤乳豬 Lechon：</b>Zubuchon、Rico's、House of Lechon。</li>
+        <li><b>SuTuKil 海鮮：</b>麥克坦挑海鮮現點現做（Sugba 烤、Tula 煮湯、Kilaw 醋漬）。</li>
+        <li><b>Larsian 烤串：</b>市區平價夜間燒烤街。</li>
+        <li><b>伴手禮：</b>7D 芒果乾、薄荷島 Peanut Kisses、Otap 酥餅。</li>
+      </ul>
+    </div>
+  </div>
+  <footer>Sinulog 祭典在 1 月第三個週日（2027/1/17），此次行程已錯開人潮；農曆新年為 2/6，回程也在連假前。地圖為示意，位置、距離與交通時間為大約值。</footer>
+</section>
+</div>
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+const LON0=123.2, LAT1=10.6, K=420, W=610, H=525, AR=W/H;
+const X=lo=>(lo-LON0)*K, Y=la=>(LAT1-la)*K;
+const NS='http://www.w3.org/2000/svg';
+const svg=document.getElementById('svg'), chart=document.getElementById('chart'), tip=document.getElementById('tip');
+const el=(t,a,parent)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(parent||svg).appendChild(e);return e;};
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const MODE={car:'車',boat:'船'}, MODEL={car:'車程',boat:'船程'};
+
+/* ---------- places ---------- */
+const PL={
+ airport:{n:'麥克坦機場',lo:123.98,la:10.31,m:1,lp:'t',d:'宿霧國際機場（CEB），入境後可換匯、買 SIM 卡。'},
+ resort:{n:'麥克坦度假村',lo:124.02,la:10.28,m:0,lp:'r',d:'住 2 晚，私人沙灘與泳池。'},
+ sutukil:{n:'SuTuKil 海鮮',lo:123.965,la:10.303,m:0,lp:'l',d:'挑海鮮現點現做：烤、煮湯、醋漬。'},
+ hil:{n:'Hilutungan',lo:124.02,la:10.205,m:1,lp:'l',d:'海洋保護區，水淺魚多，浮潛首選。'},
+ nal:{n:'Nalusuan 島',lo:124.065,la:10.185,m:0,lp:'r',d:'長棧橋就能看魚，島上吃午餐。'},
+ city:{n:'宿霧市區',lo:123.90,la:10.298,m:1,lp:'l',d:'聖嬰教堂、麥哲倫十字架、聖佩德羅堡，彼此步行 5–10 分鐘。'},
+ port:{n:'宿霧碼頭',lo:123.912,la:10.287,m:0,lp:'r',d:'Pier 1 快船碼頭，往返薄荷島。'},
+ sm:{n:'SM Seaside',lo:123.88,la:10.276,m:0,lp:'b',d:'大型商場，吃午餐、買伴手禮。'},
+ oslob:{n:'歐斯陸 鯨鯊',lo:123.40,la:9.47,m:1,lp:'r',d:'清晨 6–8 點最佳，浮潛約 30 分鐘，不可觸摸鯨鯊。'},
+ tumalog:{n:'Tumalog 瀑布',lo:123.392,la:9.50,m:0,lp:'r',d:'簾幕狀瀑布，搭摩托接駁上下坡（可選）。'},
+ kawasan:{n:'卡瓦山瀑布',lo:123.385,la:9.81,m:1,lp:'r',d:'藍綠色瀑布潭，可搭竹筏到瀑布下，步道平緩。'},
+ moalboal:{n:'墨寶',lo:123.395,la:9.94,m:1,lp:'r',d:'Panagsama 海灘，岸邊即可看沙丁魚風暴與海龜。'},
+ pescador:{n:'Pescador 島',lo:123.335,la:9.925,m:0,lp:'l',d:'小島周圍的珊瑚牆，可選行程。'},
+ tag:{n:'塔比拉蘭',lo:123.85,la:9.65,m:1,lp:'t',d:'薄荷島主要港口，包車司機在此接人。'},
+ blood:{n:'血盟紀念碑',lo:123.875,la:9.628,m:0,lp:'b',d:'紀念 1565 年西菲結盟，停留約 15 分鐘。'},
+ bac:{n:'巴克雷恩教堂',lo:123.91,la:9.622,m:0,lp:'t',d:'菲律賓最古老的石造教堂之一。'},
+ loboc:{n:'羅博河遊船',lo:124.03,la:9.64,m:1,lp:'b',d:'河上自助午餐約 1 小時，有現場音樂。'},
+ tarsier:{n:'眼鏡猴保護區',lo:124.06,la:9.665,m:0,lp:'r',d:'世界最小的靈長類之一，保持安靜、勿用閃光燈。'},
+ forest:{n:'人造森林',lo:124.10,la:9.71,m:0,lp:'r',d:'約兩公里長的桃花心木林道，下車拍照。'},
+ choco:{n:'巧克力山',lo:124.14,la:9.83,m:1,lp:'r',d:'1,200 多座圓錐小丘，觀景台約 200 階。'},
+ alona:{n:'Alona 海灘',lo:123.77,la:9.553,m:1,lp:'t',d:'邦勞島最熱鬧的海灘，餐廳與按摩店多。'},
+ dolphin:{n:'海豚觀賞',lo:123.72,la:9.50,m:0,lp:'b',d:'清晨出海，看運氣。'},
+ bal:{n:'巴里卡薩島',lo:123.68,la:9.515,m:1,lp:'l',d:'海龜與珊瑚牆，浮潛勝地。'}
+};
+const S=(f,t,mode,dur,short,dist,how,mid)=>({f,t,mode,dur,short,dist,how,mid:mid||[]});
+
+const DAYS=[
+ {d:'1/26',wk:'二',c:'--d1',t:'抵達宿霧・麥克坦',stay:'麥克坦度假村',
+  segs:[S('airport','resort','car','約 20–30 分鐘','25分','約 8 km','飯店接送或 Grab',[[124.0,10.295]]),
+        S('resort','sutukil','car','約 15 分鐘','15分','約 5 km','Grab 叫車',[[123.99,10.30]])],
+  tl:[['午後','抵達麥克坦機場（CEB），換匯、買 SIM 卡'],['15:00','度假村 Check-in，泳池與海灘放鬆'],['18:30','SuTuKil 海鮮市場挑海鮮晚餐']],
+  note:'第一天不排行程，好好休息、適應天氣。'},
+ {d:'1/27',wk:'三',c:'--d2',t:'麥克坦跳島浮潛',stay:'麥克坦度假村',
+  segs:[S('resort','hil','boat','約 30–40 分鐘','35分','約 9 km','私人包船（螃蟹船 Bangka）',[[124.03,10.24]]),
+        S('hil','nal','boat','約 15–20 分鐘','15分','約 5 km','同一艘船'),
+        S('nal','resort','boat','約 30–40 分鐘','35分','約 12 km','同一艘船返回',[[124.045,10.21],[124.036,10.25]])],
+  tl:[['08:30','碼頭出發，包船跳島（私人船較舒服）'],['09:15','Hilutungan 海洋保護區浮潛，魚群多、水淺'],['12:00','Nalusuan 島或船上 BBQ 午餐'],['14:30','回飯店休息、Spa 按摩'],['19:00','度假村晚餐']],
+  note:'<b>小提醒：</b>不下水也可以在船上或棧橋看魚。'},
+ {d:'1/28',wk:'四',c:'--d3',t:'南部：鯨鯊與瀑布',stay:'墨寶 Moalboal',
+  segs:[S('resort','oslob','car','約 3.5–4 小時','3.5h','約 140 km','清晨 4:00 包車出發，沿東岸南下',[[123.96,10.32],[123.90,10.29],[123.84,10.25],[123.76,10.21],[123.71,10.16],[123.64,10.11],[123.61,10.02],[123.59,9.88],[123.52,9.76],[123.47,9.63],[123.42,9.53]]),
+        S('oslob','tumalog','car','約 5 分鐘＋接駁','5分','約 2 km','停車場轉搭摩托接駁'),
+        S('tumalog','kawasan','car','約 1.5 小時','1.5h','約 50 km','繞過南端，走西岸公路',[[123.40,9.47],[123.37,9.43],[123.335,9.45],[123.325,9.53],[123.34,9.65],[123.375,9.76]]),
+        S('kawasan','moalboal','car','約 30 分鐘','30分','約 20 km','包車沿西岸往北',[[123.39,9.88]])],
+  tl:[['04:00','包車出發（車程約 3.5 小時，車上補眠）'],['07:30','歐斯陸看鯨鯊，浮潛約 30 分鐘；早到人少'],['09:30','早午餐；體力允許可去 Tumalog 瀑布'],['12:00','前往卡瓦山瀑布，竹筏到瀑布下'],['16:00','抵達墨寶 Check-in，海邊看夕陽']],
+  note:'<b>為什麼住墨寶：</b>一日來回要 10 小時以上，拆成兩天輕鬆許多。'},
+ {d:'1/29',wk:'五',c:'--d4',t:'沙丁魚風暴・回市區',stay:'宿霧市區',
+  segs:[S('moalboal','pescador','boat','約 20 分鐘','20分','約 3 km','（可選）螃蟹船出海浮潛',[[123.365,9.945]]),
+        S('pescador','moalboal','boat','約 20 分鐘','20分','約 3 km','回 Panagsama 海灘',[[123.365,9.918]]),
+        S('moalboal','city','car','約 3 小時','3h','約 90 km','包車，經 Carcar 沿東岸北上',[[123.41,10.0],[123.51,10.11],[123.64,10.11],[123.71,10.16],[123.76,10.21],[123.84,10.25]])],
+  tl:[['07:30','岸邊下水就能看沙丁魚群，也有海龜'],['09:30','（可選）Pescador 島浮潛'],['11:30','退房，包車回宿霧市區'],['15:00','聖嬰教堂、麥哲倫十字架、聖佩德羅堡'],['18:30','Zubuchon 或 Rico\'s 烤乳豬晚餐']],
+  note:'市區景點彼此步行 5–10 分鐘，教堂內需穿有袖上衣。'},
+ {d:'1/30',wk:'六',c:'--d5',t:'薄荷島經典一日',stay:'邦勞島 Panglao',
+  segs:[S('port','tag','boat','約 2 小時','2h','約 72 km','OceanJet／SuperCat 快船，建議提前訂票',[[123.86,10.15],[123.80,9.90],[123.75,9.75],[123.80,9.665]]),
+        S('tag','blood','car','約 10 分鐘','10分','約 4 km','包車（全天同一位司機）'),
+        S('blood','bac','car','約 10 分鐘','10分','約 3 km','包車'),
+        S('bac','loboc','car','約 30 分鐘','30分','約 18 km','包車',[[123.97,9.628]]),
+        S('loboc','tarsier','car','約 15 分鐘','15分','約 5 km','包車'),
+        S('tarsier','forest','car','約 20 分鐘','20分','約 10 km','包車'),
+        S('forest','choco','car','約 30 分鐘','30分','約 20 km','包車',[[124.13,9.77]]),
+        S('choco','alona','car','約 1.5 小時','1.5h','約 60 km','包車，經塔比拉蘭過橋到邦勞島',[[124.12,9.75],[124.04,9.67],[123.95,9.64],[123.86,9.615],[123.80,9.585]])],
+  tl:[['07:00','宿霧碼頭搭快船（約 2 小時）'],['09:30','包車：血盟紀念碑、巴克雷恩教堂'],['11:30','羅博河遊船自助午餐，有現場音樂'],['13:30','眼鏡猴保護區（保持安靜、勿用閃光燈）'],['14:30','人造桃花心木森林拍照'],['15:30','巧克力山，觀景台約 200 階，可慢慢走'],['18:00','入住邦勞島 Alona 海灘']],
+  note:'<b>小提醒：</b>巧克力山階梯可以分段休息，或在下方廣場欣賞即可。'},
+ {d:'1/31',wk:'日',c:'--d6',t:'巴里卡薩島・海灘慢活',stay:'邦勞島 Panglao',
+  segs:[S('alona','dolphin','boat','約 30 分鐘','30分','約 6 km','清晨包船出海'),
+        S('dolphin','bal','boat','約 20 分鐘','20分','約 4 km','同一艘船'),
+        S('bal','alona','boat','約 30 分鐘','30分','約 10 km','回 Alona 海灘',[[123.73,9.545]])],
+  tl:[['06:00','出海看海豚（看運氣）'],['08:00','巴里卡薩島浮潛，海龜與珊瑚牆'],['11:30','回飯店休息'],['15:00','Alona 海灘散步、按摩'],['18:30','海灘餐廳晚餐看夕陽']],
+  note:'最輕鬆的一天，可視體力取消清晨出海。'},
+ {d:'2/1',wk:'一',c:'--d7',t:'回程',stay:'—',
+  segs:[S('alona','tag','car','約 30–40 分鐘','35分','約 20 km','飯店接送或包車',[[123.80,9.585]]),
+        S('tag','port','boat','約 2 小時','2h','約 72 km','快船回宿霧',[[123.80,9.665],[123.75,9.75],[123.80,9.90],[123.86,10.15]]),
+        S('port','sm','car','約 20 分鐘','20分','約 6 km','Grab 叫車'),
+        S('sm','airport','car','約 40 分鐘','40分','約 15 km','Grab，尖峰時段容易塞車',[[123.92,10.322],[123.96,10.322]])],
+  tl:[['08:00','搭快船回宿霧'],['11:00','SM Seaside 午餐、買伴手禮'],['航班前 3h','前往麥克坦機場']],
+  note:'若遇大浪停航，可改搭國內線從薄荷島飛回宿霧。'}
+];
+const TIPS=[
+ {tips:['入境前備妥 eTravel QR code、回程機票與住宿資料','機場先換少量披索應急，市區匯兌所匯率較好','SuTuKil 點菜前先問清楚秤重價格與烹調費','菲律賓電壓 220V，只標 110V 的電器不能直接插'],bring:['護照、eTravel QR code','少量披索現金','手機 SIM／eSIM','薄外套（機上冷）']},
+ {tips:['使用珊瑚礁友善防曬，浮潛時不踩珊瑚、不餵魚','船上日曬強、風大，帽子要綁帶','暈船體質出發前 30 分鐘吃暈船藥','跳島船資與保護區門票先確認是否含在包船費內'],bring:['泳衣、毛巾、換洗衣物','防水袋、防水手機套','暈船藥','礁石友善防曬乳']},
+ {tips:['04:00 出發，前一晚早睡，可請飯店準備早餐盒','看鯨鯊前不可擦防曬乳，保持距離、不可觸摸、禁用閃光燈','卡瓦山步道與岩石濕滑，請穿防滑涼鞋','車程長，準備零食、水與暈車藥，每 1.5 小時停車休息'],bring:['防滑涼鞋','乾衣服與塑膠袋','零錢（門票、置物櫃、竹筏）','暈車藥、零食']},
+ {tips:['沙丁魚群就在岸邊不遠，可現場租浮潛裝備','退房前與司機確認出發時間，回市區約 3 小時','進聖嬰教堂需穿有袖上衣、避免太短的短褲','市區人多，手機與錢包放前方、留意扒手'],bring:['披肩或有袖上衣','小額現金','浮潛面鏡（自備較衛生）']},
+ {tips:['快船需提前 30–60 分鐘到碼頭，現場另付碼頭費，大件行李需託運','買船票需出示護照','眼鏡猴怕光與聲音，禁用閃光、輕聲說話','包車事先講好景點、時間與價格，含不含門票'],bring:['護照','帽子、飲用水','暈船藥','小額現金（門票、小費）']},
+ {tips:['海豚看運氣，浪大時船家會取消，不要勉強','巴里卡薩有海龜，保持距離不追逐','中午太陽最大，安排回飯店休息','傍晚 Alona 海灘看夕陽，餐廳可先訂位'],bring:['浮潛用具','防水手機套','防曬、帽子']},
+ {tips:['冬季偶有停航，前一天先確認船班；必要時改搭國內線','國際線建議起飛前 3 小時到機場','剩下的披索可在商場花完或機場換回','芒果乾等伴手禮放託運行李'],bring:['護照與登機證','伴手禮行李','回台用的悠遊卡、台幣']}
+];
+const SEG=[];
+DAYS.forEach((d,i)=>d.segs.forEach(s=>{s.day=i;s.id=SEG.length;s.pts=[[PL[s.f].lo,PL[s.f].la],...s.mid,[PL[s.t].lo,PL[s.t].la]].map(p=>[X(p[0]),Y(p[1])]);SEG.push(s);}));
+DAYS.forEach((d,i)=>{d.stops=[d.segs[0].f,...d.segs.map(s=>s.t)];Object.assign(d,TIPS[i]);});
+
+/* ---------- base map ---------- */
+const islands={
+ cebu:[[124.06,10.75],[124.03,10.52],[124.0,10.40],[123.95,10.35],[123.93,10.32],[123.90,10.29],[123.84,10.25],[123.76,10.21],[123.71,10.16],[123.64,10.11],[123.62,10.02],[123.60,9.88],[123.53,9.76],[123.48,9.63],[123.43,9.53],[123.40,9.46],[123.37,9.41],[123.33,9.42],[123.31,9.53],[123.32,9.58],[123.33,9.65],[123.36,9.76],[123.37,9.85],[123.38,9.94],[123.40,10.0],[123.51,10.12],[123.58,10.27],[123.64,10.38],[123.71,10.50],[123.72,10.57],[123.73,10.75]],
+ mactan:[[123.955,10.335],[124.0,10.345],[124.04,10.31],[124.03,10.26],[123.99,10.25],[123.962,10.285]],
+ olango:[[124.045,10.275],[124.085,10.285],[124.095,10.235],[124.055,10.22]],
+ bohol:[[123.85,9.65],[123.82,9.72],[123.79,9.80],[123.87,9.87],[123.96,9.95],[124.07,10.03],[124.20,10.10],[124.32,10.15],[124.40,10.12],[124.47,10.06],[124.55,9.92],[124.58,9.74],[124.49,9.76],[124.37,9.65],[124.29,9.61],[124.21,9.61],[124.10,9.59],[124.01,9.60],[123.91,9.615],[123.87,9.63]],
+ panglao:[[123.73,9.58],[123.80,9.60],[123.86,9.62],[123.885,9.595],[123.80,9.54],[123.74,9.55]]
+};
+el('rect',{x:-2000,y:-2000,width:5000,height:5000,fill:'var(--sea)'});
+const g=el('g',{class:'grid'});
+for(let lo=122.8;lo<=124.8;lo+=0.2){const x=X(lo);el('line',{x1:x,y1:-1000,x2:x,y2:2000},g);}
+for(let la=8.8;la<=11.2;la+=0.2){const y=Y(la);el('line',{x1:-1000,y1:y,x2:2000,y2:y},g);}
+const poly=pts=>pts.map(p=>X(p[0]).toFixed(1)+','+Y(p[1]).toFixed(1)).join(' ');
+for(const k in islands) el('polygon',{class:'island',points:poly(islands[k])});
+[[124.02,10.205,.008],[124.065,10.185,.006],[123.335,9.925,.006],[123.68,9.515,.009]].forEach(([lo,la,r])=>el('circle',{class:'island',cx:X(lo),cy:Y(la),r:r*K}));
+
+const scaled=[]; // elements that keep constant screen size
+const addScaled=(node,x,y,r)=>{scaled.push({el:node,x,y,r:r||0});};
+const lab=(t,lo,la,c,rot)=>{const gg=el('g',{class:'lbl'});const e=el('text',{class:c,'text-anchor':'middle'},gg);e.textContent=t;addScaled(gg,X(lo),Y(la),rot);};
+lab('CEBU',123.55,10.30,'isl-name',-58);lab('BOHOL',124.28,9.85,'isl-name',0);
+lab('BOHOL STRAIT',123.62,9.60,'sea-name',-50);lab('CAMOTES SEA',124.35,10.45,'sea-name',0);
+
+/* ---------- routes ---------- */
+const pathD=pts=>pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+const midOf=pts=>{let L=[0];for(let i=1;i<pts.length;i++)L.push(L[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));const h=L[L.length-1]/2;for(let i=1;i<pts.length;i++){if(L[i]>=h){const t=(h-L[i-1])/(L[i]-L[i-1]||1);return[pts[i-1][0]+(pts[i][0]-pts[i-1][0])*t,pts[i-1][1]+(pts[i][1]-pts[i-1][1])*t];}}return pts[0];};
+const rLayer=el('g',{}), pLayer=el('g',{}), bLayer=el('g',{});
+SEG.forEach(s=>{
+  const c=`var(${DAYS[s.day].c})`;
+  const sg=el('g',{class:'seg'},rLayer);
+  const d=pathD(s.pts);
+  el('path',{d,class:'route'+(s.mode==='boat'?' boat':''),stroke:c},sg);
+  const hit=el('path',{d,class:'hit'},sg);
+  s.g=sg; s.midW=midOf(s.pts); s.len=s.pts.slice(1).reduce((a,q,k)=>a+Math.hypot(q[0]-s.pts[k][0],q[1]-s.pts[k][1]),0);
+  const bg=el('g',{class:'badge',style:`--bc:${c}`},bLayer);
+  const label=`${MODE[s.mode]} ${s.short}`;
+  const w=[...label].reduce((a,ch)=>a+(/[　-鿿]/.test(ch)?10.5:6.3),0)+12;
+  el('rect',{x:-w/2,y:-9.5,width:w,height:19,rx:9.5},bg);
+  const t=el('text',{'text-anchor':'middle',y:3.8},bg);t.textContent=label;
+  addScaled(bg,s.midW[0],s.midW[1]); s.badge=bg;
+  [hit,bg].forEach(n=>bindHover(n,ev=>segTip(s,ev.clientX,ev.clientY),()=>hlSeg(s,true),()=>hlSeg(s,false)));
+});
+const OFF={r:[8,4,'start'],l:[-8,4,'end'],t:[0,-9,'middle'],b:[0,17,'middle']};
+const pinEls={};
+for(const id in PL){const p=PL[id];const pg=el('g',{class:'pin '+(p.m?'major':'minor')},pLayer);
+  el('circle',{r:p.m?5.5:4},pg);const [dx,dy,an]=OFF[p.lp];const t=el('text',{x:dx,y:dy,'text-anchor':an},pg);t.textContent=p.n;
+  addScaled(pg,X(p.lo),Y(p.la));pinEls[id]=pg;
+  bindHover(pg,ev=>placeTip(id,ev.clientX,ev.clientY),()=>pg.classList.add('hl'),()=>pg.classList.remove('hl'));
+}
+pLayer.after(bLayer);
+
+/* ---------- tooltip ---------- */
+let tipLock=false;
+function showTip(html,cx,cy){const r=chart.getBoundingClientRect();tip.innerHTML=html;tip.hidden=false;
+  let x=cx-r.left,y=cy-r.top;const tw=tip.offsetWidth,th=tip.offsetHeight;
+  x=Math.max(tw/2+6,Math.min(r.width-tw/2-6,x));
+  tip.style.transform=(y-th-20<0)?'translate(-50%,16px)':'translate(-50%,calc(-100% - 14px))';
+  tip.style.left=x+'px';tip.style.top=y+'px';}
+function hideTip(){tip.hidden=true;tipLock=false;}
+function segTip(s,cx,cy){showTip(`<b><span class="k">${MODEL[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}</b><div>${s.dur}・${s.dist}</div><div class="m">${s.how}　｜　Day ${s.day+1}</div>`,cx,cy);}
+function placeTip(id,cx,cy){const p=PL[id];showTip(`<b>${p.n}</b><div class="m">${p.d}</div>`,cx,cy);}
+function worldToClient(wx,wy){const r=svg.getBoundingClientRect();return[r.left+(wx-view.x)/view.w*r.width,r.top+(wy-view.y)/view.h*r.height];}
+function bindHover(node,show,on,off){
+  node.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'||dragging)return;on();show(e);});
+  node.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||dragging||tipLock)return;show(e);});
+  node.addEventListener('pointerleave',e=>{if(e.pointerType!=='mouse')return;off();if(!tipLock)hideTip();});
+  node.addEventListener('click',e=>{if(moved)return;e.stopPropagation();on();show(e);tipLock=true;setTimeout(off,1500);});
+}
+function hlSeg(s,on){s.g.classList.toggle('hl',on);s.badge.classList.toggle('hl',on);const row=document.querySelector(`.hop[data-s="${s.id}"]`);if(row)row.classList.toggle('hl',on);}
+
+/* ---------- view: pan / zoom ---------- */
+let view={x:0,y:0,w:W,h:H}, anim=0;
+const scaleEl=document.getElementById('scale');
+function setView(v){
+  const w=Math.max(28,Math.min(1100,v.w)),h=w/AR;
+  const cx=Math.max(-150,Math.min(W+150,v.x+v.w/2)),cy=Math.max(-150,Math.min(H+150,v.y+v.h/2));
+  view={x:cx-w/2,y:cy-h/2,w,h};
+  svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`);
+  const s=view.w/W;
+  scaled.forEach(o=>o.el.setAttribute('transform',`translate(${o.x},${o.y}) scale(${s})${o.r?` rotate(${o.r})`:''}`));
+  svg.classList.toggle('far',view.w>400);
+  const r=svg.getBoundingClientRect();if(!r.width)return;
+  const ppu=r.width/view.w; SEG.forEach(q=>q.badge.classList.toggle('tiny',q.len*ppu<58));
+  const pxPerKm=r.width/view.w*K/111;const nice=[1,2,5,10,20,50,100,200].find(n=>n*pxPerKm>=60)||200;
+  scaleEl.firstChild.textContent=nice+' km';scaleEl.lastChild.style.width=(nice*pxPerKm).toFixed(0)+'px';
+}
+function animateTo(t){cancelAnimationFrame(anim);if(reduce){setView(t);return;}
+  const f={...view},t0=performance.now(),D=750;const ease=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+  const step=now=>{const p=Math.min(1,(now-t0)/D),e=ease(p);setView({x:f.x+(t.x-f.x)*e,y:f.y+(t.y-f.y)*e,w:f.w+(t.w-f.w)*e,h:f.h+(t.h-f.h)*e});if(p<1)anim=requestAnimationFrame(step);};
+  anim=requestAnimationFrame(step);}
+function fit(pts,minW){let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;pts.forEach(([x,y])=>{x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);});
+  const bw=x1-x0,bh=y1-y0;let w=Math.max(bw*1.35+30,bh*1.35*AR+30*AR,minW||60);return{x:(x0+x1)/2-w/2,y:(y0+y1)/2-w/AR/2,w,h:w/AR};}
+function zoomAt(cx,cy,f){const r=svg.getBoundingClientRect();const wx=view.x+(cx-r.left)/r.width*view.w,wy=view.y+(cy-r.top)/r.height*view.h;
+  const w=Math.max(28,Math.min(1100,view.w/f)),h=w/AR;setView({x:wx-(cx-r.left)/r.width*w,y:wy-(cy-r.top)/r.height*h,w,h});}
+
+const ptrs=new Map();let dragging=false,moved=false,start=null,lastPinch=null;
+svg.addEventListener('pointerdown',e=>{cancelAnimationFrame(anim);stopTour();ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=false;start={x:e.clientX,y:e.clientY};if(ptrs.size===2)lastPinch=null;});
+svg.addEventListener('pointermove',e=>{if(!ptrs.has(e.pointerId))return;const p=ptrs.get(e.pointerId);const r=svg.getBoundingClientRect();
+  if(ptrs.size===1){if(!dragging&&Math.hypot(e.clientX-start.x,e.clientY-start.y)>4){dragging=moved=true;svg.setPointerCapture(e.pointerId);svg.classList.add('grabbing');hideTip();}
+    if(dragging){setView({...view,x:view.x-(e.clientX-p.x)*view.w/r.width,y:view.y-(e.clientY-p.y)*view.h/r.height});}}
+  ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(ptrs.size===2){moved=true;hideTip();const [a,b]=[...ptrs.values()];const d=Math.hypot(a.x-b.x,a.y-b.y),mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+    if(lastPinch){setView({...view,x:view.x-(mx-lastPinch.mx)*view.w/r.width,y:view.y-(my-lastPinch.my)*view.h/r.height});zoomAt(mx,my,d/lastPinch.d);}lastPinch={d,mx,my};}
+});
+const endPtr=e=>{ptrs.delete(e.pointerId);if(ptrs.size<2)lastPinch=null;if(!ptrs.size){dragging=false;svg.classList.remove('grabbing');}};
+['pointerup','pointercancel'].forEach(t=>svg.addEventListener(t,endPtr));
+svg.addEventListener('click',()=>{if(!moved)hideTip();});
+svg.addEventListener('wheel',e=>{e.preventDefault();cancelAnimationFrame(anim);hideTip();zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*0.0018));},{passive:false});
+const cz=f=>{const r=svg.getBoundingClientRect();cancelAnimationFrame(anim);const c={...view};const w=view.w/f;animateTo({x:c.x+c.w/2-w/2,y:c.y+c.h/2-w/AR/2,w,h:w/AR});};
+document.getElementById('zin').onclick=()=>cz(1.6);
+document.getElementById('zout').onclick=()=>cz(1/1.6);
+document.getElementById('zfit').onclick=()=>show(cur,true);
+
+/* ---------- day selection ---------- */
+const tabs=document.getElementById('tabs'),legend=document.getElementById('legend');
+let cur=-1,tour=0;
+tabs.innerHTML='<div class="side-h">行程分頁</div>';
+const mk=(html,color,idx)=>{const b=document.createElement('button');b.className='tab';b.type='button';b.innerHTML=(color?`<i style="background:var(${color});flex:none"></i>`:'')+`<span>${html}</span>`;b.onclick=()=>{stopTour();show(idx);if(matchMedia('(max-width:860px)').matches)document.getElementById('map').scrollIntoView({behavior:reduce?'auto':'smooth'});};tabs.appendChild(b);return b;};
+const btns=[mk('總覽<small>全部路線・出發準備</small>',null,-1),...DAYS.map((d,i)=>mk(`<span class="dd">D${i+1} ${d.d}</span><small>${d.t}</small>`,d.c,i))];
+const playBtn=document.createElement('button');playBtn.className='tab play';playBtn.type='button';playBtn.textContent='▶ 自動導覽';playBtn.setAttribute('aria-pressed','false');
+playBtn.onclick=()=>{if(tour){stopTour();return;}playBtn.setAttribute('aria-pressed','true');playBtn.textContent='■ 停止導覽';show(cur>=DAYS.length-1?0:cur+1);tour=setInterval(()=>{if(cur>=DAYS.length-1){stopTour();show(-1);return;}show(cur+1);},4500);};
+tabs.appendChild(playBtn);
+function stopTour(){if(!tour)return;clearInterval(tour);tour=0;playBtn.setAttribute('aria-pressed','false');playBtn.textContent='▶ 自動導覽';}
+const allPts=SEG.flatMap(s=>s.pts);
+const KEY=`<div class="key"><span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/></svg>車程</span><span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="var(--ink)" stroke-width="3" stroke-dasharray="4 5" stroke-linecap="round"/></svg>船程</span><span><svg width="12" height="12"><circle cx="6" cy="6" r="5" fill="var(--accent)" stroke="var(--ink)"/></svg>主要景點</span></div>`;
+
+function show(i,refit){
+  cur=i;hideTip();
+  btns.forEach((b,j)=>b.setAttribute('aria-pressed',String(j===i+1)));
+  svg.classList.toggle('dim',i>=0);
+  SEG.forEach(s=>{const on=s.day===i;s.g.classList.toggle('on',on);s.badge.classList.toggle('on',on);s.g.classList.remove('hl');s.badge.classList.remove('hl');});
+  const onStops=i>=0?new Set(DAYS[i].stops):new Set();
+  for(const id in pinEls)pinEls[id].classList.toggle('on',onStops.has(id));
+  if(i>=0){const segs=DAYS[i].segs;rLayer.append(...segs.map(s=>s.g));}
+  animateTo(i<0?fit(allPts):fit(DAYS[i].segs.flatMap(s=>s.pts),70));
+  if(refit)return;
+  renderPane(i);
+  if(i<0){
+    legend.style.removeProperty('--c');
+    legend.innerHTML=`<div><h3>七天路線總覽</h3><p class="sub">從麥克坦出發，沿宿霧東岸南下看鯨鯊，再走西岸經墨寶回市區，最後搭船到薄荷島。點選任一天看詳細路線。</p></div><ul class="daylist">${DAYS.map((d,j)=>`<li><button type="button" data-day="${j}"><b style="color:var(${d.c})">${d.d}</b><span>${d.t}</span></button></li>`).join('')}</ul>`+KEY;
+    legend.querySelectorAll('[data-day]').forEach(b=>b.onclick=()=>show(+b.dataset.day));
+  }else{
+    const d=DAYS[i];legend.style.setProperty('--c',`var(${d.c})`);
+    let h=`<div><h3 style="color:var(${d.c})">Day ${i+1}・${d.d}（${d.wk}）</h3><p class="sub">${d.t}　｜　住：${d.stay}</p></div><ol class="iti">`;
+    const stop=id=>`<li class="stop ${PL[id].m?'major':''}"><button type="button" data-p="${id}"><span class="dot"></span>${PL[id].n}</button></li>`;
+    h+=stop(d.segs[0].f);
+    d.segs.forEach(s=>{h+=`<li class="hop" tabindex="0" data-s="${s.id}"><span class="chip ${s.mode}">${MODEL[s.mode]}</span><span>${s.dur}・${s.dist}</span><small>${s.how}</small></li>`+stop(s.t);});
+    legend.innerHTML=h+'</ol>'+KEY;
+    legend.querySelectorAll('.hop').forEach(row=>{const s=SEG[+row.dataset.s];
+      const on=()=>{hlSeg(s,true);const [cx,cy]=worldToClient(...s.midW);const r=chart.getBoundingClientRect();if(cx>r.left&&cx<r.right&&cy>r.top&&cy<r.bottom)segTip(s,cx,cy);};
+      const off=()=>{hlSeg(s,false);hideTip();};
+      row.addEventListener('mouseenter',on);row.addEventListener('mouseleave',off);row.addEventListener('focus',on);row.addEventListener('blur',off);
+      row.addEventListener('click',()=>{stopTour();animateTo(fit(s.pts,50));setTimeout(on,reduce?0:800);});
+      row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();row.click();}});
+    });
+    legend.querySelectorAll('[data-p]').forEach(b=>{const id=b.dataset.p,p=PL[id];
+      b.onmouseenter=()=>pinEls[id].classList.add('hl');b.onmouseleave=()=>pinEls[id].classList.remove('hl');
+      b.onclick=()=>{stopTour();animateTo(fit([[X(p.lo),Y(p.la)]],45));setTimeout(()=>{const [cx,cy]=worldToClient(X(p.lo),Y(p.la));placeTip(id,cx,cy);tipLock=true;},reduce?0:800);};
+    });
+  }
+}
+document.addEventListener('keydown',e=>{if(e.target.closest('input,textarea'))return;if(e.key==='ArrowRight'&&cur<DAYS.length-1){stopTour();show(cur+1);}if(e.key==='ArrowLeft'&&cur>-1){stopTour();show(cur-1);}});
+
+/* ---------- day pane / overview ---------- */
+const pane=document.getElementById('dayPane'),ov=document.getElementById('ov');
+document.getElementById('ovDays').innerHTML=DAYS.map((d,j)=>`<button class="ovd" type="button" data-day="${j}" style="--c:var(${d.c})"><span class="mono">DAY ${j+1}・${d.d}（${d.wk}）</span><b>${d.t}</b><span>住：${d.stay}</span></button>`).join('');
+document.querySelectorAll('#ovDays [data-day]').forEach(b=>b.onclick=()=>{show(+b.dataset.day);document.getElementById('map').scrollIntoView({behavior:reduce?'auto':'smooth'});});
+function renderPane(i){
+  ov.hidden=i>=0;pane.hidden=i<0;if(i<0)return;
+  const d=DAYS[i];pane.style.setProperty('--c',`var(${d.c})`);
+  const prev=i>0?`<button class="tab" type="button" data-go="${i-1}">← D${i} ${DAYS[i-1].t}</button>`:`<button class="tab" type="button" data-go="-1">← 總覽</button>`;
+  const next=i<DAYS.length-1?`<button class="tab" type="button" data-go="${i+1}">D${i+2} ${DAYS[i+1].t} →</button>`:`<button class="tab" type="button" data-go="-1">回總覽 →</button>`;
+  pane.innerHTML=`<div class="pane-head"><span class="big mono">${d.d}</span><div><h2>Day ${i+1}・${d.t}</h2><p>星期${d.wk}　｜　住宿：${d.stay}</p></div></div>
+  <div class="pgrid">
+    <div class="pcol">
+      <div class="card"><h3>時間表</h3><ul class="tl">${d.tl.map(([t,x])=>`<li><time>${t}</time><span>${x}</span></li>`).join('')}</ul></div>
+      <div class="card"><h3>當天交通</h3><div class="hops">${d.segs.map(s=>`<span data-hs="${s.id}"><span class="chip ${s.mode}">${MODE[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}・${s.dur}</span>`).join('')}</div></div>
+      <div class="card"><h3>景點介紹</h3><ul>${[...new Set(d.stops)].map(id=>`<li><b>${PL[id].n}：</b>${PL[id].d}</li>`).join('')}</ul></div>
+    </div>
+    <div class="pcol">
+      ${d.note?`<div class="note">${d.note}</div>`:''}
+      <div class="card"><h3>注意事項</h3><ul class="warn">${d.tips.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+      <div class="card"><h3>建議攜帶</h3><ul>${d.bring.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+    </div>
+  </div>
+  <div class="pager">${prev}${next}</div>`;
+  pane.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{show(+b.dataset.go);document.getElementById('map').scrollIntoView({behavior:reduce?'auto':'smooth'});});
+  pane.querySelectorAll('[data-hs]').forEach(c=>{const s=SEG[+c.dataset.hs];c.style.cursor='pointer';c.onmouseenter=()=>hlSeg(s,true);c.onmouseleave=()=>hlSeg(s,false);c.onclick=()=>{animateTo(fit(s.pts,50));document.getElementById('map').scrollIntoView({behavior:reduce?'auto':'smooth'});};});
+}
+
+setView({x:0,y:0,w:W,h:H});
+const m=/^#d([1-7])$/.exec(location.hash);
+show(m?+m[1]-1:-1);
+new ResizeObserver(()=>setView(view)).observe(svg);
+})();
+</script>
+
+</body>
+</html>

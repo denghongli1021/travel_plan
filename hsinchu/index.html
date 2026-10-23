@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="新竹出發兩天一夜，四條大眾運輸路線與每月推薦。">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>新竹出發兩天一夜</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;800&family=Noto+Sans+TC:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: 側欄（總覽＋四條路線）＋ 月份列；主區是可拖曳縮放的鐵道式路線圖、逐站交通、逐日細節 */
+:root{
+  --bg:#f1f3f0; --paper:#ffffff; --ink:#1b2722; --muted:#5d6b64; --line:#d6ddd8;
+  --sea:#dfe9ec; --sea-deep:#a8c4cc; --land:#f4f2e6; --hill:#e6e6d2; --mtn:#d7dcc0; --land-edge:#b8bc9a;
+  --rail:#8b948f; --accent:#d4901a; --accent-ink:#7a4f00;
+  --r0:#b4462b; --r1:#2f7d4f; --r2:#1f6fae; --r3:#8a4fb3;
+  --f-display:"Noto Serif TC","Songti TC",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-mono:"DM Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1513; --paper:#161f1c; --ink:#e3ebe6; --muted:#97a69f; --line:#2a3833;
+  --sea:#13232a; --sea-deep:#2a4a55; --land:#1b2420; --hill:#212c24; --mtn:#283326; --land-edge:#4a5741;
+  --rail:#7c8882; --accent:#eaa93a; --accent-ink:#f5cf86;
+  --r0:#f0805f; --r1:#62c48a; --r2:#62aee8; --r3:#c39af0;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1513; --paper:#161f1c; --ink:#e3ebe6; --muted:#97a69f; --line:#2a3833;
+  --sea:#13232a; --sea-deep:#2a4a55; --land:#1b2420; --hill:#212c24; --mtn:#283326; --land-edge:#4a5741;
+  --rail:#7c8882; --accent:#eaa93a; --accent-ink:#f5cf86;
+  --r0:#f0805f; --r1:#62c48a; --r2:#62aee8; --r3:#c39af0;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1180px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.3}
+button{font:inherit;color:inherit}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+header{padding-block:40px 22px;display:grid;gap:14px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(28px,5.5vw,48px);font-weight:800}
+h1 em{font-style:normal;color:var(--accent-ink)}
+.lede{max-width:64ch;color:var(--muted);margin:0}
+
+.app{display:grid;grid-template-columns:210px minmax(0,1fr);gap:22px;align-items:start}
+.main{min-width:0;display:grid;gap:22px}
+.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 14px);display:grid;gap:5px}
+.side-h{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--muted);padding:0 4px 2px}
+.tab{font:500 13px/1.35 var(--f-body);border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:8px 11px;border-radius:999px;cursor:pointer;display:inline-flex;gap:7px;align-items:center}
+.tab:hover{border-color:var(--ink)}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tab:focus-visible,.ctl:focus-visible,.hop:focus-visible,.stop button:focus-visible,.mbtn:focus-visible,.hm button:focus-visible,.rcard:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.side .tab{border-radius:10px;justify-content:flex-start;text-align:left;width:100%;padding:9px 11px}
+.side .tab small{display:block;font-size:12px;opacity:.75;font-weight:400}
+.sw{width:10px;height:10px;border-radius:3px;flex:none;display:inline-block}
+@media (max-width:880px){
+  .app{grid-template-columns:1fr;gap:0}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+  .side{top:env(safe-area-inset-top,0px);z-index:6;background:var(--bg);display:flex;overflow-x:auto;padding-block:10px;border-bottom:1px solid var(--line);scrollbar-width:none;margin-bottom:14px}
+  .side-h{display:none}
+  .side .tab{width:auto;flex:none}
+  .side .tab small{display:none}
+}
+/* month bar */
+.months{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:10px}
+.months-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
+.months-top b{font-family:var(--f-display);font-size:17px}
+.months-top span{font-size:12px;color:var(--muted)}
+.mrow{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px}
+@media (max-width:560px){.mrow{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.mbtn{all:unset;box-sizing:border-box;cursor:pointer;text-align:center;border:1px solid var(--line);border-radius:8px;padding:5px 0 4px;display:grid;gap:3px;justify-items:center}
+.mbtn .mn{font:500 13px var(--f-mono)}
+.mbtn .dots{display:flex;gap:2px;height:5px}
+.mbtn .dots i{width:5px;height:5px;border-radius:50%;background:var(--c,var(--muted));opacity:.25}
+.mbtn .dots i.f{opacity:1}
+.mbtn:hover{border-color:var(--ink)}
+.mbtn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.mbtn[aria-pressed="true"] .dots i{background:var(--bg)}
+.mnote{border-radius:10px;padding:10px 12px;background:color-mix(in srgb,var(--c,var(--accent)) 10%,transparent);display:grid;gap:4px;font-size:14px}
+.mnote .rate{font-size:12px;font-weight:700;color:var(--c,var(--accent-ink))}
+.mnote ul{margin:0;padding-left:18px}
+/* map */
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.sec-h h2{font-size:23px}
+.sec-h p{margin:0;color:var(--muted);font-size:13px}
+.mapbox{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:980px){.mapbox{grid-template-columns:1fr}}
+.chart{background:var(--sea);border:1px solid var(--line);border-radius:12px;overflow:hidden;position:relative;user-select:none;-webkit-user-select:none}
+.chart svg#svg{display:block;width:100%;aspect-ratio:640/500;max-width:100%;touch-action:none;cursor:grab}
+.chart svg.grabbing{cursor:grabbing}
+.ctls{position:absolute;top:10px;left:10px;display:grid;gap:4px}
+.ctl{min-width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--paper);cursor:pointer;font-size:18px;line-height:1;display:grid;place-items:center;padding:0 6px}
+.ctl.txt{font-size:11px;font-weight:700;white-space:nowrap}
+.compass{position:absolute;top:10px;right:12px;width:40px;height:52px;pointer-events:none}
+.scalebar{position:absolute;left:12px;bottom:10px;font:11px var(--f-mono);color:var(--muted);pointer-events:none}
+.scalebar div{height:6px;border:2px solid var(--muted);border-top:0;margin-top:2px}
+.hint{position:absolute;right:10px;bottom:8px;font-size:11px;color:var(--muted);background:color-mix(in srgb,var(--paper) 80%,transparent);padding:2px 8px;border-radius:6px;pointer-events:none}
+@media (max-width:520px){.hint{display:none}}
+.tip{position:absolute;z-index:5;pointer-events:none;background:var(--ink);color:var(--bg);font-size:13px;line-height:1.5;padding:8px 11px;border-radius:8px;max-width:260px;box-shadow:0 6px 20px rgb(0 0 0 / .22)}
+.tip b{display:block;font-size:14px}
+.tip .m{opacity:.78;font-size:12px}
+.tip .k{display:inline-block;font-size:11px;font-weight:700;padding:0 6px;border-radius:4px;background:var(--accent);color:#1a1200;margin-right:6px}
+.route{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:3;transition:opacity .25s,stroke-width .15s}
+.route.walk,.route.bike{stroke-dasharray:1 6;stroke-width:3.5}
+.route.shuttle,.route.taxi{stroke-dasharray:7 5}
+.hit{fill:none;stroke:transparent;stroke-width:18;pointer-events:stroke;cursor:pointer}
+svg.dim .seg:not(.on) .route{opacity:.1}
+svg.dim .seg:not(.on) .hit{pointer-events:none}
+.seg.on .route{stroke-width:4.5}
+.seg.on .route.walk,.seg.on .route.bike{stroke-width:5}
+.seg.hl .route{stroke-width:7.5}
+svg.dim .pin:not(.on){opacity:.25}
+.pin{cursor:pointer}
+.pin text{font:500 11px var(--f-body);fill:var(--ink);paint-order:stroke;stroke:var(--land);stroke-width:3px;stroke-linejoin:round}
+.pin.major text{font-weight:700;font-size:12px}
+.pin circle{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+.pin.major circle{fill:var(--accent)}
+.pin.stn circle{fill:var(--paper);stroke-width:2.5}
+.pin:hover circle,.pin.hl circle{stroke-width:3.5}
+svg.far .pin.minor:not(.on) text{display:none}
+.badge{display:none;cursor:pointer}
+.badge.on{display:inline}
+.badge.tiny{display:none}
+.badge rect{fill:var(--paper);stroke:var(--bc);stroke-width:1.5}
+.badge text{font:700 10.5px var(--f-body);fill:var(--ink)}
+.badge.hl rect{fill:var(--bc)}
+.badge.hl text{fill:var(--paper)}
+.land{fill:var(--land);stroke:var(--land-edge);stroke-width:1.2}
+.hill{fill:var(--hill)}
+.mtn{fill:var(--mtn)}
+.river{fill:none;stroke:var(--sea-deep);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.railctx{fill:none;stroke:var(--rail);stroke-width:1.4;stroke-dasharray:6 3;opacity:.7}
+.hsrctx{fill:none;stroke:var(--rail);stroke-width:1;opacity:.55}
+.region{font:600 13px var(--f-display);fill:var(--land-edge);letter-spacing:.35em}
+.sea-name{font:italic 12px var(--f-body);fill:var(--sea-deep);letter-spacing:.2em}
+.grid line{stroke:var(--sea-deep);stroke-width:.5;opacity:.45}
+svg#svg *{vector-effect:non-scaling-stroke}
+.pin *,.badge *,.lbl *{vector-effect:none}
+
+.legend{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:12px;align-content:start}
+@media (min-width:981px){.legend{max-height:560px;overflow:auto}}
+.legend h3{font-size:18px}
+.legend .sub{color:var(--muted);font-size:13px;margin:2px 0 0}
+.dayseg{display:flex;gap:6px;flex-wrap:wrap}
+.dayseg .tab{padding:6px 10px}
+.iti{list-style:none;margin:0;padding:0}
+.iti .dh{font-family:var(--f-mono);font-size:12px;color:var(--muted);letter-spacing:.08em;padding:8px 0 4px}
+.stop button{all:unset;cursor:pointer;display:flex;gap:10px;align-items:center;font-weight:500;padding:3px 6px 3px 0;border-radius:6px}
+.stop button:hover{color:var(--c)}
+.dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink);background:var(--paper);flex:none}
+.stop.major .dot{background:var(--accent)}
+.hop{margin-left:5px;border-left:2px dashed var(--line);padding:6px 8px 6px 16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 8px;font-size:13px;cursor:pointer;border-radius:0 8px 8px 0;align-items:baseline}
+.hop small{grid-column:2;color:var(--muted);font-size:12px}
+.hop:hover,.hop.hl{background:color-mix(in srgb,var(--c) 14%,transparent);border-left-color:var(--c)}
+.chip{font-size:11px;font-weight:700;padding:1px 7px;border-radius:4px;background:var(--ink);color:var(--bg);white-space:nowrap}
+.chip.walk,.chip.bike{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.chip.bus{background:var(--accent);color:#1a1200}
+.chip.shuttle,.chip.taxi{background:var(--muted);color:var(--paper)}
+.key{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.key span{display:inline-flex;align-items:center;gap:6px}
+
+/* panes */
+.rhead{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap;border-bottom:2px solid var(--c);padding-bottom:12px}
+.rhead h2{font-size:clamp(22px,3.4vw,30px);color:var(--c)}
+.rhead p{margin:0;color:var(--muted);font-size:14px;max-width:60ch}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.stat{background:var(--paper);padding:10px 14px;display:grid;gap:1px}
+.stat span{font-size:12px;color:var(--muted)}
+.stat b{font-size:15px}
+.pgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+@media (max-width:760px){.pgrid{grid-template-columns:1fr}}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0;display:grid;gap:10px;align-content:start}
+.card h3{font-size:17px}
+.card .ctag{font-family:var(--f-mono);font-size:12px;color:var(--c);letter-spacing:.06em}
+.card ul{margin:0;padding-left:18px;display:grid;gap:5px}
+.tl{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.tl li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:10px}
+.tl time{font-family:var(--f-mono);font-size:13px;color:var(--muted);padding-top:2px}
+.hops{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;color:var(--muted)}
+.hops span.h{border:1px solid var(--line);border-radius:6px;padding:2px 8px;display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.hops span.h:hover{border-color:var(--c)}
+.warn li::marker{color:var(--accent)}
+.couple{font-size:13px;background:color-mix(in srgb,var(--c) 10%,transparent);border-radius:8px;padding:8px 12px}
+/* overview */
+.hm-wrap{overflow-x:auto}
+table.hm{border-collapse:separate;border-spacing:3px;width:100%;min-width:620px;font-size:13px}
+.hm th{font-weight:500;color:var(--muted);font-size:12px;text-align:center}
+.hm th.rn{text-align:left;color:var(--ink);font-size:13px;white-space:nowrap;padding-right:6px}
+.hm td{padding:0}
+.hm button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;height:34px;border-radius:6px;display:grid;place-items:center;font:600 12px var(--f-mono)}
+.hm button:hover{outline:2px solid var(--ink)}
+.hm button.sel{outline:2px solid var(--accent)}
+.hm-key{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.hm-key i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:4px}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.rcard{all:unset;box-sizing:border-box;cursor:pointer;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:6px;position:relative;overflow:hidden}
+.rcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.rcard:hover{border-color:var(--c)}
+.rcard b{font-family:var(--f-display);font-size:17px;color:var(--c)}
+.rcard span{font-size:13px;color:var(--muted)}
+.rcard .mini{font-size:12px;color:var(--ink)}
+footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:16px}
+@media (prefers-reduced-motion:reduce){.route{transition:none}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Hsinchu · Miaoli · 2D1N · 大眾運輸</div>
+  <h1>新竹出發<br><em>兩天一夜</em>・四條路線</h1>
+  <p class="lede">兩個人不開車，靠火車、高鐵、台灣好行與 YouBike 就能走完的四種玩法：客家老街與古道、山上部落、海線單車與城隍廟小吃、苗栗舊山線加溫泉草莓。選一個月份，看每條路線那個月好不好玩、要注意什麼。</p>
+</header>
+
+<div class="app">
+  <nav class="side" id="side" aria-label="路線分頁"></nav>
+  <main class="main">
+    <div class="months" id="months"></div>
+    <section id="map">
+      <div class="sec-h"><h2 id="mapTitle">路線地圖</h2><p>拖曳、縮放地圖；滑過路線看搭什麼車、要多久</p></div>
+      <div class="mapbox">
+        <div class="chart" id="chart">
+          <svg id="svg" viewBox="0 0 640 500" role="img" aria-label="新竹苗栗互動路線圖"></svg>
+          <div class="ctls">
+            <button class="ctl" id="zin" type="button" aria-label="放大">+</button>
+            <button class="ctl" id="zout" type="button" aria-label="縮小">−</button>
+            <button class="ctl txt" id="zfit" type="button">全覽</button>
+          </div>
+          <svg class="compass" viewBox="-20 -30 40 52" aria-hidden="true"><text y="-20" text-anchor="middle" style="font:600 11px var(--f-mono);fill:var(--muted)">N</text><circle r="16" fill="none" stroke="var(--sea-deep)"/><path d="M0,-14 L4,0 L0,14 L-4,0 Z" fill="var(--sea-deep)"/><path d="M0,-14 L4,0 L-4,0 Z" fill="var(--accent)"/></svg>
+          <div class="scalebar" id="scale"><span>5 km</span><div></div></div>
+          <div class="hint">拖曳移動・滾輪或雙指縮放</div>
+          <div class="tip" id="tip" hidden></div>
+        </div>
+        <aside class="legend" id="legend" aria-live="polite"></aside>
+      </div>
+    </section>
+    <div id="pane"></div>
+    <footer>班次、票價與開放時間會變動，出發前請以台鐵、台灣好行、客運與景點官網公告為準。季節資訊為往年大約時間，實際依當年花況與天氣。地圖為示意。</footer>
+  </main>
+</div>
+</div>
+
+<script>
+(function(){
+const LON0=120.6, LAT1=24.925, K=800, W=640, H=500, AR=W/H;
+const X=lo=>(lo-LON0)*K, Y=la=>(LAT1-la)*K;
+const NS='http://www.w3.org/2000/svg';
+const svg=document.getElementById('svg'), chart=document.getElementById('chart'), tip=document.getElementById('tip');
+const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e;};
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const MODE={hsr:'高鐵',train:'火車',bus:'公車',walk:'步行',bike:'單車',shuttle:'接駁',taxi:'計程車'};
+const MS={hsr:'高鐵',train:'火車',bus:'公車',walk:'走',bike:'騎',shuttle:'接駁',taxi:'車'};
+
+/* ---------- places ---------- */
+const PL={
+ hcst:{n:'新竹火車站',lo:120.9715,la:24.8016,m:1,s:1,lp:'r',d:'1913 年落成的巴洛克式車站，全台最老的現役站房之一。'},
+ hsr:{n:'高鐵新竹站',lo:121.0405,la:24.8081,m:0,s:1,lp:'r',d:'台灣好行獅山線起點，台鐵六家站就在旁邊。'},
+ dm:{n:'東門城',lo:120.9685,la:24.8040,m:0,lp:'t',d:'清代竹塹城僅存的城門，周邊是護城河親水公園。'},
+ cg:{n:'城隍廟',lo:120.9652,la:24.8045,m:1,lp:'l',d:'廟口小吃：炒米粉、貢丸湯、肉圓、潤餅。'},
+ zt:{n:'新竹州廳',lo:120.9705,la:24.8072,m:0,lp:'r',d:'日治時期紅磚建築，旁邊是新竹市美術館（舊市役所）。'},
+ park:{n:'新竹公園',lo:120.9800,la:24.8005,m:0,lp:'r',d:'湖畔料亭、玻璃工藝博物館、新竹動物園都在園內。'},
+ nl:{n:'南寮漁港',lo:120.9265,la:24.8480,m:1,lp:'l',d:'魚鱗天梯、風情海岸，也是 17 公里海岸線起點，傍晚看夕陽。'},
+ xs:{n:'香山濕地',lo:120.9135,la:24.7720,m:1,lp:'l',d:'賞蟹步道，退潮時看招潮蟹與夕陽。'},
+ hsh:{n:'海山漁港',lo:120.8990,la:24.7460,m:0,lp:'l',d:'海線南端的小漁港，附近有海鮮餐廳。'},
+ qq:{n:'青青草原',lo:120.9400,la:24.7680,m:0,lp:'r',d:'大片草坡與溜滑梯，視野看得到海。'},
+ bp:{n:'北埔老街',lo:121.0570,la:24.7000,m:1,lp:'r',d:'慈天宮、金廣成、姜阿新洋樓；擂茶與膨風茶。'},
+ ss:{n:'獅山遊客中心',lo:121.0100,la:24.6430,m:0,lp:'r',d:'獅頭山古道北端入口，沿途是一連串的寺廟。'},
+ qh:{n:'勸化堂',lo:120.9950,la:24.6330,m:0,lp:'l',d:'古道南端，台灣好行南庄線「龍門口」站下車處。'},
+ nz:{n:'南庄老街',lo:120.9990,la:24.5970,m:1,lp:'l',d:'桂花巷、老郵局、康濟吊橋；桂花釀與客家湯圓。'},
+ xth:{n:'向天湖',lo:121.0450,la:24.5850,m:0,lp:'r',d:'賽夏族部落旁的高山湖泊，清晨常有湖霧。'},
+ zn:{n:'竹南站',lo:120.8780,la:24.6860,m:0,s:1,lp:'l',d:'海線與山線分歧點，台灣好行南庄線起點。'},
+ hh:{n:'合興車站',lo:121.1400,la:24.7160,m:1,s:1,lp:'t',d:'「愛情車站」，木造站房與紅色車廂咖啡。'},
+ nw:{n:'內灣老街',lo:121.1820,la:24.7050,m:1,s:1,lp:'r',d:'內灣線終點；野薑花粽、客家粄條、內灣吊橋。'},
+ sm:{n:'司馬庫斯',lo:121.3330,la:24.5780,m:1,lp:'r',d:'泰雅族部落，共有共享的經營方式，夜晚星空清楚。'},
+ jm:{n:'巨木群',lo:121.3100,la:24.5540,m:0,lp:'l',d:'紅檜巨木群，最大的「大老爺」據估超過兩千年。'},
+ ml:{n:'苗栗站',lo:120.8220,la:24.5700,m:0,s:1,lp:'l',d:'101B 與 5656 苗卓線都可在附近搭乘。'},
+ sy:{n:'三義站',lo:120.7730,la:24.4130,m:0,s:1,lp:'l',d:'木雕之鄉，台灣好行舊山線從這裡發車。'},
+ sx:{n:'勝興車站',lo:120.7850,la:24.3890,m:1,lp:'r',d:'台鐵最高點（海拔 402 公尺）紀念碑與客家老街。'},
+ lt:{n:'龍騰斷橋',lo:120.7750,la:24.3690,m:1,lp:'l',d:'紅磚拱橋遺跡；舊山線鐵道自行車從龍騰站出發。'},
+ xb:{n:'雪霸管理處',lo:120.9000,la:24.4900,m:0,lp:'l',d:'101B 終點，轉搭泰安好行上溫泉區。'},
+ ta:{n:'泰安溫泉',lo:120.9850,la:24.4630,m:1,lp:'r',d:'弱鹼性碳酸氫鈉泉，溪谷旁的溫泉旅館，可選私人湯屋。'},
+ dh:{n:'大湖草莓區',lo:120.8680,la:24.4250,m:1,lp:'b',d:'大湖酒莊與周邊草莓園，11 月到隔年 4 月可採草莓。'}
+};
+const S=(f,t,mode,dur,short,how,mid)=>({f,t,mode,dur,short,how,mid:mid||[]});
+const RAIL_S=[[120.9715,24.8016],[120.935,24.775],[120.912,24.755],[120.878,24.686],[120.855,24.64],[120.835,24.60],[120.822,24.570],[120.81,24.52],[120.795,24.47],[120.773,24.413]];
+const railBetween=(a,b)=>{const i=RAIL_S.findIndex(p=>p[0]===PL[a].lo),j=RAIL_S.findIndex(p=>p[0]===PL[b].lo);const seg=i<j?RAIL_S.slice(i+1,j):RAIL_S.slice(j+1,i).reverse();return seg;};
+const NW_LINE=[[120.9715,24.8016],[121.005,24.795],[121.032,24.781],[121.06,24.76],[121.087,24.737],[121.117,24.725],[121.140,24.716],[121.165,24.709],[121.182,24.705]];
+
+/* ---------- routes ---------- */
+const ROUTES=[
+{id:'hakka',c:'--r0',name:'客家老街・獅頭山古道',short:'客家老街',tag:'北埔擂茶 → 獅頭山古道 → 住南庄',
+ desc:'用台灣好行串起北埔與南庄，中間走一段獅頭山古道，從新竹縣走到苗栗縣。',
+ time:'單程約 1–1.5 小時',budget:'約 NT$2,500–3,800／人',stay:'南庄民宿',walk:'中（古道階梯約 1.5–2 小時）',
+ rate:[4,4,4,5,5,3,2,2,3,5,5,4],
+ mnote:['天冷，正適合熱擂茶和客家湯圓；南庄早晚約 10°C。','春節人潮多，老街早上 10 點前到；元宵前後有客家活動。','春暖、古道好走，是人少又舒服的月份。','下旬油桐花開；南庄、向天湖晚上可看螢火蟲（約 4–5 月）。','客家桐花季高峰，古道上「五月雪」；螢火蟲季持續。','梅雨季，古道濕滑，下雨就改走老街與吊橋。','炎熱又有午後雷陣雨，古道改清晨走或跳過。','颱風季，出發前確認台灣好行是否停駛。','暑氣退了，北埔膨風茶與柿餅季開始。','九降風起、天氣乾爽，最適合走古道。','秋高氣爽，向天湖晨霧；柿餅、桔醬季。','天涼人少，老街吃熱擂茶很舒服。'],
+ days:[
+  {t:'北埔老街・走獅頭山古道到南庄',
+   segs:[S('hsr','bp','bus','約 40 分鐘','40分','台灣好行獅山線（5700）；新竹市區可先搭內灣線到六家站'),
+         S('bp','ss','bus','約 20 分鐘','20分','台灣好行獅山線，坐到獅山遊客中心',[[121.03,24.68]]),
+         S('ss','qh','walk','約 1.5–2 小時','1.5h','獅頭山古道，沿途寺廟、階梯多',[[121.003,24.637]]),
+         S('qh','nz','bus','約 15 分鐘','15分','台灣好行南庄線，龍門口站上車',[[120.99,24.615]])],
+   tl:[['09:00','高鐵新竹站 1 樓搭台灣好行獅山線'],['09:45','北埔老街：慈天宮、金廣成、姜阿新洋樓'],['11:30','擂茶 DIY＋客家菜午餐'],['13:30','好行到獅山遊客中心'],['14:00','走獅頭山古道，經各座寺廟到勸化堂'],['16:30','龍門口站搭南庄線'],['17:00','入住南庄，晚餐吃鱒魚或客家小炒']],
+   tips:['好行班距約 1 小時，先抄好回程與轉乘時刻','古道全程步道與階梯，穿好走的鞋、帶水','台灣好行可刷悠遊卡／一卡通'],
+   couple:'擂茶要兩個人輪流磨，是很適合合照的體驗。'},
+  {t:'南庄老街・向天湖・回竹南',
+   segs:[S('nz','xth','taxi','約 20–25 分鐘','20分','計程車或請民宿接送（山路，無公車直達）',[[121.025,24.588]]),
+         S('xth','nz','taxi','約 20–25 分鐘','20分','回程請司機約好時間',[[121.022,24.594]]),
+         S('nz','zn','bus','約 60 分鐘','1h','台灣好行南庄線，經三灣、頭份',[[120.99,24.615],[120.96,24.64],[120.93,24.66],[120.90,24.675]]),
+         S('zn','hcst','train','約 15–20 分鐘','20分','台鐵往北，區間車即可')],
+   tl:[['08:30','早上的南庄老街：桂花巷、老郵局、康濟吊橋'],['10:00','計程車上向天湖，看湖、逛賽夏族文物館'],['12:00','回南庄午餐，吃桂花湯圓、粄條'],['14:00','台灣好行南庄線到竹南站'],['15:30','台鐵回新竹']],
+   tips:['向天湖來回建議先跟司機講好等候與價格','南庄老街下午人多，早上逛最舒服','買伴手禮：桂花釀、客家醬菜'],
+   couple:'早晨的向天湖常起霧，人少很安靜。'}
+ ],
+ book:['南庄民宿（假日、桐花與螢火蟲季提早訂）','台灣好行獅山線、南庄線時刻表（好行官網）','向天湖來回計程車']},
+
+{id:'mtn',c:'--r1',name:'內灣・司馬庫斯部落',short:'山林部落',tag:'合興愛情車站 → 內灣 → 住司馬庫斯',
+ desc:'內灣線小火車進山，再搭部落接駁上司馬庫斯，第二天清晨走巨木群步道。需要事先訂部落住宿與接駁。',
+ time:'火車 1 小時＋接駁約 2.5–3 小時',budget:'約 NT$4,000–6,000／人',stay:'司馬庫斯部落住宿',walk:'高（巨木步道來回約 10 公里）',
+ rate:[3,4,5,4,4,3,3,3,2,4,5,4],
+ mnote:['山上低溫可到 0–5°C，偶有霜，帶羽絨衣與毛帽。','下旬進入櫻花季，車輛上山要事先申請通行證（約 1 月中開放申請）。','櫻花季高峰，部落住宿與接駁最早額滿，越早訂越好。','內灣一帶有螢火蟲與桐花，山上天氣也穩定。','桐花季尾聲，梅雨前最後一段好天氣。','梅雨季，巨木步道泥濘，帶雨衣與雨鞋。','水蜜桃季（約 7–8 月）；颱風前後道路可能封閉。','水蜜桃季尾聲；颱風季，接駁可能取消。','颱風高峰期，建議改期，或改成內灣一日遊。','秋涼、天氣穩定，走巨木步道最舒適。','楓紅與雲海季，部落最美的時節之一。','開始變冷，空氣乾淨，夜晚星空很清楚。'],
+ days:[
+  {t:'內灣線小火車・合興・上部落',
+   segs:[S('hcst','hh','train','約 50 分鐘','50分','台鐵內灣線（部分班次在竹中站轉車）',NW_LINE.slice(1,6)),
+         S('hh','nw','train','約 10 分鐘','10分','同一班內灣線坐到終點',NW_LINE.slice(7,8)),
+         S('nw','sm','shuttle','約 2.5–3 小時','3h','部落接駁（向住宿預約），配合道路管制時段',[[121.22,24.68],[121.26,24.64],[121.29,24.62],[121.31,24.60]])],
+   tl:[['08:00','新竹站搭內灣線'],['09:00','合興車站：愛情車站、車廂咖啡'],['10:00','內灣老街：野薑花粽、粄條、內灣吊橋'],['12:30','內灣搭部落接駁上山'],['15:30','抵達司馬庫斯，部落散步看雲海'],['18:00','部落共食晚餐，晚上看星星']],
+   tips:['住宿、接駁一定要先訂，現場沒有車','山上晚上很冷，四季都帶保暖外套','部落商店不多，零錢與常備藥自備'],
+   couple:'合興車站有「愛情車站」的故事，月台上很適合拍照。'},
+  {t:'巨木群步道・下山回新竹',
+   segs:[S('sm','jm','walk','約 2.5 小時','2.5h','巨木群步道去程，單程約 5 公里',[[121.326,24.566]]),
+         S('jm','sm','walk','約 2.5 小時','2.5h','原路返回部落',[[121.318,24.568]]),
+         S('sm','nw','shuttle','約 2.5–3 小時','3h','部落接駁下山（約 14:00 前出發）',[[121.31,24.60],[121.29,24.62],[121.26,24.64],[121.22,24.68]]),
+         S('nw','hcst','train','約 1 小時','1h','台鐵內灣線回新竹',NW_LINE.slice(1,8).reverse())],
+   tl:[['06:30','早餐後出發走巨木群步道'],['09:00','抵達巨木區，看「大老爺」神木'],['12:00','回部落吃午餐'],['13:30','部落接駁下山'],['16:30','抵達內灣，搭內灣線回新竹']],
+   tips:['步道來回 5–6 小時，體力不足可走到一半就折返','下山時間要配合管制時段，不要拖延','部落禁菸、不要亂丟垃圾'],
+   couple:'清晨的巨木步道很安靜，可以慢慢走。'}
+ ],
+ book:['司馬庫斯住宿（含餐、建議 1–2 個月前）','部落接駁或包車（內灣或高鐵新竹站上車）','櫻花季車輛通行證（約 1 月中起申請）']},
+
+{id:'sea',c:'--r2',name:'新竹市區・17 公里海岸',short:'海線市區',tag:'城隍廟小吃 → 住市區 → 單車騎海岸',
+ desc:'第一天在市區走路吃城隍廟、看老建築，第二天到南寮騎 YouBike 沿 17 公里海岸線往南。最輕鬆、花費也最少。',
+ time:'市區步行＋公車約 20–30 分',budget:'約 NT$2,000–3,000／人',stay:'新竹市區飯店',walk:'低（單車約 1.5 小時）',
+ rate:[2,3,4,5,5,4,3,3,4,4,3,2],
+ mnote:['九降風（東北季風）很強，海邊很冷；第二天可改看新竹市美術館、玻璃工藝博物館。','還是冷且風大；春節期間城隍廟一帶人潮很多。','回暖、風變小，騎海岸線開始舒服。','最適合騎車的月份，香山濕地招潮蟹開始活躍。','天氣好，退潮看蟹，傍晚回南寮看夕陽。','開始炎熱，單車改清晨或傍晚騎。','酷暑，中午躲在市區室內，傍晚再去漁港。','同 7 月；颱風來時海邊步道會封閉。','暑氣退、夕陽漂亮，海風舒服。','九降風開始，正是米粉與柿餅曬製季；騎車往南會逆風。','風大轉涼，南寮放風箏的人多，騎車量力而為。','東北季風強，海邊短暫停留就好，城隍廟喝熱湯。'],
+ days:[
+  {t:'城隍廟小吃・老城散步',
+   segs:[S('hcst','dm','walk','約 5 分鐘','5分','出站沿中正路走'),
+         S('dm','cg','walk','約 5 分鐘','5分','沿東門街、中山路'),
+         S('cg','zt','walk','約 8 分鐘','8分','往中正路走'),
+         S('zt','park','walk','約 15 分鐘','15分','經東大路一帶，或騎 YouBike 5 分鐘')],
+   tl:[['10:00','新竹火車站，看百年車站建築'],['10:15','東門城、護城河親水公園'],['11:00','城隍廟：炒米粉、貢丸湯、肉圓'],['13:00','新竹州廳、新竹市美術館'],['14:30','新竹公園：湖畔料亭、玻璃工藝博物館'],['18:00','晚餐：北門街老店或巨城']],
+   tips:['城隍廟小吃中午人最多，11 點前吃','玻璃工藝博物館週一休館（以官網為準）','市區飯店選火車站附近，第二天搭車最方便'],
+   couple:'晚上的護城河有燈光，飯後散步很舒服。'},
+  {t:'南寮漁港・騎 17 公里海岸線',
+   segs:[S('hcst','nl','bus','約 20–30 分鐘','25分','市區公車或計程車（用 Google 地圖查即時班次）',[[120.955,24.82]]),
+         S('nl','xs','bike','約 1 小時','1h','YouBike 沿海岸自行車道往南約 10 公里',[[120.918,24.83],[120.915,24.80]]),
+         S('xs','hsh','bike','約 15 分鐘','15分','繼續沿海岸往南，到海山漁港還車',[[120.905,24.758]]),
+         S('hsh','qq','taxi','約 15 分鐘','15分','計程車',[[120.92,24.755]]),
+         S('qq','hcst','taxi','約 20 分鐘','20分','計程車回市區',[[120.955,24.785]])],
+   tl:[['08:30','搭公車或計程車到南寮漁港'],['09:00','魚鱗天梯、風情海岸'],['10:00','租 YouBike 沿 17 公里海岸線往南'],['11:00','香山濕地賞蟹步道（退潮最好看）'],['12:00','海山漁港一帶午餐'],['14:00','計程車到青青草原散步'],['16:30','回新竹火車站']],
+   tips:['出發前查潮汐表，退潮時才看得到招潮蟹','海邊沒有遮蔽，帽子、防曬、水一定要帶','九降風季節逆風騎很累，可只騎一段'],
+   couple:'想看夕陽可以反過來從南往北騎，傍晚停在南寮。'}
+ ],
+ book:['新竹市區飯店（火車站周邊）','YouBike 會員或悠遊卡租借','查詢潮汐時間（中央氣象署）']},
+
+{id:'miaoli',c:'--r3',name:'苗栗舊山線・泰安溫泉・大湖草莓',short:'苗栗山城',tag:'勝興車站 → 住泰安溫泉 → 大湖採草莓',
+ desc:'第一天騎舊山線鐵道自行車看龍騰斷橋，晚上住溪谷溫泉；第二天下山到大湖採草莓。交通轉乘最多，但冬天最好玩。',
+ time:'火車約 1.5 小時＋公車',budget:'約 NT$4,000–6,500／人',stay:'泰安溫泉旅館',walk:'低',
+ rate:[5,5,5,4,3,2,2,2,3,3,4,5],
+ mnote:['草莓最大顆、溫泉旺季；假日 101B 容易塞車，提早一班出發。','泰安櫻花季＋草莓季；春節人潮最多，住宿最早訂。','草莓產量最高最適合採；溫泉季尾聲。','草莓季尾聲比較便宜；下旬舊山線油桐花開、有螢火蟲。','舊山線桐花最美（龍騰斷橋一帶）；草莓季結束，改逛大湖酒莊。','梅雨又悶熱，山區道路留意落石。','颱風季，泰安山區道路可能封閉；泡湯選室內湯屋。','同 7 月；草莓改吃大湖酒莊的草莓冰。','颱風尾聲，人少價格低，天氣仍熱。','秋涼，舊山線騎車舒服，溫泉旺季前的淡季。','草莓開季（量少但品質好）、溫泉季開始。','溫泉加草莓最熱門的月份，住宿越早訂越好。'],
+ days:[
+  {t:'三義舊山線・住泰安溫泉',
+   segs:[S('hcst','sy','train','約 1 小時 20 分','1.3h','台鐵區間車往南，竹南後走山線',railBetween('hcst','sy')),
+         S('sy','sx','bus','約 20 分鐘','20分','台灣好行舊山線，三義站發車',[[120.78,24.40]]),
+         S('sx','lt','bus','約 10 分鐘','10分','好行到龍騰斷橋；鐵道自行車在龍騰站出發',[[120.782,24.378]]),
+         S('lt','sy','bus','約 20 分鐘','20分','好行回三義站',[[120.77,24.39]]),
+         S('sy','ml','train','約 25 分鐘','25分','台鐵往北到苗栗站',railBetween('sy','ml')),
+         S('ml','xb','bus','約 45 分鐘','45分','高鐵快捷公車 101B，往雪霸管理處',[[120.84,24.53],[120.87,24.50]]),
+         S('xb','ta','bus','約 25 分鐘','25分','轉泰安好行接駁上溫泉區（末班約 17:30）',[[120.94,24.475]])],
+   tl:[['07:40','新竹站搭區間車往三義'],['09:10','三義站轉台灣好行舊山線'],['09:30','勝興車站：台鐵最高點、老街'],['10:30','龍騰站騎舊山線鐵道自行車，經龍騰斷橋（約 1.5 小時）'],['12:30','勝興客家菜午餐'],['14:00','回三義站，搭火車到苗栗'],['15:30','苗栗站搭 101B 往雪霸管理處'],['17:30','轉泰安好行到溫泉區，晚上泡湯']],
+   tips:['鐵道自行車要先上官網預約，假日常額滿','泰安好行末班約 17:30，錯過要叫計程車','持當日高鐵票根可免費搭 101B（從高鐵苗栗站上車）'],
+   couple:'溫泉旅館可以訂私人湯屋，兩個人泡最舒服。'},
+  {t:'泡湯・大湖採草莓・回新竹',
+   segs:[S('ta','xb','bus','約 25 分鐘','25分','泰安好行下山（09:15 班；11:15 班要當天 10:00 前電話預約）',[[120.94,24.475]]),
+         S('xb','dh','bus','約 15 分鐘','15分','公車往大湖（101B 或 5656）',[[120.885,24.46]]),
+         S('dh','ml','bus','約 40 分鐘','40分','新竹客運 5656 苗卓線，經獅潭、公館',[[120.87,24.47],[120.85,24.52],[120.835,24.55]]),
+         S('ml','hcst','train','約 45 分鐘','45分','台鐵往北回新竹',railBetween('ml','hcst'))],
+   tl:[['07:30','清晨泡湯、早餐'],['09:15','泰安好行下山'],['09:45','雪霸管理處轉公車到大湖'],['10:15','採草莓（11–4 月），或逛大湖酒莊'],['12:30','大湖午餐：草莓料理、客家菜'],['14:00','5656 苗卓線回苗栗站'],['15:00','台鐵回新竹']],
+   tips:['草莓園建議早上 10 點前到，果實較多','採草莓多以斤計價，先問好價格','非草莓季可改大湖酒莊、草莓文化館'],
+   couple:'泡完湯慢慢吃早餐，第二天的行程可以很悠閒。'}
+ ],
+ book:['泰安溫泉旅館（冬季、春節提早訂）','舊山線鐵道自行車（官網預約）','泰安好行 11:15 班電話預約（若要搭）']}
+];
+
+/* ---------- build segments ---------- */
+const SEG=[];
+ROUTES.forEach((r,ri)=>r.days.forEach((d,di)=>d.segs.forEach(s=>{
+  s.r=ri;s.d=di;s.id=SEG.length;
+  s.pts=[[PL[s.f].lo,PL[s.f].la],...s.mid,[PL[s.t].lo,PL[s.t].la]].map(p=>[X(p[0]),Y(p[1])]);
+  s.len=s.pts.slice(1).reduce((a,q,k)=>a+Math.hypot(q[0]-s.pts[k][0],q[1]-s.pts[k][1]),0);
+  SEG.push(s);})));
+ROUTES.forEach(r=>r.days.forEach(d=>{d.stops=[d.segs[0].f,...d.segs.map(s=>s.t)];}));
+
+/* ---------- base map ---------- */
+const P=pts=>pts.map(p=>X(p[0]).toFixed(1)+','+Y(p[1]).toFixed(1)).join(' ');
+const D=pts=>pts.map((p,i)=>(i?'L':'M')+X(p[0]).toFixed(1)+','+Y(p[1]).toFixed(1)).join(' ');
+el('rect',{x:-2000,y:-2000,width:5000,height:5000,fill:'var(--sea)'});
+const g=el('g',{class:'grid'});
+for(let lo=120.4;lo<=121.6;lo+=0.1){const x=X(lo);el('line',{x1:x,y1:-1000,x2:x,y2:2000},g);}
+for(let la=24.1;la<=25.1;la+=0.1){const y=Y(la);el('line',{x1:-1000,y1:y,x2:2000,y2:y},g);}
+const COAST=[[121.10,25.05],[121.05,24.94],[121.00,24.905],[120.955,24.878],[120.93,24.855],[120.918,24.835],[120.915,24.80],[120.905,24.775],[120.895,24.745],[120.875,24.715],[120.858,24.69],[120.83,24.65],[120.79,24.61],[120.75,24.56],[120.70,24.50],[120.67,24.45],[120.63,24.38],[120.60,24.32],[120.57,24.25]];
+el('polygon',{class:'land',points:P([...COAST,[121.7,24.25],[121.7,25.05]])});
+el('polygon',{class:'hill',points:P([[121.06,25.05],[121.7,25.05],[121.7,24.25],[120.78,24.25],[120.80,24.36],[120.86,24.45],[120.93,24.55],[120.99,24.63],[121.05,24.70],[121.09,24.78],[121.08,24.90]])});
+el('polygon',{class:'mtn',points:P([[121.16,25.05],[121.7,25.05],[121.7,24.25],[120.92,24.25],[120.95,24.38],[121.04,24.50],[121.12,24.60],[121.17,24.70],[121.19,24.85]])});
+[[[121.22,24.74],[121.15,24.76],[121.08,24.78],[121.02,24.81],[120.96,24.845],[120.935,24.862]],
+ [[121.06,24.56],[121.00,24.59],[120.97,24.63],[120.93,24.66],[120.89,24.69],[120.865,24.70]],
+ [[120.96,24.46],[120.90,24.50],[120.85,24.55],[120.80,24.60],[120.775,24.625]],
+ [[121.0,24.35],[120.90,24.34],[120.80,24.33],[120.70,24.31],[120.60,24.30]],
+ [[121.35,24.62],[121.30,24.66],[121.24,24.70],[121.20,24.71]]
+].forEach(r=>el('path',{class:'river',d:D(r)}));
+el('path',{class:'railctx',d:D(RAIL_S)});
+el('path',{class:'railctx',d:D([[121.009,24.839],[120.9715,24.8016]])});
+el('path',{class:'railctx',d:D(NW_LINE)});
+el('path',{class:'railctx',d:D([[120.878,24.686],[120.82,24.62],[120.76,24.56],[120.70,24.48]])});
+el('path',{class:'hsrctx',d:D([[121.06,24.86],[121.0405,24.8081],[120.95,24.71],[120.826,24.605],[120.76,24.48],[120.72,24.30]])});
+const scaled=[];const addS=(n,x,y,r)=>scaled.push({el:n,x,y,r:r||0});
+const lab=(t,lo,la,c,rot)=>{const gg=el('g',{class:'lbl'});const e=el('text',{class:c,'text-anchor':'middle'},gg);e.textContent=t;addS(gg,X(lo),Y(la),rot);};
+lab('新竹市',120.95,24.825,'region');lab('新竹縣',121.15,24.79,'region');lab('苗栗縣',120.92,24.55,'region');
+lab('雪山山脈',121.33,24.72,'region',-60);lab('台灣海峽',120.70,24.72,'sea-name');
+
+/* ---------- routes on map ---------- */
+const pathD=pts=>pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+const midOf=pts=>{let L=[0];for(let i=1;i<pts.length;i++)L.push(L[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));const h=L[L.length-1]/2;for(let i=1;i<pts.length;i++)if(L[i]>=h){const t=(h-L[i-1])/(L[i]-L[i-1]||1);return[pts[i-1][0]+(pts[i][0]-pts[i-1][0])*t,pts[i-1][1]+(pts[i][1]-pts[i-1][1])*t];}return pts[0];};
+const rLayer=el('g',{}),pLayer=el('g',{}),bLayer=el('g',{});
+SEG.forEach(s=>{
+  const c=`var(${ROUTES[s.r].c})`;
+  const sg=el('g',{class:'seg'},rLayer);const d=pathD(s.pts);
+  el('path',{d,class:'route '+s.mode,stroke:c},sg);
+  const hit=el('path',{d,class:'hit'},sg);
+  s.g=sg;s.midW=midOf(s.pts);
+  const bg=el('g',{class:'badge',style:`--bc:${c}`},bLayer);
+  const label=`${MS[s.mode]} ${s.short}`;
+  const w=[...label].reduce((a,ch)=>a+(/[　-鿿]/.test(ch)?10.5:6.3),0)+12;
+  el('rect',{x:-w/2,y:-9.5,width:w,height:19,rx:9.5},bg);
+  const t=el('text',{'text-anchor':'middle',y:3.8},bg);t.textContent=label;
+  addS(bg,s.midW[0],s.midW[1]);s.badge=bg;
+  [hit,bg].forEach(n=>bindHover(n,ev=>segTip(s,ev.clientX,ev.clientY),()=>hlSeg(s,true),()=>hlSeg(s,false)));
+});
+const OFF={r:[8,4,'start'],l:[-8,4,'end'],t:[0,-9,'middle'],b:[0,17,'middle']};
+const pinEls={};
+for(const id in PL){const p=PL[id];const pg=el('g',{class:'pin '+(p.m?'major':'minor')+(p.s?' stn':'')},pLayer);
+  el('circle',{r:p.m?5.5:4},pg);const [dx,dy,an]=OFF[p.lp];const t=el('text',{x:dx,y:dy,'text-anchor':an},pg);t.textContent=p.n;
+  addS(pg,X(p.lo),Y(p.la));pinEls[id]=pg;
+  bindHover(pg,ev=>placeTip(id,ev.clientX,ev.clientY),()=>pg.classList.add('hl'),()=>pg.classList.remove('hl'));}
+
+/* ---------- tooltip ---------- */
+let tipLock=false;
+function showTip(html,cx,cy){const r=chart.getBoundingClientRect();tip.innerHTML=html;tip.hidden=false;
+  let x=cx-r.left,y=cy-r.top;const tw=tip.offsetWidth,th=tip.offsetHeight;
+  x=Math.max(tw/2+6,Math.min(r.width-tw/2-6,x));
+  tip.style.transform=(y-th-20<0)?'translate(-50%,16px)':'translate(-50%,calc(-100% - 14px))';
+  tip.style.left=x+'px';tip.style.top=y+'px';}
+function hideTip(){tip.hidden=true;tipLock=false;}
+function segTip(s,cx,cy){const r=ROUTES[s.r];showTip(`<b><span class="k">${MODE[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}</b><div>${s.dur}</div><div class="m">${s.how}</div><div class="m">${r.short}・第 ${s.d+1} 天</div>`,cx,cy);}
+function placeTip(id,cx,cy){const p=PL[id];showTip(`<b>${p.n}</b><div class="m">${p.d}</div>`,cx,cy);}
+function worldToClient(wx,wy){const r=svg.getBoundingClientRect();return[r.left+(wx-view.x)/view.w*r.width,r.top+(wy-view.y)/view.h*r.height];}
+function bindHover(node,show,on,off){
+  node.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'||dragging)return;on();show(e);});
+  node.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||dragging||tipLock)return;show(e);});
+  node.addEventListener('pointerleave',e=>{if(e.pointerType!=='mouse')return;off();if(!tipLock)hideTip();});
+  node.addEventListener('click',e=>{if(moved)return;e.stopPropagation();on();show(e);tipLock=true;setTimeout(off,1500);});
+}
+function hlSeg(s,on){s.g.classList.toggle('hl',on);s.badge.classList.toggle('hl',on);document.querySelectorAll(`[data-s="${s.id}"]`).forEach(n=>n.classList.toggle('hl',on));}
+
+/* ---------- view ---------- */
+let view={x:0,y:0,w:W,h:H},anim=0;
+const scaleEl=document.getElementById('scale');
+function setView(v){
+  const w=Math.max(10,Math.min(1100,v.w)),h=w/AR;
+  const cx=Math.max(-150,Math.min(W+150,v.x+v.w/2)),cy=Math.max(-150,Math.min(H+150,v.y+v.h/2));
+  view={x:cx-w/2,y:cy-h/2,w,h};
+  svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`);
+  const s=view.w/W;
+  scaled.forEach(o=>o.el.setAttribute('transform',`translate(${o.x},${o.y}) scale(${s})${o.r?` rotate(${o.r})`:''}`));
+  svg.classList.toggle('far',view.w>300);
+  const r=svg.getBoundingClientRect();if(!r.width)return;
+  const ppu=r.width/view.w;SEG.forEach(q=>q.badge.classList.toggle('tiny',q.len*ppu<56));
+  const pxPerKm=ppu*K/101;const nice=[0.2,0.5,1,2,5,10,20,50].find(n=>n*pxPerKm>=60)||50;
+  scaleEl.firstChild.textContent=(nice<1?nice*1000+' m':nice+' km');scaleEl.lastChild.style.width=(nice*pxPerKm).toFixed(0)+'px';
+}
+function animateTo(t){cancelAnimationFrame(anim);if(reduce){setView(t);return;}
+  const f={...view},t0=performance.now(),Dur=750,ease=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+  const step=now=>{const p=Math.min(1,(now-t0)/Dur),e=ease(p);setView({x:f.x+(t.x-f.x)*e,y:f.y+(t.y-f.y)*e,w:f.w+(t.w-f.w)*e,h:f.h+(t.h-f.h)*e});if(p<1)anim=requestAnimationFrame(step);};
+  anim=requestAnimationFrame(step);}
+function fit(pts,minW){let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;pts.forEach(([x,y])=>{x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);});
+  const bw=x1-x0,bh=y1-y0;const w=Math.max(bw*1.4+16,(bh*1.4+16)*AR,minW||20);return{x:(x0+x1)/2-w/2,y:(y0+y1)/2-w/AR/2,w,h:w/AR};}
+function zoomAt(cx,cy,f){const r=svg.getBoundingClientRect();const wx=view.x+(cx-r.left)/r.width*view.w,wy=view.y+(cy-r.top)/r.height*view.h;
+  const w=Math.max(10,Math.min(1100,view.w/f)),h=w/AR;setView({x:wx-(cx-r.left)/r.width*w,y:wy-(cy-r.top)/r.height*h,w,h});}
+const ptrs=new Map();let dragging=false,moved=false,start=null,lastPinch=null;
+svg.addEventListener('pointerdown',e=>{cancelAnimationFrame(anim);ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=false;start={x:e.clientX,y:e.clientY};if(ptrs.size===2)lastPinch=null;});
+svg.addEventListener('pointermove',e=>{if(!ptrs.has(e.pointerId))return;const p=ptrs.get(e.pointerId);const r=svg.getBoundingClientRect();
+  if(ptrs.size===1){if(!dragging&&Math.hypot(e.clientX-start.x,e.clientY-start.y)>4){dragging=moved=true;svg.setPointerCapture(e.pointerId);svg.classList.add('grabbing');hideTip();}
+    if(dragging)setView({...view,x:view.x-(e.clientX-p.x)*view.w/r.width,y:view.y-(e.clientY-p.y)*view.h/r.height});}
+  ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(ptrs.size===2){moved=true;hideTip();const [a,b]=[...ptrs.values()];const d=Math.hypot(a.x-b.x,a.y-b.y),mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+    if(lastPinch){setView({...view,x:view.x-(mx-lastPinch.mx)*view.w/r.width,y:view.y-(my-lastPinch.my)*view.h/r.height});zoomAt(mx,my,d/lastPinch.d);}lastPinch={d,mx,my};}});
+const endPtr=e=>{ptrs.delete(e.pointerId);if(ptrs.size<2)lastPinch=null;if(!ptrs.size){dragging=false;svg.classList.remove('grabbing');}};
+['pointerup','pointercancel'].forEach(t=>svg.addEventListener(t,endPtr));
+svg.addEventListener('click',()=>{if(!moved)hideTip();});
+svg.addEventListener('wheel',e=>{e.preventDefault();cancelAnimationFrame(anim);hideTip();zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*0.0018));},{passive:false});
+const cz=f=>{const c={...view};const w=view.w/f;animateTo({x:c.x+c.w/2-w/2,y:c.y+c.h/2-w/AR/2,w,h:w/AR});};
+document.getElementById('zin').onclick=()=>cz(1.6);
+document.getElementById('zout').onclick=()=>cz(1/1.6);
+document.getElementById('zfit').onclick=()=>applyMap();
+
+/* ---------- state ---------- */
+const st={r:-1,d:-1,m:new Date().getMonth()+1};
+const RATE=['','','要留意','可以去','推薦','最推薦'];
+const side=document.getElementById('side'),months=document.getElementById('months'),legend=document.getElementById('legend'),pane=document.getElementById('pane');
+side.innerHTML='<div class="side-h">路線分頁</div>';
+const sbtn=(html,i,color)=>{const b=document.createElement('button');b.type='button';b.className='tab';b.innerHTML=(color?`<span class="sw" style="background:var(${color})"></span>`:'')+`<span>${html}</span>`;b.onclick=()=>go(i,-1);side.appendChild(b);return b;};
+const sideBtns=[sbtn('總覽<small>四條路線＋每月推薦</small>',-1),...ROUTES.map((r,i)=>sbtn(`${r.short}<small>${r.tag}</small>`,i,r.c))];
+
+function go(r,d,keepScroll){st.r=r;st.d=d;render();if(!keepScroll&&matchMedia('(max-width:880px)').matches)document.getElementById('months').scrollIntoView({behavior:reduce?'auto':'smooth'});}
+function setMonth(m){st.m=m;renderMonths();renderPane();}
+
+function renderMonths(){
+  const r=st.r>=0?ROUTES[st.r]:null;
+  months.style.cssText=r?`--c:var(${r.c})`:'';
+  let note;
+  if(r){const v=r.rate[st.m-1];note=`<div class="mnote"><span class="rate">${st.m} 月・${RATE[v]}</span><span>${r.mnote[st.m-1]}</span></div>`;}
+  else{const order=ROUTES.map((x,i)=>[x,i]).sort((a,b)=>b[0].rate[st.m-1]-a[0].rate[st.m-1]);
+    note=`<div class="mnote"><span class="rate">${st.m} 月推薦順序</span><ul>${order.map(([x])=>`<li><b style="color:var(${x.c})">${x.short}</b>（${RATE[x.rate[st.m-1]]}）：${x.mnote[st.m-1]}</li>`).join('')}</ul></div>`;}
+  months.innerHTML=`<div class="months-top"><b>出發月份</b><span>${r?'圓點越多，這條路線那個月越推薦':'選一個月，看四條路線哪條最適合'}</span></div>
+  <div class="mrow">${Array.from({length:12},(_,i)=>{const m=i+1;const v=r?r.rate[i]:Math.max(...ROUTES.map(x=>x.rate[i]));
+    return `<button class="mbtn" type="button" data-m="${m}" aria-pressed="${m===st.m}" aria-label="${m} 月"><span class="mn">${m}月</span><span class="dots">${[2,3,4,5].map(k=>`<i class="${v>=k?'f':''}"></i>`).join('')}</span></button>`;}).join('')}</div>${note}`;
+  months.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>setMonth(+b.dataset.m));
+}
+
+const KEY=`<div class="key"><span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/></svg>火車・公車</span><span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="var(--ink)" stroke-width="3" stroke-dasharray="7 5"/></svg>接駁・計程車</span><span><svg width="26" height="6"><line x1="2" y1="3" x2="25" y2="3" stroke="var(--ink)" stroke-width="3.5" stroke-dasharray="1 6" stroke-linecap="round"/></svg>步行・單車</span><span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="var(--rail)" stroke-width="1.6" stroke-dasharray="6 3"/></svg>鐵路</span></div>`;
+
+function applyMap(){
+  hideTip();
+  const act=s=>st.r>=0&&s.r===st.r&&(st.d<0||s.d===st.d);
+  svg.classList.toggle('dim',st.r>=0);
+  SEG.forEach(s=>{const on=act(s);s.g.classList.toggle('on',on);s.badge.classList.toggle('on',on);s.g.classList.remove('hl');s.badge.classList.remove('hl');if(on)rLayer.append(s.g);});
+  const stops=new Set();if(st.r>=0)ROUTES[st.r].days.forEach((d,i)=>{if(st.d<0||st.d===i)d.stops.forEach(x=>stops.add(x));});
+  for(const id in pinEls)pinEls[id].classList.toggle('on',stops.has(id));
+  const pts=st.r<0?SEG.flatMap(s=>s.pts):SEG.filter(act).flatMap(s=>s.pts);
+  animateTo(fit(pts,20));
+}
+function renderLegend(){
+  if(st.r<0){
+    legend.style.removeProperty('--c');
+    legend.innerHTML=`<div><h3>四條路線</h3><p class="sub">全部從新竹出發、當天可回。點一條看細節。</p></div>
+    <div class="rgrid" style="grid-template-columns:1fr">${ROUTES.map((r,i)=>`<button class="rcard" type="button" data-r="${i}" style="--c:var(${r.c})"><b>${r.name}</b><span>${r.tag}</span><span class="mini">${st.m} 月：${RATE[r.rate[st.m-1]]}</span></button>`).join('')}</div>`+KEY;
+    legend.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>go(+b.dataset.r,-1,true));
+    return;}
+  const r=ROUTES[st.r];legend.style.setProperty('--c',`var(${r.c})`);
+  let h=`<div><h3 style="color:var(${r.c})">${r.name}</h3><p class="sub">住：${r.stay}</p></div>
+  <div class="dayseg">${['全部','第 1 天','第 2 天'].map((t,i)=>`<button class="tab" type="button" data-d="${i-1}" aria-pressed="${st.d===i-1}">${t}</button>`).join('')}</div><ol class="iti">`;
+  r.days.forEach((d,di)=>{if(st.d>=0&&st.d!==di)return;
+    const stop=id=>`<li class="stop ${PL[id].m?'major':''}"><button type="button" data-p="${id}"><span class="dot"></span>${PL[id].n}</button></li>`;
+    h+=`<li class="dh">DAY ${di+1}・${d.t}</li>`+stop(d.segs[0].f);
+    d.segs.forEach(s=>{h+=`<li class="hop" tabindex="0" data-s="${s.id}"><span class="chip ${s.mode}">${MODE[s.mode]}</span><span>${s.dur}</span><small>${s.how}</small></li>`+stop(s.t);});});
+  legend.innerHTML=h+'</ol>'+KEY;
+  legend.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{st.d=+b.dataset.d;applyMap();renderLegend();});
+  legend.querySelectorAll('.hop').forEach(row=>{const s=SEG[+row.dataset.s];
+    const on=()=>{hlSeg(s,true);const [cx,cy]=worldToClient(...s.midW);const rc=chart.getBoundingClientRect();if(cx>rc.left&&cx<rc.right&&cy>rc.top&&cy<rc.bottom)segTip(s,cx,cy);};
+    const off=()=>{hlSeg(s,false);hideTip();};
+    row.addEventListener('mouseenter',on);row.addEventListener('mouseleave',off);row.addEventListener('focus',on);row.addEventListener('blur',off);
+    row.addEventListener('click',()=>{animateTo(fit(s.pts,14));setTimeout(on,reduce?0:800);});
+    row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();row.click();}});});
+  legend.querySelectorAll('[data-p]').forEach(b=>{const id=b.dataset.p,p=PL[id];
+    b.onmouseenter=()=>pinEls[id].classList.add('hl');b.onmouseleave=()=>pinEls[id].classList.remove('hl');
+    b.onclick=()=>{animateTo(fit([[X(p.lo),Y(p.la)]],14));setTimeout(()=>{const [cx,cy]=worldToClient(X(p.lo),Y(p.la));placeTip(id,cx,cy);tipLock=true;},reduce?0:800);};});
+}
+function renderPane(){
+  if(st.r<0){
+    const cell=(r,i)=>{const v=r.rate[i];const pct=[0,0,12,30,55,85][v];return `<td><button type="button" data-hr="${ROUTES.indexOf(r)}" data-hm="${i+1}" class="${i+1===st.m?'sel':''}" style="background:color-mix(in srgb,var(${r.c}) ${pct}%,var(--paper));color:${v>=5?'var(--paper)':'var(--ink)'}" aria-label="${r.short} ${i+1} 月 ${RATE[v]}">${'●'.repeat(v-1)}</button></td>`;};
+    pane.innerHTML=`<section class="card"><div class="sec-h" style="margin:0"><h2>全年月份表</h2><p>點格子，直接看那條路線那個月</p></div>
+      <div class="hm-wrap"><table class="hm"><thead><tr><th></th>${Array.from({length:12},(_,i)=>`<th>${i+1}月</th>`).join('')}</tr></thead>
+      <tbody>${ROUTES.map(r=>`<tr><th class="rn"><span class="sw" style="background:var(${r.c})"></span> ${r.short}</th>${r.rate.map((_,i)=>cell(r,i)).join('')}</tr>`).join('')}</tbody></table></div>
+      <div class="hm-key"><span><i style="background:color-mix(in srgb,var(--ink) 85%,var(--paper))"></i>●●●● 最推薦</span><span><i style="background:color-mix(in srgb,var(--ink) 55%,var(--paper))"></i>●●● 推薦</span><span><i style="background:color-mix(in srgb,var(--ink) 30%,var(--paper))"></i>●● 可以去</span><span><i style="background:color-mix(in srgb,var(--ink) 12%,var(--paper))"></i>● 要留意（颱風、酷暑或強風）</span></div></section>
+    <section><div class="sec-h"><h2>路線比較</h2></div><div class="rgrid">${ROUTES.map((r,i)=>`<button class="rcard" type="button" data-r="${i}" style="--c:var(${r.c})"><b>${r.name}</b><span>${r.desc}</span><span class="mini">交通：${r.time}</span><span class="mini">花費：${r.budget}</span><span class="mini">步行量：${r.walk}</span></button>`).join('')}</div></section>`;
+    pane.querySelectorAll('[data-hr]').forEach(b=>b.onclick=()=>{st.m=+b.dataset.hm;go(+b.dataset.hr,-1);document.getElementById('months').scrollIntoView({behavior:reduce?'auto':'smooth'});});
+    pane.querySelectorAll('.rcard[data-r]').forEach(b=>b.onclick=()=>{go(+b.dataset.r,-1);document.getElementById('months').scrollIntoView({behavior:reduce?'auto':'smooth'});});
+    return;}
+  const r=ROUTES[st.r];pane.style.setProperty('--c',`var(${r.c})`);
+  pane.innerHTML=`<div style="--c:var(${r.c});display:grid;gap:16px">
+  <div class="rhead"><div><h2>${r.name}</h2><p>${r.desc}</p></div></div>
+  <div class="stats"><div class="stat"><span>交通</span><b>${r.time}</b></div><div class="stat"><span>參考花費</span><b>${r.budget}</b></div><div class="stat"><span>住宿</span><b>${r.stay}</b></div><div class="stat"><span>步行量</span><b>${r.walk}</b></div><div class="stat"><span>${st.m} 月</span><b>${RATE[r.rate[st.m-1]]}</b></div></div>
+  <div class="pgrid">${r.days.map((d,di)=>`<article class="card"><span class="ctag">DAY ${di+1}</span><h3>${d.t}</h3>
+    <ul class="tl">${d.tl.map(([t,x])=>`<li><time>${t}</time><span>${x}</span></li>`).join('')}</ul>
+    <div class="hops">${d.segs.map(s=>`<span class="h" data-s="${s.id}" data-zs="${s.id}"><span class="chip ${s.mode}">${MODE[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}・${s.dur}</span>`).join('')}</div>
+    <h3 style="font-size:15px">注意事項</h3><ul class="warn">${d.tips.map(t=>`<li>${t}</li>`).join('')}</ul>
+    <div class="couple">${d.couple}</div>
+    <button class="tab" type="button" data-showd="${di}" style="justify-self:start">在地圖上看第 ${di+1} 天</button></article>`).join('')}</div>
+  <div class="pgrid">
+    <div class="card"><h3>${st.m} 月要注意</h3><p style="margin:0">${r.mnote[st.m-1]}</p></div>
+    <div class="card"><h3>出發前預訂</h3><ul>${r.book.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+  </div></div>`;
+  pane.querySelectorAll('[data-zs]').forEach(c=>{const s=SEG[+c.dataset.zs];c.onmouseenter=()=>hlSeg(s,true);c.onmouseleave=()=>hlSeg(s,false);c.onclick=()=>{animateTo(fit(s.pts,14));document.getElementById('map').scrollIntoView({behavior:reduce?'auto':'smooth'});};});
+  pane.querySelectorAll('[data-showd]').forEach(b=>b.onclick=()=>{st.d=+b.dataset.showd;applyMap();renderLegend();document.getElementById('map').scrollIntoView({behavior:reduce?'auto':'smooth'});});
+}
+function render(){
+  sideBtns.forEach((b,j)=>b.setAttribute('aria-pressed',String(j===st.r+1)));
+  document.getElementById('mapTitle').textContent=st.r<0?'路線地圖':ROUTES[st.r].short+'路線圖';
+  renderMonths();applyMap();renderLegend();renderPane();
+}
+setView({x:0,y:0,w:W,h:H});
+const hm=/^#(hakka|mtn|sea|miaoli)$/.exec(location.hash);
+st.r=hm?ROUTES.findIndex(r=>r.id===hm[1]):-1;
+render();
+new ResizeObserver(()=>setView(view)).observe(svg);
+})();
+</script>
+
+</body>
+</html>
