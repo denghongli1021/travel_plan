@@ -198,6 +198,20 @@ th{font-size:12px;color:var(--muted);font-weight:500}
 td.num{font-family:var(--f-mono);white-space:nowrap}
 footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:16px;margin-top:20px}
 @media (prefers-reduced-motion:reduce){.route,.day{transition:none}}
+
+.tip.lock{pointer-events:auto}
+.tip .ad{font-size:12px;opacity:.85;margin-top:4px;color:inherit}
+.tip .ml{margin-top:6px}
+.ml{display:inline-flex;gap:10px;flex-wrap:wrap;font-size:12px}
+.ml a{color:inherit;text-decoration:underline;text-underline-offset:2px;white-space:nowrap}
+.ml a:hover{color:var(--accent)}
+.stop{display:flex;align-items:center;justify-content:space-between;gap:4px 10px;flex-wrap:wrap}
+.stop .ml{font-size:11px;color:var(--muted)}
+.pd summary{cursor:pointer;font-weight:700;font-size:14px;color:var(--c,var(--ink))}
+.pd[open] summary{margin-bottom:8px}
+.plist{list-style:none!important;padding:0!important;margin:0;display:grid;gap:10px}
+.plist li{display:grid;gap:1px;font-size:13px}
+.plist .ad,.ad{color:var(--muted);font-size:12px}
 </style>
 
 </head>
@@ -476,6 +490,13 @@ for(const id in PL){const p=PL[id];const pg=el('g',{class:'pin '+(p.m?'major':'m
 }
 pLayer.after(bLayer);
 
+const ADDR={"airport": {"pid": "ChIJ3yW9O2GXqTMRwTKES0Vh0Is", "q": "Mactan-Cebu International Airport", "a": "Lapu-Lapu Airport Rd, Lapu-Lapu, 6016 Cebu, Philippines", "lat": 10.31362, "lon": 123.98336}, "resort": {"q": "Mactan Island resort", "a": "依實際預訂的度假村為準"}, "sutukil": {"q": "Sutukil Mactan Lapu-Lapu"}, "hil": {"pid": "ChIJiTTaHzqPqTMR3h4IOZ5r_LE", "q": "Gilutongan Marine Sanctuary", "a": "Cordova, Cebu, Philippines", "lat": 10.20883, "lon": 123.98594}, "nal": {"pid": "ChIJc351EfWaqTMREUVrt-BEk9s", "q": "Nalusuan Island Resort and Marine Sanctuary", "a": "Olango Reef, Cordova, 6017 Cebu, Philippines", "lat": 10.19074, "lon": 124.00036}, "city": {"pid": "ChIJp45-1uObqTMRKiyk55UEjGY", "q": "Basilica Minore del Sto. Niño de Cebu", "a": "Pilgrim’s Center, Osmeña Blvd, Cebu City, 6000 Cebu, Philippines", "lat": 10.29411, "lon": 123.90211}, "port": {"pid": "ChIJ2TImteCbqTMRtRck6dNcgEM", "q": "Cebu Pier 1", "a": "Cebu City, 6000 Cebu, Philippines", "lat": 10.29232, "lon": 123.90899}, "sm": {"pid": "ChIJI4dr1eOdqTMRVEQyfXaBtoY", "q": "SM Seaside City Cebu", "a": "Cebu South Coastal Rd, Antuwanga, Cebu City, 6000 Cebu, Philippines", "lat": 10.28185, "lon": 123.88158}, "oslob": {"pid": "ChIJBwm4UkR0qzMR1yMRjqgTPUQ", "q": "Oslob Whale Shark Watching", "a": "Natalio Bacalso Avenue, Oslob, 6023 Cebu, Philippines", "lat": 9.46336, "lon": 123.37973}, "tumalog": {"pid": "ChIJg2E9ZfN1qzMR1N-Xe5V3dzo", "q": "Tumalog Falls", "a": "Natalio Bacalso Avenue, Oslob, Cebu, Philippines", "lat": 9.48601, "lon": 123.36963}, "kawasan": {"pid": "ChIJzaFdmHHAqzMRzyRjfu-ZeDU", "q": "Kawasan Falls", "a": "Badian, Cebu, Philippines", "lat": 9.8035, "lon": 123.37433}, "moalboal": {"pid": "ChIJjdOKTMLoqzMR8s8ab7MnfKs", "q": "Panagsama Beach", "a": "Panagsama Beach, Basdiot, Moalboal, Cebu, Philippines", "lat": 9.94642, "lon": 123.36855}, "pescador": {"pid": "ChIJG-cmH8zuqzMRguQH6Do5VIc", "q": "Pescador Island", "a": "Pescador Island, Moalboal, Cebu, Philippines", "lat": 9.92311, "lon": 123.34353}, "tag": {"pid": "ChIJ92fssaxNqjMRzuO0NW5s10U", "q": "Tagbilaran City Tourist Port", "a": "Tagbilaran Wharf Road, Tagbilaran City, Bohol, Philippines", "lat": 9.64888, "lon": 123.84676}, "blood": {"pid": "ChIJTS6i9t1NqjMRd2Zq2VhChxw", "q": "Blood Compact Shrine", "a": "J.P EK Inting St, Tagbilaran City, 6300 Bohol, Philippines", "lat": 9.62732, "lon": 123.87877}, "bac": {"pid": "ChIJw_CRaj9OqjMRSbQIIGXN6uI", "q": "Baclayon Church", "a": "Baclayon, Bohol, Philippines", "lat": 9.62262, "lon": 123.91222}, "loboc": {"pid": "ChIJmx0VqFBEqjMR-6rgBqOEo4A", "q": "Loboc River Cruise", "a": "Loboc, Bohol, Philippines", "lat": 9.6348, "lon": 124.02983}, "tarsier": {"pid": "ChIJORwIIvxDqjMREtkvm-C7978", "q": "Bohol Tarsier Conservation Area", "a": "Villa Aurora, Bilar, 6317 Bohol, Philippines", "lat": 9.67621, "lon": 124.09121}, "forest": {"pid": "ChIJV3MW-lhBqjMRYdXbTWLZk-8", "q": "Bilar Man-Made Forest", "a": "Loay Interior Road, Bilar, Bohol, Philippines", "lat": 9.66721, "lon": 124.08452}, "choco": {"pid": "ChIJ7bQymfgWqjMRsIML34Cnk_g", "q": "Chocolate Hills Complex", "a": "Loay Interior Road, Carmen, Bohol, Philippines", "lat": 9.79864, "lon": 124.16746}, "alona": {"pid": "ChIJp3TlMp-sqzMR4VhodDXL50g", "q": "Alona Beach", "a": "Alona Beach, Panglao, Bohol, Philippines", "lat": 9.54855, "lon": 123.77403}, "dolphin": {"q": "Panglao dolphin watching"}, "bal": {"pid": "ChIJNc3x1QqpqzMRc2ZmceWAGIo", "q": "Balicasag Island", "a": "Balicasag Island, Panglao, Bohol, Philippines", "lat": 9.51611, "lon": 123.6833}};
+const enc=encodeURIComponent;
+function mapUrls(id){const p=PL[id],a=ADDR[id]||{};const q=a.q||p.n;
+  const g='https://www.google.com/maps/search/?api=1&query='+enc(q)+(a.pid?'&query_place_id='+a.pid:'');
+  const ap='https://maps.apple.com/?q='+enc(q)+'&ll='+(a.lat||p.la)+','+(a.lon||p.lo);return{g,ap,addr:a.a||''};}
+function mlinks(id){const u=mapUrls(id);return `<span class="ml"><a href="${u.g}" target="_blank" rel="noopener">Google 地圖</a><a href="${u.ap}" target="_blank" rel="noopener">Apple 地圖</a></span>`;}
+const PLACE_LIST=ids=>`<details class="pd"><summary>地點・地址・導航</summary><ul class="plist">${[...new Set(ids)].map(id=>{const u=mapUrls(id);return `<li><b>${PL[id].n}</b>${u.addr?`<span class="ad">${u.addr}</span>`:''}${mlinks(id)}</li>`;}).join('')}</ul></details>`;
 /* ---------- tooltip ---------- */
 let tipLock=false;
 function showTip(html,cx,cy){const r=chart.getBoundingClientRect();tip.innerHTML=html;tip.hidden=false;
@@ -483,15 +504,15 @@ function showTip(html,cx,cy){const r=chart.getBoundingClientRect();tip.innerHTML
   x=Math.max(tw/2+6,Math.min(r.width-tw/2-6,x));
   tip.style.transform=(y-th-20<0)?'translate(-50%,16px)':'translate(-50%,calc(-100% - 14px))';
   tip.style.left=x+'px';tip.style.top=y+'px';}
-function hideTip(){tip.hidden=true;tipLock=false;}
+function hideTip(){tip.hidden=true;tipLock=false;tip.classList.remove('lock');}
 function segTip(s,cx,cy){showTip(`<b><span class="k">${MODEL[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}</b><div>${s.dur}・${s.dist}</div><div class="m">${s.how}　｜　Day ${s.day+1}</div>`,cx,cy);}
-function placeTip(id,cx,cy){const p=PL[id];showTip(`<b>${p.n}</b><div class="m">${p.d}</div>`,cx,cy);}
+function placeTip(id,cx,cy){const p=PL[id],u=mapUrls(id);showTip(`<b>${p.n}</b><div class="m">${p.d}</div>${u.addr?`<div class="ad">${u.addr}</div>`:''}${mlinks(id)}`,cx,cy);}
 function worldToClient(wx,wy){const r=svg.getBoundingClientRect();return[r.left+(wx-view.x)/view.w*r.width,r.top+(wy-view.y)/view.h*r.height];}
 function bindHover(node,show,on,off){
   node.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'||dragging)return;on();show(e);});
   node.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||dragging||tipLock)return;show(e);});
   node.addEventListener('pointerleave',e=>{if(e.pointerType!=='mouse')return;off();if(!tipLock)hideTip();});
-  node.addEventListener('click',e=>{if(moved)return;e.stopPropagation();on();show(e);tipLock=true;setTimeout(off,1500);});
+  node.addEventListener('click',e=>{if(moved)return;e.stopPropagation();on();show(e);tipLock=true;tip.classList.add('lock');setTimeout(off,1500);});
 }
 function hlSeg(s,on){s.g.classList.toggle('hl',on);s.badge.classList.toggle('hl',on);const row=document.querySelector(`.hop[data-s="${s.id}"]`);if(row)row.classList.toggle('hl',on);}
 
@@ -569,7 +590,7 @@ function show(i,refit){
   }else{
     const d=DAYS[i];legend.style.setProperty('--c',`var(${d.c})`);
     let h=`<div><h3 style="color:var(${d.c})">Day ${i+1}・${d.d}（${d.wk}）</h3><p class="sub">${d.t}　｜　住：${d.stay}</p></div><ol class="iti">`;
-    const stop=id=>`<li class="stop ${PL[id].m?'major':''}"><button type="button" data-p="${id}"><span class="dot"></span>${PL[id].n}</button></li>`;
+    const stop=id=>`<li class="stop ${PL[id].m?'major':''}"><button type="button" data-p="${id}"><span class="dot"></span>${PL[id].n}</button>${mlinks(id)}</li>`;
     h+=stop(d.segs[0].f);
     d.segs.forEach(s=>{h+=`<li class="hop" tabindex="0" data-s="${s.id}"><span class="chip ${s.mode}">${MODEL[s.mode]}</span><span>${s.dur}・${s.dist}</span><small>${s.how}</small></li>`+stop(s.t);});
     legend.innerHTML=h+'</ol>'+KEY;
@@ -582,7 +603,7 @@ function show(i,refit){
     });
     legend.querySelectorAll('[data-p]').forEach(b=>{const id=b.dataset.p,p=PL[id];
       b.onmouseenter=()=>pinEls[id].classList.add('hl');b.onmouseleave=()=>pinEls[id].classList.remove('hl');
-      b.onclick=()=>{stopTour();animateTo(fit([[X(p.lo),Y(p.la)]],45));setTimeout(()=>{const [cx,cy]=worldToClient(X(p.lo),Y(p.la));placeTip(id,cx,cy);tipLock=true;},reduce?0:800);};
+      b.onclick=()=>{stopTour();animateTo(fit([[X(p.lo),Y(p.la)]],45));setTimeout(()=>{const [cx,cy]=worldToClient(X(p.lo),Y(p.la));placeTip(id,cx,cy);tipLock=true;tip.classList.add('lock');},reduce?0:800);};
     });
   }
 }
@@ -602,7 +623,7 @@ function renderPane(i){
     <div class="pcol">
       <div class="card"><h3>時間表</h3><ul class="tl">${d.tl.map(([t,x])=>`<li><time>${t}</time><span>${x}</span></li>`).join('')}</ul></div>
       <div class="card"><h3>當天交通</h3><div class="hops">${d.segs.map(s=>`<span data-hs="${s.id}"><span class="chip ${s.mode}">${MODE[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}・${s.dur}</span>`).join('')}</div></div>
-      <div class="card"><h3>景點介紹</h3><ul>${[...new Set(d.stops)].map(id=>`<li><b>${PL[id].n}：</b>${PL[id].d}</li>`).join('')}</ul></div>
+      <div class="card"><h3>景點介紹</h3><ul>${[...new Set(d.stops)].map(id=>{const u=mapUrls(id);return `<li><b>${PL[id].n}：</b>${PL[id].d}${u.addr?`<br><span class="ad">${u.addr}</span>`:''}<br>${mlinks(id)}</li>`;}).join('')}</ul></div>
     </div>
     <div class="pcol">
       ${d.note?`<div class="note">${d.note}</div>`:''}

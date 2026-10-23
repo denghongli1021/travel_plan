@@ -175,6 +175,20 @@ svg#svg *{vector-effect:non-scaling-stroke}
 #pane{display:grid;gap:22px}
 footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:16px}
 @media (prefers-reduced-motion:reduce){.route{transition:none}}
+
+.tip.lock{pointer-events:auto}
+.tip .ad{font-size:12px;opacity:.85;margin-top:4px;color:inherit}
+.tip .ml{margin-top:6px}
+.ml{display:inline-flex;gap:10px;flex-wrap:wrap;font-size:12px}
+.ml a{color:inherit;text-decoration:underline;text-underline-offset:2px;white-space:nowrap}
+.ml a:hover{color:var(--accent)}
+.stop{display:flex;align-items:center;justify-content:space-between;gap:4px 10px;flex-wrap:wrap}
+.stop .ml{font-size:11px;color:var(--muted)}
+.pd summary{cursor:pointer;font-weight:700;font-size:14px;color:var(--c,var(--ink))}
+.pd[open] summary{margin-bottom:8px}
+.plist{list-style:none!important;padding:0!important;margin:0;display:grid;gap:10px}
+.plist li{display:grid;gap:1px;font-size:13px}
+.plist .ad,.ad{color:var(--muted);font-size:12px}
 </style>
 </head>
 <body>
@@ -385,6 +399,13 @@ for(const id in PL){const p=PL[id];const pg=el('g',{class:'pin '+(p.m?'major':'m
   addS(pg,X(p.lo),Y(p.la));pinEls[id]=pg;
   bindHover(pg,ev=>placeTip(id,ev.clientX,ev.clientY),()=>pg.classList.add('hl'),()=>pg.classList.remove('hl'));}
 
+const ADDR={"nhsr": {"pid": "ChIJcZS36Kk3aDQRUH1UctWAeuc", "q": "高鐵新竹站", "a": "Zhubei City, Hsinchu County, Taiwan 302", "lat": 24.80714, "lon": 121.04048}, "ntr": {"pid": "ChIJgaS1FD41aDQRmSVNYTMKmeY", "q": "Hsinchu Train Station", "a": "No. 445, Section 2, Zhonghua Rd, East District, Hsinchu City, Taiwan 300", "lat": 24.80164, "lon": 120.9717}, "thsr": {"pid": "ChIJb37YoaE-aTQR6G0CkRYKeRo", "q": "高鐵台中站", "a": "Wuri District, Taichung City, Taiwan 414", "lat": 24.11098, "lon": 120.61568}, "tcs": {"pid": "ChIJPz37OBQ9aTQRtgYZL9DrtLc", "q": "台中車站", "a": "No. 1, Section 1, Taiwan Blvd, Central District, Taichung City, Taiwan 400", "lat": 24.13729, "lon": 120.68693}, "gy": {"pid": "ChIJ-bIJXaeQbjQRBlsPVLME9EY", "q": "宮原眼科", "a": "No. 20, Zhongshan Rd, Central District, Taichung City, Taiwan 400", "lat": 24.13783, "lon": 120.68356}, "park": {"pid": "ChIJd4ZLdms9aTQRNvhSHJDrebA", "q": "台中公園湖心亭", "a": "Section 2, Ziyou Rd, North District, Taichung City, Taiwan 404", "lat": 24.14367, "lon": 120.6842}, "mk2": {"pid": "ChIJFcuTyhI9aTQRVG2bVY9qD70", "q": "台中第二市場", "a": "No. 87, Section 2, Sanmin Rd, Central District, Taichung City, Taiwan 400", "lat": 24.14242, "lon": 120.67876}, "sj": {"pid": "ChIJ-6EWw6E9aTQR3zvU6TYesbg", "q": "審計新村", "a": "臺中市西區昇平里審計新村", "lat": 24.14461, "lon": 120.66284}, "cmw": {"pid": "ChIJEQD-2Z09aTQRZnVyOL2OnW8", "q": "勤美誠品綠園道", "a": "No. 68, Gongyi Rd, West District, Taichung City, Taiwan 403", "lat": 24.1513, "lon": 120.664}, "opera": {"pid": "ChIJcaKjTOw9aTQR4mAeJzejtdg", "q": "臺中國家歌劇院", "a": "No. 101, Section 2, Huilai Rd, Xitun District, Taichung City, Taiwan 407025", "lat": 24.16265, "lon": 120.6403}, "fj": {"pid": "ChIJK4W2WSIWaTQROebP2ugIGg8", "q": "逢甲夜市", "a": "Wenhua Rd, Xitun District, Taichung City, Taiwan 407", "lat": 24.17617, "lon": 120.64563}, "th": {"pid": "ChIJp6dwUB4-aTQRTQhFCHoWYqQ", "q": "東海大學路思義教堂", "a": "台灣大道四段 1727 號（東海大學）, Xitun District, Taichung City, Taiwan 407", "lat": 24.1789, "lon": 120.60055}, "qs": {"pid": "ChIJo6jhEIYUaTQR73dsUvuAfvY", "q": "清水車站", "a": "Qingshui District, Taichung City, Taiwan 436", "lat": 24.26362, "lon": 120.56918}, "gm": {"pid": "ChIJvT5yFSYTaTQRdlamuLSItpM", "q": "高美濕地", "a": "Qingshui District, Taichung City, Taiwan", "lat": 24.31328, "lon": 120.54518}, "zh": {"pid": "ChIJH3GYEJo4aTQR0MidCJ9ycko", "q": "彰化車站", "a": "彰化縣彰化市三民路 1 號", "lat": 24.08162, "lon": 120.53838}, "fan": {"pid": "ChIJf792IgA5aTQRZ85ctqVraBE", "q": "彰化扇形車庫", "a": "No. 1, Section 1, Zhangmei Rd, Changhua City, Changhua County, Taiwan 500", "lat": 24.08595, "lon": 120.54017}, "lg": {"pid": "ChIJGf3abONFaTQRdcF8WzFbEhM", "q": "鹿港天后宮", "a": "No. 430, Zhongshan Rd, Lukang Township, Changhua County, Taiwan 505", "lat": 24.05931, "lon": 120.43144}, "smt": {"pid": "ChIJu123aQ7WaDQRmiZQuTKv0IU", "q": "日月潭水社碼頭", "a": "No. 11, Mingsheng St, Yuchi Township, Nantou County, Taiwan 555", "lat": 23.86453, "lon": 120.91177}, "xg": {"pid": "ChIJGdgGneHVaDQRXUW5X6DUDbY", "q": "玄光寺", "a": "No. 388, Zhongzheng Rd, Yuchi Township, Nantou County, Taiwan 555", "lat": 23.8521, "lon": 120.9136}, "ita": {"pid": "ChIJeZCOJdjVaDQRGNYPuf8Ka-g", "q": "伊達邵碼頭", "a": "Yuchi Township, Nantou County, Taiwan 555", "lat": 23.84974, "lon": 120.92967}, "xs": {"pid": "ChIJK0mpEA7WaDQRmEyDE50nThc", "q": "向山遊客中心", "a": "No. 599, Zhongshan Rd, Yuchi Township, Nantou County, Taiwan 555", "lat": 23.85203, "lon": 120.90225}};
+const enc=encodeURIComponent;
+function mapUrls(id){const p=PL[id],a=ADDR[id]||{};const q=a.q||p.n;
+  const g='https://www.google.com/maps/search/?api=1&query='+enc(q)+(a.pid?'&query_place_id='+a.pid:'');
+  const ap='https://maps.apple.com/?q='+enc(q)+'&ll='+(a.lat||p.la)+','+(a.lon||p.lo);return{g,ap,addr:a.a||''};}
+function mlinks(id){const u=mapUrls(id);return `<span class="ml"><a href="${u.g}" target="_blank" rel="noopener">Google 地圖</a><a href="${u.ap}" target="_blank" rel="noopener">Apple 地圖</a></span>`;}
+const PLACE_LIST=ids=>`<details class="pd"><summary>地點・地址・導航</summary><ul class="plist">${[...new Set(ids)].map(id=>{const u=mapUrls(id);return `<li><b>${PL[id].n}</b>${u.addr?`<span class="ad">${u.addr}</span>`:''}${mlinks(id)}</li>`;}).join('')}</ul></details>`;
 /* tooltip */
 let tipLock=false;
 function showTip(html,cx,cy){const r=chart.getBoundingClientRect();tip.innerHTML=html;tip.hidden=false;
@@ -392,15 +413,15 @@ function showTip(html,cx,cy){const r=chart.getBoundingClientRect();tip.innerHTML
   x=Math.max(tw/2+6,Math.min(r.width-tw/2-6,x));
   tip.style.transform=(y-th-20<0)?'translate(-50%,16px)':'translate(-50%,calc(-100% - 14px))';
   tip.style.left=x+'px';tip.style.top=y+'px';}
-function hideTip(){tip.hidden=true;tipLock=false;}
+function hideTip(){tip.hidden=true;tipLock=false;tip.classList.remove('lock');}
 function segTip(s,cx,cy){const r=ROUTES[s.r];showTip(`<b><span class="k">${MODE[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}</b><div>${s.dur}</div><div class="m">${s.how}</div><div class="m">${r.short}・${r.days[s.d].label||('第 '+(s.d+1)+' 天')}</div>`,cx,cy);}
-function placeTip(id,cx,cy){const p=PL[id];showTip(`<b>${p.n}</b><div class="m">${p.d}</div>`,cx,cy);}
+function placeTip(id,cx,cy){const p=PL[id],u=mapUrls(id);showTip(`<b>${p.n}</b><div class="m">${p.d}</div>${u.addr?`<div class="ad">${u.addr}</div>`:''}${mlinks(id)}`,cx,cy);}
 function worldToClient(wx,wy){const r=svg.getBoundingClientRect();return[r.left+(wx-view.x)/view.w*r.width,r.top+(wy-view.y)/view.h*r.height];}
 function bindHover(node,show,on,off){
   node.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'||dragging)return;on();show(e);});
   node.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||dragging||tipLock)return;show(e);});
   node.addEventListener('pointerleave',e=>{if(e.pointerType!=='mouse')return;off();if(!tipLock)hideTip();});
-  node.addEventListener('click',e=>{if(moved)return;e.stopPropagation();on();show(e);tipLock=true;setTimeout(off,1500);});
+  node.addEventListener('click',e=>{if(moved)return;e.stopPropagation();on();show(e);tipLock=true;tip.classList.add('lock');setTimeout(off,1500);});
 }
 function hlSeg(s,on){s.g.classList.toggle('hl',on);s.badge.classList.toggle('hl',on);document.querySelectorAll(`[data-s="${s.id}"]`).forEach(n=>n.classList.toggle('hl',on));}
 
@@ -477,7 +498,7 @@ function renderLegend(){
   let h=`<div><h3 style="color:var(${r.c})">${r.name}</h3><p class="sub">${r.sub||''}</p></div>
   <div class="dayseg">${['全部',...r.days.map((d,i)=>d.label||('第 '+(i+1)+' 天'))].map((t,i)=>`<button class="tab" type="button" data-d="${i-1}" aria-pressed="${st.d===i-1}">${t}</button>`).join('')}</div><ol class="iti">`;
   r.days.forEach((d,di)=>{if(st.d>=0&&st.d!==di)return;
-    const stop=id=>`<li class="stop ${PL[id].m?'major':''}"><button type="button" data-p="${id}"><span class="dot"></span>${PL[id].n}</button></li>`;
+    const stop=id=>`<li class="stop ${PL[id].m?'major':''}"><button type="button" data-p="${id}"><span class="dot"></span>${PL[id].n}</button>${mlinks(id)}</li>`;
     h+=`<li class="dh">${d.label?d.label.toUpperCase():'DAY '+(di+1)}・${d.t}</li>`+stop(d.segs[0].f);
     d.segs.forEach(s=>{h+=`<li class="hop" tabindex="0" data-s="${s.id}"><span class="chip ${s.mode}">${MODE[s.mode]}</span><span>${s.dur}</span><small>${s.how}</small></li>`+stop(s.t);});});
   legend.innerHTML=h+'</ol>'+KEY;
@@ -490,7 +511,7 @@ function renderLegend(){
     row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();row.click();}});});
   legend.querySelectorAll('[data-p]').forEach(b=>{const id=b.dataset.p,p=PL[id];
     b.onmouseenter=()=>pinEls[id].classList.add('hl');b.onmouseleave=()=>pinEls[id].classList.remove('hl');
-    b.onclick=()=>{animateTo(fit([[X(p.lo),Y(p.la)]],10));setTimeout(()=>{const [cx,cy]=worldToClient(X(p.lo),Y(p.la));placeTip(id,cx,cy);tipLock=true;},reduce?0:850);};});
+    b.onclick=()=>{animateTo(fit([[X(p.lo),Y(p.la)]],10));setTimeout(()=>{const [cx,cy]=worldToClient(X(p.lo),Y(p.la));placeTip(id,cx,cy);tipLock=true;tip.classList.add('lock');},reduce?0:850);};});
 }
 const list=(items,cls)=>`<ul${cls?` class="${cls}"`:''}>${items.map(t=>`<li>${t}</li>`).join('')}</ul>`;
 function renderPane(){
@@ -506,6 +527,7 @@ function renderPane(){
   <div class="pgrid">${r.days.map((d,di)=>`<article class="card"><span class="ctag">${d.label?d.label.toUpperCase():'DAY '+(di+1)}${d.date?'・'+d.date:''}</span><h3>${d.t}</h3>
     <ul class="tl">${d.tl.map(([t,x])=>`<li><time>${t}</time><span>${x}</span></li>`).join('')}</ul>
     <div class="hops">${d.segs.map(s=>`<span class="h" data-s="${s.id}" data-zs="${s.id}"><span class="chip ${s.mode}">${MODE[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}・${s.dur}</span>`).join('')}</div>
+    ${PLACE_LIST(d.stops)}
     <h3 style="font-size:15px">注意事項</h3>${list(d.tips,'warn')}
     ${d.couple?`<div class="couple">${d.couple}</div>`:''}
     <button class="tab" type="button" data-showd="${di}" style="justify-self:start">在地圖上看這一天</button></article>`).join('')}</div>

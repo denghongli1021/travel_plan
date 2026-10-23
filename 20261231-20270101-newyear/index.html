@@ -175,6 +175,20 @@ svg#svg *{vector-effect:non-scaling-stroke}
 #pane{display:grid;gap:22px}
 footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:16px}
 @media (prefers-reduced-motion:reduce){.route{transition:none}}
+
+.tip.lock{pointer-events:auto}
+.tip .ad{font-size:12px;opacity:.85;margin-top:4px;color:inherit}
+.tip .ml{margin-top:6px}
+.ml{display:inline-flex;gap:10px;flex-wrap:wrap;font-size:12px}
+.ml a{color:inherit;text-decoration:underline;text-underline-offset:2px;white-space:nowrap}
+.ml a:hover{color:var(--accent)}
+.stop{display:flex;align-items:center;justify-content:space-between;gap:4px 10px;flex-wrap:wrap}
+.stop .ml{font-size:11px;color:var(--muted)}
+.pd summary{cursor:pointer;font-weight:700;font-size:14px;color:var(--c,var(--ink))}
+.pd[open] summary{margin-bottom:8px}
+.plist{list-style:none!important;padding:0!important;margin:0;display:grid;gap:10px}
+.plist li{display:grid;gap:1px;font-size:13px}
+.plist .ad,.ad{color:var(--muted);font-size:12px}
 </style>
 </head>
 <body>
@@ -383,6 +397,13 @@ for(const id in PL){const p=PL[id];const pg=el('g',{class:'pin '+(p.m?'major':'m
   addS(pg,X(p.lo),Y(p.la));pinEls[id]=pg;
   bindHover(pg,ev=>placeTip(id,ev.clientX,ev.clientY),()=>pg.classList.add('hl'),()=>pg.classList.remove('hl'));}
 
+const ADDR={"hsr": {"pid": "ChIJcZS36Kk3aDQRUH1UctWAeuc", "q": "高鐵新竹站", "a": "Zhubei City, Hsinchu County, Taiwan 302", "lat": 24.80714, "lon": 121.04048}, "tpe": {"pid": "ChIJlWImqHKpQjQREk5-6lec4-w", "q": "台北車站", "a": "No. 8, Zhengzhou Rd, Zhongzheng District, Taipei City, Taiwan 100", "lat": 25.04882, "lon": 121.51375}, "dh": {"pid": "ChIJFVOnlROpQjQR_uVIl2iafuU", "q": "永樂市場", "a": "No. 21, Section 1, Dihua St, Datong District, Taipei City, Taiwan 103（永樂市場）", "lat": 25.05484, "lon": 121.51022}, "dock": {"pid": "ChIJIWBDRhGpQjQRvziv5q6gr20", "q": "大稻埕碼頭貨櫃市集", "a": "五號水門, Minsheng W Rd, Datong District, Taipei City, Taiwan 103", "lat": 25.05651, "lon": 121.50752}, "xs": {"pid": "ChIJI1oAUBmrQjQR9nmyvzkOe5A", "q": "象山步道", "a": "Sanli Village, Xinyi District, Taipei City, Taiwan 110", "lat": 25.02738, "lon": 121.57096}, "t101": {"pid": "ChIJraeA2rarQjQRPBBjyR3RxKw", "q": "台北101", "a": "No. 45, City Hall Rd, Xinyi District, Taipei City, Taiwan 110", "lat": 25.03412, "lon": 121.56402}, "ch": {"pid": "ChIJ-dJnWbmrQjQRFpnfhQbM9nA", "q": "捷運市政府站", "a": "No. 2, Section 5, Zhongxiao E Rd, Xinyi District, Taipei City, Taiwan 110", "lat": 25.04124, "lon": 121.56656}, "xbt": {"pid": "ChIJ6fE69FCuQjQRPAp8aSmP8a0", "q": "北投溫泉博物館", "a": "No. 2, Zhongshan Rd, Beitou District, Taipei City, Taiwan 112", "lat": 25.13657, "lon": 121.50715}, "zy": {"pid": "ChIJVXhMJCsFbjQR9-DVjEq6Ah0", "q": "高鐵左營站", "a": "No. 105, Gaotie Rd, Zuoying District, Kaohsiung City, Taiwan 813", "lat": 22.68731, "lon": 120.30736}, "yc": {"pid": "ChIJz2CQF3cEbjQRsaYILt1u1r4", "q": "捷運鹽埕埔站", "a": "No. 70, Fuye Rd, Yancheng District, Kaohsiung City, Taiwan 803", "lat": 22.6235, "lon": 120.28378}, "p2": {"pid": "ChIJW8ThIHYEbjQR8k12HL3R1uY", "q": "駁二藝術特區", "a": "No. 1, Dayong Rd, Yancheng District, Kaohsiung City, Taiwan 803", "lat": 22.61998, "lon": 120.28153}, "xzw": {"pid": "ChIJK14oxggEbjQR7C0EK_wuKQM", "q": "西子灣", "a": "Gushan District, Kaohsiung City, Taiwan 804", "lat": 22.62819, "lon": 120.26449}, "dream": {"pid": "ChIJJ9PJ63IDbjQR-dpo3hF9MZI", "q": "夢時代購物中心", "a": "No. 789, Zhonghua 5th Rd, Cianjhen District, Kaohsiung City, Taiwan 806", "lat": 22.59487, "lon": 120.30575}, "gs": {"pid": "ChIJg1VQtfUDbjQR5xvpkq1UyfI", "q": "鼓山輪渡站", "a": "No. 1, Binhai 2nd Rd, Gushan District, Kaohsiung City, Taiwan 804", "lat": 22.61979, "lon": 120.27006}, "cj": {"pid": "ChIJw5Es9fEDbjQRwouNEzeC4bA", "q": "旗津天后宮", "a": "No. 93, Miaoqian Rd, Qijin District, Kaohsiung City, Taiwan 805", "lat": 22.61337, "lon": 120.26837}, "cjb": {"pid": "ChIJpUASyeoDbjQRxlnmoOXkT0A", "q": "旗津海岸公園", "a": "No. 990, Qijin 3rd Rd, Qijin District, Kaohsiung City, Taiwan 805", "lat": 22.60111, "lon": 120.27382}};
+const enc=encodeURIComponent;
+function mapUrls(id){const p=PL[id],a=ADDR[id]||{};const q=a.q||p.n;
+  const g='https://www.google.com/maps/search/?api=1&query='+enc(q)+(a.pid?'&query_place_id='+a.pid:'');
+  const ap='https://maps.apple.com/?q='+enc(q)+'&ll='+(a.lat||p.la)+','+(a.lon||p.lo);return{g,ap,addr:a.a||''};}
+function mlinks(id){const u=mapUrls(id);return `<span class="ml"><a href="${u.g}" target="_blank" rel="noopener">Google 地圖</a><a href="${u.ap}" target="_blank" rel="noopener">Apple 地圖</a></span>`;}
+const PLACE_LIST=ids=>`<details class="pd"><summary>地點・地址・導航</summary><ul class="plist">${[...new Set(ids)].map(id=>{const u=mapUrls(id);return `<li><b>${PL[id].n}</b>${u.addr?`<span class="ad">${u.addr}</span>`:''}${mlinks(id)}</li>`;}).join('')}</ul></details>`;
 /* tooltip */
 let tipLock=false;
 function showTip(html,cx,cy){const r=chart.getBoundingClientRect();tip.innerHTML=html;tip.hidden=false;
@@ -390,15 +411,15 @@ function showTip(html,cx,cy){const r=chart.getBoundingClientRect();tip.innerHTML
   x=Math.max(tw/2+6,Math.min(r.width-tw/2-6,x));
   tip.style.transform=(y-th-20<0)?'translate(-50%,16px)':'translate(-50%,calc(-100% - 14px))';
   tip.style.left=x+'px';tip.style.top=y+'px';}
-function hideTip(){tip.hidden=true;tipLock=false;}
+function hideTip(){tip.hidden=true;tipLock=false;tip.classList.remove('lock');}
 function segTip(s,cx,cy){const r=ROUTES[s.r];showTip(`<b><span class="k">${MODE[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}</b><div>${s.dur}</div><div class="m">${s.how}</div><div class="m">${r.short}・${r.days[s.d].label||('第 '+(s.d+1)+' 天')}</div>`,cx,cy);}
-function placeTip(id,cx,cy){const p=PL[id];showTip(`<b>${p.n}</b><div class="m">${p.d}</div>`,cx,cy);}
+function placeTip(id,cx,cy){const p=PL[id],u=mapUrls(id);showTip(`<b>${p.n}</b><div class="m">${p.d}</div>${u.addr?`<div class="ad">${u.addr}</div>`:''}${mlinks(id)}`,cx,cy);}
 function worldToClient(wx,wy){const r=svg.getBoundingClientRect();return[r.left+(wx-view.x)/view.w*r.width,r.top+(wy-view.y)/view.h*r.height];}
 function bindHover(node,show,on,off){
   node.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'||dragging)return;on();show(e);});
   node.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||dragging||tipLock)return;show(e);});
   node.addEventListener('pointerleave',e=>{if(e.pointerType!=='mouse')return;off();if(!tipLock)hideTip();});
-  node.addEventListener('click',e=>{if(moved)return;e.stopPropagation();on();show(e);tipLock=true;setTimeout(off,1500);});
+  node.addEventListener('click',e=>{if(moved)return;e.stopPropagation();on();show(e);tipLock=true;tip.classList.add('lock');setTimeout(off,1500);});
 }
 function hlSeg(s,on){s.g.classList.toggle('hl',on);s.badge.classList.toggle('hl',on);document.querySelectorAll(`[data-s="${s.id}"]`).forEach(n=>n.classList.toggle('hl',on));}
 
@@ -475,7 +496,7 @@ function renderLegend(){
   let h=`<div><h3 style="color:var(${r.c})">${r.name}</h3><p class="sub">${r.sub||''}</p></div>
   <div class="dayseg">${['全部',...r.days.map((d,i)=>d.label||('第 '+(i+1)+' 天'))].map((t,i)=>`<button class="tab" type="button" data-d="${i-1}" aria-pressed="${st.d===i-1}">${t}</button>`).join('')}</div><ol class="iti">`;
   r.days.forEach((d,di)=>{if(st.d>=0&&st.d!==di)return;
-    const stop=id=>`<li class="stop ${PL[id].m?'major':''}"><button type="button" data-p="${id}"><span class="dot"></span>${PL[id].n}</button></li>`;
+    const stop=id=>`<li class="stop ${PL[id].m?'major':''}"><button type="button" data-p="${id}"><span class="dot"></span>${PL[id].n}</button>${mlinks(id)}</li>`;
     h+=`<li class="dh">${d.label?d.label.toUpperCase():'DAY '+(di+1)}・${d.t}</li>`+stop(d.segs[0].f);
     d.segs.forEach(s=>{h+=`<li class="hop" tabindex="0" data-s="${s.id}"><span class="chip ${s.mode}">${MODE[s.mode]}</span><span>${s.dur}</span><small>${s.how}</small></li>`+stop(s.t);});});
   legend.innerHTML=h+'</ol>'+KEY;
@@ -488,7 +509,7 @@ function renderLegend(){
     row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();row.click();}});});
   legend.querySelectorAll('[data-p]').forEach(b=>{const id=b.dataset.p,p=PL[id];
     b.onmouseenter=()=>pinEls[id].classList.add('hl');b.onmouseleave=()=>pinEls[id].classList.remove('hl');
-    b.onclick=()=>{animateTo(fit([[X(p.lo),Y(p.la)]],10));setTimeout(()=>{const [cx,cy]=worldToClient(X(p.lo),Y(p.la));placeTip(id,cx,cy);tipLock=true;},reduce?0:850);};});
+    b.onclick=()=>{animateTo(fit([[X(p.lo),Y(p.la)]],10));setTimeout(()=>{const [cx,cy]=worldToClient(X(p.lo),Y(p.la));placeTip(id,cx,cy);tipLock=true;tip.classList.add('lock');},reduce?0:850);};});
 }
 const list=(items,cls)=>`<ul${cls?` class="${cls}"`:''}>${items.map(t=>`<li>${t}</li>`).join('')}</ul>`;
 function renderPane(){
@@ -504,6 +525,7 @@ function renderPane(){
   <div class="pgrid">${r.days.map((d,di)=>`<article class="card"><span class="ctag">${d.label?d.label.toUpperCase():'DAY '+(di+1)}${d.date?'・'+d.date:''}</span><h3>${d.t}</h3>
     <ul class="tl">${d.tl.map(([t,x])=>`<li><time>${t}</time><span>${x}</span></li>`).join('')}</ul>
     <div class="hops">${d.segs.map(s=>`<span class="h" data-s="${s.id}" data-zs="${s.id}"><span class="chip ${s.mode}">${MODE[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}・${s.dur}</span>`).join('')}</div>
+    ${PLACE_LIST(d.stops)}
     <h3 style="font-size:15px">注意事項</h3>${list(d.tips,'warn')}
     ${d.couple?`<div class="couple">${d.couple}</div>`:''}
     <button class="tab" type="button" data-showd="${di}" style="justify-self:start">在地圖上看這一天</button></article>`).join('')}</div>
