@@ -34,7 +34,8 @@ a.trip:hover{border-color:var(--c);transform:translateY(-2px)}
 a.trip:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .stamp{border:2px solid var(--c);color:var(--c);border-radius:10px;padding:8px 6px;text-align:center;transform:rotate(-4deg);font-family:var(--f-mono);line-height:1.25}
 .stamp b{display:block;font-family:var(--f-display);font-size:22px}
-.stamp span{font-size:11px;letter-spacing:.08em}
+.stamp span{display:block;font-size:11px;letter-spacing:.08em}
+.date{font-family:var(--f-mono);font-size:12px;color:var(--muted);letter-spacing:.04em}
 .info{min-width:0;display:grid;gap:4px}
 .info h2{font-family:var(--f-display);font-size:22px;margin:0;color:var(--c)}
 .info p{margin:0;color:var(--muted);font-size:14px}
@@ -54,20 +55,20 @@ footer{margin-top:28px;color:var(--muted);font-size:12px}
   <p class="lede">每一趟旅行的行程、路線圖與注意事項。點進去看細節。</p>
 </header>
 <div class="list">
-  <a class="trip" href="cebu/" style="--c:var(--t1)">
-    <div class="stamp"><b>01.26</b><span>2027 · 7D6N</span></div>
-    <div class="info"><h2>宿霧・薄荷島</h2><p>跳島浮潛、歐斯陸鯨鯊、卡瓦山瀑布、巧克力山與眼鏡猴，家庭七天六夜。</p>
+  <a class="trip" href="20270126-20270201-cebu/" style="--c:var(--t1)">
+    <div class="stamp"><b>01.26</b><span>– 02.01</span><span>2027 · 7D6N</span></div>
+    <div class="info"><span class="date">2027/01/26（二）→ 2027/02/01（一）・7 天 6 夜</span><h2>宿霧・薄荷島</h2><p>跳島浮潛、歐斯陸鯨鯊、卡瓦山瀑布、巧克力山與眼鏡猴，家庭七天六夜。</p>
       <div class="tags"><span>菲律賓</span><span>家庭</span><span>互動路線圖</span></div></div>
     <span class="go" aria-hidden="true">→</span>
   </a>
-  <a class="trip" href="hsinchu/" style="--c:var(--t2)">
-    <div class="stamp"><b>2D1N</b><span>全年 · 4 路線</span></div>
-    <div class="info"><h2>新竹出發兩天一夜</h2><p>客家老街、山林部落、海線單車、苗栗溫泉草莓，四條大眾運輸路線與每月推薦。</p>
+  <a class="trip" href="undated-hsinchu/" style="--c:var(--t2)">
+    <div class="stamp"><b>未定</b><span>2D1N</span><span>全年可去</span></div>
+    <div class="info"><span class="date">日期未定・兩天一夜</span><h2>新竹出發兩天一夜</h2><p>客家老街、山林部落、海線單車、苗栗溫泉草莓，四條大眾運輸路線與每月推薦。</p>
       <div class="tags"><span>台灣</span><span>情侶</span><span>不開車</span></div></div>
     <span class="go" aria-hidden="true">→</span>
   </a>
 </div>
-<footer>新增旅行時，在這個資料夾加一個子資料夾放 index.html，再在上面加一張卡片即可。</footer>
+<footer>新增旅行：建立「開始日期-結束日期-地點」資料夾（例如 20270126-20270201-cebu）放 index.html，再在上面加一張卡片。日期未定用 undated-地點。</footer>
 </div>
 </body>
 </html>
