@@ -3,201 +3,178 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="2027/1/26–2/1 宿霧與薄荷島七天六夜行程，互動路線圖與每日注意事項。">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>宿霧薄荷島家庭之旅</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="2027/1/26–2/1 宿霧與薄荷島七天六夜，兩個版本：分組行動版與全家從容版。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;800&family=Noto+Sans+TC:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: 航海圖式頁面 — 摘要 → 可拖曳縮放的互動海圖（右側逐站交通）→ 逐日行程卡 → 實用資訊 */
+/* Layout: 側欄分頁（總覽＋各版本）；主區是可拖曳縮放的路線圖、逐站交通、逐日細節 */
 :root{
-  --bg:#f3f6f4; --paper:#ffffff; --ink:#12302f; --muted:#5a706d; --line:#d5e0dc;
-  --sea:#d7ebee; --sea-deep:#a9d2d8; --land:#eef0dc; --land-edge:#b9c08f;
-  --accent:#e2a21b; --accent-ink:#7a5300; --deep:#0f5b5f;
-  --d1:#0f5b5f; --d2:#1e88a8; --d3:#c2410c; --d4:#7c3aed; --d5:#15803d; --d6:#0891b2; --d7:#64748b;
+  --bg:#f1f3f0; --paper:#ffffff; --ink:#1b2722; --muted:#5d6b64; --line:#d6ddd8;
+  --sea:#dfe9ec; --sea-deep:#a8c4cc; --land:#f4f2e6; --hill:#e6e6d2; --mtn:#d7dcc0; --land-edge:#b8bc9a; --lake:#cfe2e6;
+  --rail:#8b948f; --accent:#d4901a; --accent-ink:#7a4f00;
+  --r0:#c2410c; --r1:#0f5b5f;
   --f-display:"Noto Serif TC","Songti TC",serif;
   --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
   --f-mono:"DM Mono",ui-monospace,monospace;
+  color-scheme:light;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0b1a1b; --paper:#112526; --ink:#e4efec; --muted:#93aaa6; --line:#23403f;
-  --sea:#0e2c33; --sea-deep:#1d4f59; --land:#1d2a20; --land-edge:#56683f;
-  --accent:#f0b43a; --accent-ink:#f6cf7c; --deep:#5fc2c4;
-  --d1:#5fc2c4; --d2:#5ab8d8; --d3:#fb8a52; --d4:#b394f7; --d5:#5fd18a; --d6:#4fd0e6; --d7:#a5b2c3;
+@media (prefers-color-scheme: dark){:root{
+  --bg:#0f1513; --paper:#161f1c; --ink:#e3ebe6; --muted:#97a69f; --line:#2a3833;
+  --sea:#13232a; --sea-deep:#2a4a55; --land:#1b2420; --hill:#212c24; --mtn:#283326; --land-edge:#4a5741; --lake:#1d3a42;
+  --rail:#7c8882; --accent:#eaa93a; --accent-ink:#f5cf86;
+  --r0:#fb8a52; --r1:#5fc2c4;
   color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0b1a1b; --paper:#112526; --ink:#e4efec; --muted:#93aaa6; --line:#23403f;
-  --sea:#0e2c33; --sea-deep:#1d4f59; --land:#1d2a20; --land-edge:#56683f;
-  --accent:#f0b43a; --accent-ink:#f6cf7c; --deep:#5fc2c4;
-  --d1:#5fc2c4; --d2:#5ab8d8; --d3:#fb8a52; --d4:#b394f7; --d5:#5fd18a; --d6:#4fd0e6; --d7:#a5b2c3;
-  color-scheme:dark}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
-.wrap{max-width:1120px;margin:0 auto}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7;
+  padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-right,0px)) 64px max(16px,env(safe-area-inset-left,0px))}
+[hidden]{display:none!important}
+.wrap{max-width:1180px;margin:0 auto}
 h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.3}
-.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
 button{font:inherit;color:inherit}
-header{padding-block:44px 28px;display:grid;gap:18px}
+header{padding-block:40px 22px;display:grid;gap:14px}
 .eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-h1{font-size:clamp(30px,6vw,52px);font-weight:800}
-h1 em{font-style:normal;color:var(--deep)}
-.lede{max-width:62ch;color:var(--muted);margin:0}
+h1{font-size:clamp(28px,5.5vw,48px);font-weight:800}
+h1 em{font-style:normal;color:var(--accent-ink)}
+.lede{max-width:64ch;color:var(--muted);margin:0}
 .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
-.fact{background:var(--paper);padding:12px 14px;display:grid;gap:2px}
-.fact b{font-size:16px}
+.fact{background:var(--paper);padding:10px 14px;display:grid;gap:1px}
 .fact span{font-size:12px;color:var(--muted)}
-section{padding-block:26px}
-.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
-.sec-h h2{font-size:24px}
-.sec-h p{margin:0;color:var(--muted);font-size:13px}
-
-/* ---------- map ---------- */
-.toolbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;align-items:center}
-.tab{font:500 13px/1 var(--f-body);border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:8px 11px;border-radius:999px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
-.tab i{width:10px;height:10px;border-radius:50%;display:inline-block}
-.tab[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.fact b{font-size:15px}
+.app{display:grid;grid-template-columns:210px minmax(0,1fr);gap:22px;align-items:start}
+.main{min-width:0;display:grid;gap:22px}
+.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 14px);display:grid;gap:5px}
+.side-h{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--muted);padding:0 4px 2px}
+.tab{font:500 13px/1.35 var(--f-body);border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:8px 11px;border-radius:999px;cursor:pointer;display:inline-flex;gap:7px;align-items:center}
 .tab:hover{border-color:var(--ink)}
-.tab:focus-visible,.ctl:focus-visible,.hop:focus-visible,.stop button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.tab.play{margin-left:auto}
-.tab.play[aria-pressed="true"]{background:var(--accent);color:#1a1200;border-color:var(--accent)}
-.mapbox{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:18px;align-items:start}
-@media (max-width:860px){.mapbox{grid-template-columns:1fr}}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tab:focus-visible,.ctl:focus-visible,.hop:focus-visible,.stop button:focus-visible,.rcard:focus-visible,.rlist button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.side .tab{border-radius:10px;justify-content:flex-start;text-align:left;width:100%;padding:9px 11px}
+.side .tab small{display:block;font-size:12px;opacity:.75;font-weight:400}
+.sw{width:10px;height:10px;border-radius:3px;flex:none;display:inline-block}
+@media (max-width:880px){
+  .app{grid-template-columns:1fr;gap:0}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+  .side{top:env(safe-area-inset-top,0px);z-index:6;background:var(--bg);display:flex;overflow-x:auto;padding-block:10px;border-bottom:1px solid var(--line);scrollbar-width:none;margin-bottom:14px}
+  .side-h{display:none}
+  .side .tab{width:auto;flex:none}
+  .side .tab small{display:none}
+}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.sec-h h2{font-size:23px}
+.sec-h p{margin:0;color:var(--muted);font-size:13px}
+.mapbox{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:980px){.mapbox{grid-template-columns:1fr}}
 .chart{background:var(--sea);border:1px solid var(--line);border-radius:12px;overflow:hidden;position:relative;user-select:none;-webkit-user-select:none}
-.chart svg{display:block;width:100%;aspect-ratio:610/525;max-width:100%;touch-action:none;cursor:grab}
+.chart svg#svg{display:block;width:100%;aspect-ratio:610/525;max-width:100%;touch-action:none;cursor:grab}
 .chart svg.grabbing{cursor:grabbing}
 .ctls{position:absolute;top:10px;left:10px;display:grid;gap:4px}
-.ctl{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--paper);cursor:pointer;font-size:18px;line-height:1;display:grid;place-items:center}
-.ctl.txt{font-size:11px;font-weight:700;width:auto;padding:0 6px;white-space:nowrap}
-.badge.tiny{display:none}
-@media (max-width:520px){.hint{display:none}}
+.ctl{min-width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--paper);cursor:pointer;font-size:18px;line-height:1;display:grid;place-items:center;padding:0 6px}
+.ctl.txt{font-size:11px;font-weight:700;white-space:nowrap}
 .compass{position:absolute;top:10px;right:12px;width:40px;height:52px;pointer-events:none}
 .scalebar{position:absolute;left:12px;bottom:10px;font:11px var(--f-mono);color:var(--muted);pointer-events:none}
 .scalebar div{height:6px;border:2px solid var(--muted);border-top:0;margin-top:2px}
 .hint{position:absolute;right:10px;bottom:8px;font-size:11px;color:var(--muted);background:color-mix(in srgb,var(--paper) 80%,transparent);padding:2px 8px;border-radius:6px;pointer-events:none}
-.tip{position:absolute;z-index:5;pointer-events:none;background:var(--ink);color:var(--bg);font-size:13px;line-height:1.5;padding:8px 11px;border-radius:8px;max-width:250px;transform:translate(-50%,calc(-100% - 14px));box-shadow:0 6px 20px rgb(0 0 0 / .22)}
+@media (max-width:520px){.hint{display:none}}
+.tip{position:absolute;z-index:5;pointer-events:none;background:var(--ink);color:var(--bg);font-size:13px;line-height:1.5;padding:8px 11px;border-radius:8px;max-width:260px;box-shadow:0 6px 20px rgb(0 0 0 / .22)}
 .tip b{display:block;font-size:14px}
-.tip .m{opacity:.75;font-size:12px}
+.tip .m{opacity:.78;font-size:12px}
 .tip .k{display:inline-block;font-size:11px;font-weight:700;padding:0 6px;border-radius:4px;background:var(--accent);color:#1a1200;margin-right:6px}
-
 .route{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:3;transition:opacity .25s,stroke-width .15s}
-.route.boat{stroke-dasharray:6 6}
+.route.walk,.route.bike{stroke-dasharray:1 6;stroke-width:3.5}
+.route.shuttle,.route.taxi,.route.ferry,.route.boat{stroke-dasharray:7 5}
 .hit{fill:none;stroke:transparent;stroke-width:18;pointer-events:stroke;cursor:pointer}
-svg.dim .seg:not(.on) .route{opacity:.12}
+svg.dim .seg:not(.on) .route{opacity:.1}
 svg.dim .seg:not(.on) .hit{pointer-events:none}
 .seg.on .route{stroke-width:4.5}
-.seg.hl .route{stroke-width:7}
-svg.dim .pin:not(.on){opacity:.28}
+.seg.on .route.walk,.seg.on .route.bike{stroke-width:5}
+.seg.hl .route{stroke-width:7.5}
+svg.dim .pin:not(.on){opacity:.25}
 .pin{cursor:pointer}
-.pin text{font:500 11px var(--f-body);fill:var(--ink);paint-order:stroke;stroke:var(--sea);stroke-width:3px;stroke-linejoin:round}
+.pin text{font:500 11px var(--f-body);fill:var(--ink);paint-order:stroke;stroke:var(--land);stroke-width:3px;stroke-linejoin:round}
 .pin.major text{font-weight:700;font-size:12px}
 .pin circle{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
 .pin.major circle{fill:var(--accent)}
-.pin:hover circle,.pin.hl circle{stroke-width:3}
+.pin.stn circle{fill:var(--paper);stroke-width:2.5}
+.pin:hover circle,.pin.hl circle{stroke-width:3.5}
 svg.far .pin.minor:not(.on) text{display:none}
 .badge{display:none;cursor:pointer}
 .badge.on{display:inline}
+.badge.tiny{display:none}
 .badge rect{fill:var(--paper);stroke:var(--bc);stroke-width:1.5}
 .badge text{font:700 10.5px var(--f-body);fill:var(--ink)}
 .badge.hl rect{fill:var(--bc)}
 .badge.hl text{fill:var(--paper)}
-.island{fill:var(--land);stroke:var(--land-edge);stroke-width:1.2}
-.isl-name{font:600 15px var(--f-display);fill:var(--land-edge);letter-spacing:.3em}
+.land{fill:var(--land);stroke:var(--land-edge);stroke-width:1.2}
+.hill{fill:var(--hill)} .mtn{fill:var(--mtn)} .lake{fill:var(--lake);stroke:var(--sea-deep);stroke-width:1}
+.river{fill:none;stroke:var(--sea-deep);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.railctx{fill:none;stroke:var(--rail);stroke-width:1.4;stroke-dasharray:6 3;opacity:.7}
+.hsrctx{fill:none;stroke:var(--rail);stroke-width:1;opacity:.55}
+.mrtctx{fill:none;stroke:var(--rail);stroke-width:2;opacity:.45}
+.region{font:600 13px var(--f-display);fill:var(--land-edge);letter-spacing:.35em}
 .sea-name{font:italic 12px var(--f-body);fill:var(--sea-deep);letter-spacing:.2em}
-.grid line{stroke:var(--sea-deep);stroke-width:.6;opacity:.6}
-svg *{vector-effect:non-scaling-stroke}
+.grid line{stroke:var(--sea-deep);stroke-width:.5;opacity:.45}
+svg#svg *{vector-effect:non-scaling-stroke}
 .pin *,.badge *,.lbl *{vector-effect:none}
-
 .legend{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:12px;align-content:start}
-@media (min-width:861px){.legend{max-height:620px;overflow:auto}}
+@media (min-width:981px){.legend{max-height:560px;overflow:auto}}
 .legend h3{font-size:18px}
 .legend .sub{color:var(--muted);font-size:13px;margin:2px 0 0}
-.daylist{list-style:none;margin:0;padding:0;display:grid;gap:4px}
-.daylist button{all:unset;cursor:pointer;display:flex;gap:10px;align-items:baseline;padding:6px 8px;border-radius:8px;width:100%;box-sizing:border-box}
-.daylist button:hover,.daylist button:focus-visible{background:color-mix(in srgb,var(--accent) 14%,transparent)}
-.daylist b{font-family:var(--f-mono);min-width:40px}
+.dayseg{display:flex;gap:6px;flex-wrap:wrap}
+.dayseg .tab{padding:6px 10px}
 .iti{list-style:none;margin:0;padding:0}
+.iti .dh{font-family:var(--f-mono);font-size:12px;color:var(--muted);letter-spacing:.08em;padding:8px 0 4px}
 .stop button{all:unset;cursor:pointer;display:flex;gap:10px;align-items:center;font-weight:500;padding:3px 6px 3px 0;border-radius:6px}
-.stop button:hover{color:var(--deep)}
+.stop button:hover{color:var(--c)}
 .dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink);background:var(--paper);flex:none}
 .stop.major .dot{background:var(--accent)}
 .hop{margin-left:5px;border-left:2px dashed var(--line);padding:6px 8px 6px 16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 8px;font-size:13px;cursor:pointer;border-radius:0 8px 8px 0;align-items:baseline}
 .hop small{grid-column:2;color:var(--muted);font-size:12px}
 .hop:hover,.hop.hl{background:color-mix(in srgb,var(--c) 14%,transparent);border-left-color:var(--c)}
 .chip{font-size:11px;font-weight:700;padding:1px 7px;border-radius:4px;background:var(--ink);color:var(--bg);white-space:nowrap}
-.chip.boat{background:var(--deep);color:var(--paper)}
-.key{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.chip.walk,.chip.bike{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.chip.bus,.chip.lrt{background:var(--accent);color:#1a1200}
+.chip.mrt{background:color-mix(in srgb,var(--accent) 45%,var(--ink));color:var(--paper)}
+.chip.shuttle,.chip.taxi,.chip.ferry,.chip.boat{background:var(--muted);color:var(--paper)}
+.key{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
 .key span{display:inline-flex;align-items:center;gap:6px}
-
-/* ---------- app shell ---------- */
-.app{display:grid;grid-template-columns:200px minmax(0,1fr);gap:22px;align-items:start}
-.main{min-width:0}
-.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 14px);display:grid;gap:4px;padding-block:26px}
-.side .tab{border-radius:10px;justify-content:flex-start;padding:9px 11px;text-align:left;line-height:1.35;width:100%}
-.side .tab small{display:block;font-size:12px;opacity:.75;font-weight:400}
-.side .tab .dd{font-family:var(--f-mono);font-size:12px}
-.side .tab.play{margin-top:8px;justify-content:center}
-.side-h{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--muted);padding:0 4px 4px}
-@media (max-width:860px){
-  .app{grid-template-columns:1fr;gap:0}
-  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
-  .side{top:env(safe-area-inset-top,0px);z-index:6;background:var(--bg);display:flex;overflow-x:auto;padding-block:10px;border-bottom:1px solid var(--line);scrollbar-width:none}
-  .side-h{display:none}
-  .side .tab{width:auto;flex:none}
-  .side .tab small{display:none}
-  .side .tab.play{margin:0}
-}
-.ovgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
-.ovd{all:unset;cursor:pointer;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:2px;position:relative;overflow:hidden;box-sizing:border-box}
-.ovd::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
-.ovd:hover{border-color:var(--c)}
-.ovd:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.ovd .mono{font-size:12px;color:var(--muted)}
-.ovd b{font-family:var(--f-display);font-size:16px}
-.ovd span:last-child{font-size:12px;color:var(--muted)}
-.pane-head{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap;border-bottom:2px solid var(--c);padding-bottom:12px;margin-bottom:16px}
-.pane-head .big{font-family:var(--f-display);font-size:40px;font-weight:800;line-height:1;color:var(--c)}
-.pane-head h2{font-size:24px}
-.pane-head p{margin:0;color:var(--muted);font-size:13px}
-.pgrid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;align-items:start}
-@media (max-width:760px){.pgrid{grid-template-columns:1fr}}
-.pcol{display:grid;gap:14px;min-width:0}
-.warn li::marker{color:var(--accent)}
-.pager{display:flex;justify-content:space-between;gap:10px;margin-top:16px;flex-wrap:wrap}
-/* ---------- days ---------- */
-.days{display:grid;gap:14px}
-.day{background:var(--paper);border:1px solid var(--line);border-radius:12px;display:grid;grid-template-columns:120px minmax(0,1fr);overflow:hidden;transition:box-shadow .2s}
-.day.cur{box-shadow:0 0 0 2px var(--c)}
-@media (max-width:620px){.day{grid-template-columns:1fr}}
-.day-side{padding:16px;border-right:1px solid var(--line);display:grid;align-content:start;gap:4px;position:relative}
-@media (max-width:620px){.day-side{border-right:0;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}}
-.day-side::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
-.day-n{font-family:var(--f-mono);font-size:12px;color:var(--muted);letter-spacing:.08em}
-.day-date{font-family:var(--f-display);font-size:24px;font-weight:800}
-.day-wk{font-size:13px;color:var(--muted)}
-.day-main{padding:16px 18px;display:grid;gap:10px;min-width:0}
-.day-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between}
-.day-main h3{font-size:19px}
-.day-main .stay{font-size:13px;color:var(--muted)}
-.tl{list-style:none;margin:0;padding:0;display:grid;gap:7px}
-.tl li{display:grid;grid-template-columns:72px minmax(0,1fr);gap:10px}
+.rlist{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.rlist button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center;padding:8px;border-radius:8px}
+.rlist button:hover{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.rlist b{display:block;font-size:14px}
+.rlist small{display:block;font-size:12px;color:var(--muted)}
+.rhead{border-bottom:2px solid var(--c);padding-bottom:12px;display:grid;gap:4px}
+.rhead h2{font-size:clamp(22px,3.4vw,30px);color:var(--c)}
+.rhead p{margin:0;color:var(--muted);font-size:14px;max-width:64ch}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.stat{background:var(--paper);padding:10px 14px;display:grid;gap:1px}
+.stat span{font-size:12px;color:var(--muted)}
+.stat b{font-size:15px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;align-items:start}
+@media (max-width:420px){.pgrid{grid-template-columns:1fr}}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0;display:grid;gap:10px;align-content:start}
+.card h3{font-size:17px}
+.card .ctag{font-family:var(--f-mono);font-size:12px;color:var(--c);letter-spacing:.06em}
+.card ul{margin:0;padding-left:18px;display:grid;gap:5px}
+.tl{list-style:none!important;margin:0;padding:0!important;display:grid;gap:7px}
+.tl li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:10px}
 .tl time{font-family:var(--f-mono);font-size:13px;color:var(--muted);padding-top:2px}
 .hops{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;color:var(--muted)}
-.hops span{border:1px solid var(--line);border-radius:6px;padding:2px 8px;display:inline-flex;gap:6px;align-items:center}
-.note{font-size:13px;background:color-mix(in srgb,var(--accent) 14%,transparent);border-radius:8px;padding:8px 12px}
-.note b{color:var(--accent-ink)}
-.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
-.card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0}
-.card h3{font-size:17px;margin-bottom:8px}
-.card ul{margin:0;padding-left:18px;display:grid;gap:5px}
-.tbl-wrap{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-size:12px;color:var(--muted);font-weight:500}
-td.num{font-family:var(--f-mono);white-space:nowrap}
-footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:16px;margin-top:20px}
-@media (prefers-reduced-motion:reduce){.route,.day{transition:none}}
+.hops span.h{border:1px solid var(--line);border-radius:6px;padding:2px 8px;display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.hops span.h:hover{border-color:var(--c)}
+.warn li::marker{color:var(--accent)}
+.couple{font-size:13px;background:color-mix(in srgb,var(--c) 10%,transparent);border-radius:8px;padding:8px 12px}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.rcard{all:unset;box-sizing:border-box;cursor:pointer;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:6px;position:relative;overflow:hidden}
+.rcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.rcard:hover{border-color:var(--c)}
+.rcard b{font-family:var(--f-display);font-size:17px;color:var(--c)}
+.rcard span{font-size:13px;color:var(--muted)}
+.rcard .mini{font-size:12px;color:var(--ink)}
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+#pane{display:grid;gap:22px}
+footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:16px}
+@media (prefers-reduced-motion:reduce){.route{transition:none}}
 
 .tip.lock{pointer-events:auto}
 .tip .ad{font-size:12px;opacity:.85;margin-top:4px;color:inherit}
@@ -213,291 +190,294 @@ footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);paddin
 .plist li{display:grid;gap:1px;font-size:13px}
 .plist .ad,.ad{color:var(--muted);font-size:12px}
 </style>
-
 </head>
 <body>
 <div class="wrap">
 <header>
   <div class="eyebrow">Cebu · Bohol · 2027.01.26 — 02.01</div>
-  <h1><em>宿霧</em>與<em>薄荷島</em><br>七天六夜</h1>
-  <p class="lede">跳島浮潛、歐斯陸看鯨鯊、卡瓦山瀑布、巧克力山與眼鏡猴，加上宿霧市區的烤乳豬。長途車程拆成兩段、在墨寶多住一晚，每天下午留了休息時間，全家都能玩得輕鬆。</p>
+  <h1><em>宿霧</em>與<em>薄荷島</em><br>七天六夜・兩個版本</h1>
+  <p class="lede">看鯨鯊、跳島浮潛、卡瓦山瀑布、巧克力山與螢火蟲。分成兩個版本：A 版下午分組各玩各的，B 版全家一起慢慢玩。</p>
   <div class="facts">
-    <div class="fact"><span>天數</span><b>7 天 6 夜</b></div>
-    <div class="fact"><span>住宿（晚）</span><b>麥克坦 2・墨寶 1<br>市區 1・邦勞 2</b></div>
-    <div class="fact"><span>航程（桃園 ⇄ 宿霧）</span><b>直飛約 2.5–3 小時</b></div>
+    <div class="fact"><span>日期</span><b>1/26（二）→ 2/1（一）</b></div>
+    <div class="fact"><span>航程</span><b>桃園 ⇄ 宿霧 直飛約 2.5–3 小時</b></div>
     <div class="fact"><span>時差</span><b>無（同 UTC+8）</b></div>
     <div class="fact"><span>一月天氣</span><b>約 24–30°C，乾季初</b></div>
   </div>
 </header>
-
 <div class="app">
-<nav class="side" id="tabs" aria-label="行程分頁"></nav>
-<main class="main">
-<section id="map">
-  <div class="sec-h">
-    <h2>路線海圖</h2>
-    <p>選日期自動縮放；滑過路線或右側交通看車程與船程</p>
-  </div>
-  <div class="mapbox">
-    <div class="chart" id="chart">
-      <svg id="svg" viewBox="0 0 610 525" role="img" aria-label="宿霧與薄荷島互動路線圖"></svg>
-      <div class="ctls">
-        <button class="ctl" id="zin" type="button" aria-label="放大">+</button>
-        <button class="ctl" id="zout" type="button" aria-label="縮小">−</button>
-        <button class="ctl txt" id="zfit" type="button" aria-label="回到當天範圍">全覽</button>
+  <nav class="side" id="side" aria-label="分頁"></nav>
+  <main class="main">
+    <section id="map">
+      <div class="sec-h"><h2 id="mapTitle">路線地圖</h2><p>拖曳、縮放地圖；滑過路線看搭什麼車、要多久</p></div>
+      <div class="mapbox">
+        <div class="chart" id="chart">
+          <svg id="svg" viewBox="0 0 610 525" role="img" aria-label="互動路線圖"></svg>
+          <div class="ctls">
+            <button class="ctl" id="zin" type="button" aria-label="放大">+</button>
+            <button class="ctl" id="zout" type="button" aria-label="縮小">−</button>
+            <button class="ctl txt" id="zfit" type="button">全覽</button>
+          </div>
+          <svg class="compass" viewBox="-20 -30 40 52" aria-hidden="true"><text y="-20" text-anchor="middle" style="font:600 11px var(--f-mono);fill:var(--muted)">N</text><circle r="16" fill="none" stroke="var(--sea-deep)"/><path d="M0,-14 L4,0 L0,14 L-4,0 Z" fill="var(--sea-deep)"/><path d="M0,-14 L4,0 L-4,0 Z" fill="var(--accent)"/></svg>
+          <div class="scalebar" id="scale"><span>5 km</span><div></div></div>
+          <div class="hint">拖曳移動・滾輪或雙指縮放</div>
+          <div class="tip" id="tip" hidden></div>
+        </div>
+        <aside class="legend" id="legend" aria-live="polite"></aside>
       </div>
-      <svg class="compass" viewBox="-20 -30 40 52" aria-hidden="true"><text y="-20" text-anchor="middle" style="font:600 11px var(--f-mono);fill:var(--muted)">N</text><circle r="16" fill="none" stroke="var(--sea-deep)"/><path d="M0,-14 L4,0 L0,14 L-4,0 Z" fill="var(--sea-deep)"/><path d="M0,-14 L4,0 L-4,0 Z" fill="var(--accent)"/></svg>
-      <div class="scalebar" id="scale"><span>20 km</span><div></div></div>
-      <div class="hint">拖曳移動・滾輪或雙指縮放</div>
-      <div class="tip" id="tip" hidden></div>
-    </div>
-    <aside class="legend" id="legend" aria-live="polite"></aside>
-  </div>
-</section>
-
-<section id="dayPane" hidden></section>
-<div id="ov">
-<section id="ovdays">
-  <div class="sec-h"><h2>七天一覽</h2><p>點任一天，看當天細節與注意事項</p></div>
-  <div class="ovgrid" id="ovDays"></div>
-</section>
-
-<section id="info">
-  <div class="sec-h"><h2>出發前準備</h2></div>
-  <div class="info">
-    <div class="card">
-      <h3>入境與證件</h3>
-      <ul>
-        <li>台灣護照目前可免簽入境菲律賓 14 天，此措施已延長至 2027 年 6 月，行程在期限內。</li>
-        <li>出發前 72 小時內上 eTravel 官網填寫入境資料，取得 QR code（免費，小心收費的假網站）。</li>
-        <li>護照效期需超過 6 個月，並準備回程機票證明。</li>
-        <li>建議投保含海上活動與醫療後送的旅平險。</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>行程小提醒</h3>
-      <ul>
-        <li>包車（含司機）最省力，南部行程與薄荷島一日遊都可請飯店或當地包車業者安排。</li>
-        <li>鯨鯊與跳島都會提供救生衣，不會游泳也能參加；可帶防滑涼鞋與防水袋。</li>
-        <li>卡瓦山瀑布從停車處步行約 15–20 分鐘平緩步道，不需要做溯溪。</li>
-        <li>常備藥、暈船藥（船程前 30 分鐘服用）、防曬與帽子一定要帶。</li>
-        <li>一月東北季風期偶有大浪，船班可能取消，最後一天提早回宿霧較保險。</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>交通方式</h3>
-      <ul>
-        <li><b>機票：</b>星宇航空、菲律賓航空有桃園直飛宿霧（麥克坦機場 CEB），價格與時刻以訂位當下為準。</li>
-        <li><b>宿霧 ⇄ 薄荷島：</b>OceanJet、SuperCat 等快船約 2 小時，建議提早上網訂票並選 Tourist/Business 艙。</li>
-        <li><b>市區移動：</b>Grab 叫車方便，價格透明。</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section id="budget">
-  <div class="sec-h"><h2>參考花費與住宿</h2><p>價格為大約值，以現場公告為準</p></div>
-  <div class="info">
-    <div class="card tbl-wrap">
-      <h3>主要活動</h3>
-      <table>
-        <thead><tr><th>項目</th><th>大約費用 / 人</th></tr></thead>
-        <tbody>
-          <tr><td>歐斯陸鯨鯊浮潛（外國人）</td><td class="num">₱1,000 上下</td></tr>
-          <tr><td>麥克坦跳島（包船含午餐）</td><td class="num">₱2,500–4,000</td></tr>
-          <tr><td>卡瓦山瀑布門票</td><td class="num">₱50 左右</td></tr>
-          <tr><td>宿霧 → 薄荷島快船</td><td class="num">₱800–1,500</td></tr>
-          <tr><td>羅博河遊船自助午餐</td><td class="num">₱800–1,000</td></tr>
-          <tr><td>巴里卡薩島浮潛（含船）</td><td class="num">₱1,500–2,500</td></tr>
-          <tr><td>南部包車一日（整車）</td><td class="num">₱5,000–7,000</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="card">
-      <h3>住宿建議</h3>
-      <ul>
-        <li><b>麥克坦（2 晚）：</b>選有私人沙灘與泳池的度假村，例如香格里拉、Crimson、JPark（有水上樂園）。</li>
-        <li><b>墨寶（1 晚）：</b>Panagsama 海灘一帶的小型度假村，步行就能看沙丁魚風暴。</li>
-        <li><b>宿霧市區（1 晚）：</b>IT Park 或 Ayala 商圈附近，方便吃飯與購物，碼頭約 20–30 分鐘。</li>
-        <li><b>邦勞島（2 晚）：</b>Alona 海灘周邊，Henann、Amorita、Bellevue 等都適合家庭。</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>必吃清單</h3>
-      <ul>
-        <li><b>宿霧烤乳豬 Lechon：</b>Zubuchon、Rico's、House of Lechon。</li>
-        <li><b>SuTuKil 海鮮：</b>麥克坦挑海鮮現點現做（Sugba 烤、Tula 煮湯、Kilaw 醋漬）。</li>
-        <li><b>Larsian 烤串：</b>市區平價夜間燒烤街。</li>
-        <li><b>伴手禮：</b>7D 芒果乾、薄荷島 Peanut Kisses、Otap 酥餅。</li>
-      </ul>
-    </div>
-  </div>
-  <footer>Sinulog 祭典在 1 月第三個週日（2027/1/17），此次行程已錯開人潮；農曆新年為 2/6，回程也在連假前。地圖為示意，位置、距離與交通時間為大約值。</footer>
-</section>
-</div>
-</main>
+    </section>
+    <div id="pane"></div>
+    <footer>Sinulog 祭典在 1 月第三個週日（2027/1/17），此行已錯開；農曆新年為 2/6。價格、時間與距離為大約值，出發前以業者與官方公告為準。地圖為示意。</footer>
+  </main>
 </div>
 </div>
-
 <script>
 (function(){
-const LON0=123.2, LAT1=10.6, K=420, W=610, H=525, AR=W/H;
+const S=(f,t,mode,dur,short,how,mid)=>({f,t,mode,dur,short,how,mid:mid||[]});
+const COAST_E=[[123.96,10.32],[123.90,10.29],[123.84,10.25],[123.76,10.21],[123.71,10.16],[123.64,10.11],[123.61,10.02]];
+const SEG_PORT_TAG=[[123.86,10.15],[123.80,9.90],[123.75,9.75],[123.80,9.665]];
+const D_ARR=(extra)=>({label:'1/26',date:'週二',t:'抵達宿霧・麥克坦',
+  segs:[S('airport','resort','car','約 20–30 分鐘','25分','飯店接送；侖侖先把 SIM／Grab 弄好',[[124.0,10.295]])].concat(extra||[]),
+  tl:[],tips:[],couple:''});
+const CFG={
+LON0:123.2,LAT1:10.6,K:420,W:610,H:525,grid:0.2,minFit:10,farW:250,maxW:1300,
+sideH:'兩個版本',ovSub:'版本比較與準備',ovTitle:'兩個版本',ovText:'日期、住宿城市都一樣，差在節奏：A 版下午分組各玩各的，B 版全家一起慢慢玩。',cmpTitle:'版本比較',infoTitle:'出發前準備',
+info:[
+ {h:'怎麼選版本',items:['想讓每個人都玩到最想玩的 → <b>A 分組行動版</b>：早上全家一起看重點，下午爸媽按摩泡湯、兄弟溯溪潛水，晚上一起吃。','想全家都在一起、不要太累 → <b>B 全家從容版</b>：不用凌晨四點起床（前一晚住歐斯陸），每天下午都有午休，景點少而精。','兩版住宿城市相同（麥克坦 2、南部 1、市區 1、邦勞 2），訂房前再決定也來得及。']},
+ {h:'分工建議',items:['爸爸：總指揮，確認集合時間、付款與包車費用','媽媽：餐廳訂位、Spa 預約、每天整理相簿','侖侖：交通隊長，Grab、船票、包車司機聯絡','弘利：攝影與地圖，找夕陽點、記錄每天行程']},
+ {h:'入境與證件',items:['台灣護照目前可免簽入境菲律賓 14 天，已延長至 2027 年 6 月','出發前 72 小時內上 eTravel 官網填資料（免費，小心假網站）','護照效期需超過 6 個月；建議保含海上活動與醫療後送的旅平險']},
+ {h:'食安與健康',items:['生的醋漬海鮮 Kilaw 先不點，海鮮選現烤、煮湯','只喝瓶裝水，冰塊在大餐廳比較安心','暈船藥在船程前 30 分鐘吃；防曬、帽子、防蚊液','螢火蟲行程穿長袖長褲']},
+ {h:'參考花費（大約值）',items:['歐斯陸鯨鯊浮潛 約 ₱1,000／人','麥克坦跳島包船（含午餐）約 ₱2,500–4,000／人','溯溪 Canyoneering（含嚮導）約 ₱1,500–2,500／人','宿霧 ⇄ 薄荷島快船 約 ₱800–1,500／人','南部包車一日（整車）約 ₱5,000–7,000','螢火蟲遊船 約 ₱1,000–1,500／人']}
+],
+places:{
+ airport:{n:'麥克坦機場',lo:123.98,la:10.31,m:1,s:1,lp:'t',d:'宿霧國際機場（CEB），入境後換匯、買 SIM 卡。'},
+ resort:{n:'麥克坦度假村',lo:124.02,la:10.28,m:0,lp:'r',d:'住 2 晚，選有 Spa 和私人沙灘的度假村。'},
+ sutukil:{n:'SuTuKil 海鮮',lo:123.965,la:10.303,m:0,lp:'l',d:'挑海鮮現點現做，點烤和煮湯，生的先不點。'},
+ hil:{n:'Hilutungan',lo:124.02,la:10.205,m:1,lp:'l',d:'海洋保護區，水淺魚多，浮潛首選。'},
+ nal:{n:'Nalusuan 島',lo:124.065,la:10.185,m:0,lp:'r',d:'長棧橋就能看魚，島上吃午餐。'},
+ city:{n:'聖嬰教堂',lo:123.90,la:10.298,m:1,lp:'l',d:'宿霧市區：聖嬰教堂、麥哲倫十字架、聖佩德羅堡，步行 5–10 分鐘。'},
+ leah:{n:'Leah 神殿',lo:123.873,la:10.369,m:0,lp:'l',d:'山上的希臘式神殿，俯瞰宿霧市區，夕陽與夜景很美。'},
+ ayala:{n:'Ayala 商場',lo:123.905,la:10.318,m:0,lp:'r',d:'大型商場，按摩店、餐廳多，晚餐好選。'},
+ port:{n:'宿霧碼頭',lo:123.912,la:10.287,m:0,s:1,lp:'r',d:'Pier 1 快船碼頭，往返薄荷島。'},
+ sm:{n:'SM Seaside',lo:123.88,la:10.276,m:0,lp:'b',d:'回程前吃午餐、買伴手禮。'},
+ simala:{n:'西馬拉教堂',lo:123.60,la:9.98,m:1,lp:'l',d:'像歐洲城堡的朝聖教堂，需穿過膝、有袖衣物。'},
+ oslob:{n:'歐斯陸 鯨鯊',lo:123.40,la:9.47,m:1,lp:'r',d:'清晨 6–8 點最佳；不想下水也可以坐船在上面看。'},
+ tumalog:{n:'Tumalog 瀑布',lo:123.392,la:9.50,m:0,lp:'r',d:'簾幕狀瀑布，摩托接駁上下坡。'},
+ canyon:{n:'溯溪起點',lo:123.378,la:9.835,m:0,lp:'r',d:'Badian Canyoneering 起點，溯溪跳水 3–4 小時，終點是卡瓦山瀑布。'},
+ kawasan:{n:'卡瓦山瀑布',lo:123.385,la:9.81,m:1,lp:'r',d:'藍綠色瀑布潭，竹筏可到瀑布下，步道平緩。'},
+ moalboal:{n:'墨寶',lo:123.395,la:9.94,m:1,lp:'r',d:'Panagsama 海灘，岸邊就能看沙丁魚風暴和海龜。'},
+ pescador:{n:'Pescador 島',lo:123.335,la:9.925,m:0,lp:'b',d:'小島珊瑚牆，浮潛。'},
+ tag:{n:'塔比拉蘭',lo:123.85,la:9.65,m:1,s:1,lp:'t',d:'薄荷島港口，包車司機在此接人。'},
+ blood:{n:'血盟紀念碑',lo:123.875,la:9.628,m:0,lp:'b',d:'紀念 1565 年西菲結盟。'},
+ bac:{n:'巴克雷恩教堂',lo:123.91,la:9.622,m:0,lp:'t',d:'菲律賓最古老的石造教堂之一。'},
+ loboc:{n:'羅博河遊船',lo:124.03,la:9.64,m:1,lp:'b',d:'河上自助午餐約 1 小時，有現場音樂。'},
+ tarsier:{n:'眼鏡猴保護區',lo:124.06,la:9.665,m:0,lp:'r',d:'保持安靜、勿用閃光燈。'},
+ forest:{n:'人造森林',lo:124.10,la:9.71,m:0,lp:'r',d:'桃花心木林道，下車拍照。'},
+ choco:{n:'巧克力山',lo:124.14,la:9.83,m:1,lp:'r',d:'1,200 多座圓錐小丘，觀景台約 200 階。'},
+ firefly:{n:'Abatan 螢火蟲',lo:123.874,la:9.715,m:1,lp:'l',d:'晚上坐船在紅樹林看整棵樹的螢火蟲，約 1 小時。'},
+ alona:{n:'Alona 海灘',lo:123.77,la:9.553,m:1,lp:'t',d:'邦勞島最熱鬧的海灘，按摩店、餐廳多。'},
+ dolphin:{n:'海豚觀賞',lo:123.72,la:9.50,m:0,lp:'b',d:'清晨出海，看運氣。'},
+ bal:{n:'巴里卡薩島',lo:123.68,la:9.515,m:1,lp:'l',d:'海龜與珊瑚牆。'}
+},
+routes:[
+{id:'split',c:'--r0',name:'A 分組行動版',short:'A 分組版',tag:'早上一起・下午各玩各的・晚上一起吃',
+ sub:'住：麥克坦 2・墨寶 1・市區 1・邦勞 2',
+ desc:'大家分兩組再會合。重點景點全家一起，下午爸媽按摩、泡湯、喝茶，兄弟溯溪、潛水、拍夕陽，晚餐再一起吃。',
+ stats:[['節奏','每天都有活動'],['最早起床','1/28 凌晨 4:30'],['適合','想讓每個人都玩到最想玩的'],['參考花費','約 NT$45,000–60,000／人（含機票）']],
+ days:[
+  {label:'1/26',date:'週二',t:'抵達・度假村放鬆',
+   segs:[S('airport','resort','car','約 20–30 分鐘','25分','飯店接送；侖侖先把 SIM／Grab 弄好',[[124.0,10.295]]),
+         S('resort','sutukil','car','約 15 分鐘','15分','Grab（侖侖叫車）',[[123.99,10.30]])],
+   tl:[['午後','抵達、換匯、買 SIM'],['15:00','度假村 Check-in'],['16:00','【媽媽】飯店 Spa【爸爸】池畔喝茶【兄弟】泳池'],['18:30','SuTuKil 海鮮晚餐（點烤和煮湯）']],
+   tips:['第一天不排景點，先適應天氣','生的 Kilaw 先不點，選熟食比較安心','侖侖先建好全家的 Grab 與網路'],
+   couple:'媽媽可以先上網預約好第二天的按摩時段。'},
+  {label:'1/27',date:'週三',t:'跳島浮潛・下午分組',
+   segs:[S('resort','hil','boat','約 30–40 分鐘','35分','私人包船（有遮陽、救生衣）',[[124.03,10.24]]),
+         S('hil','nal','boat','約 15–20 分鐘','15分','同一艘船'),
+         S('nal','resort','boat','約 30–40 分鐘','35分','回飯店',[[124.045,10.21],[124.036,10.25]])],
+   tl:[['08:30','私人包船出發'],['09:15','Hilutungan 浮潛（不下水的人在船上看魚）'],['12:00','Nalusuan 島午餐'],['14:00','回飯店'],['14:30','【爸媽】按摩、岩盤浴、喝茶【兄弟】潛水體驗或水上活動'],['18:30','全家晚餐（媽媽先訂位）']],
+   tips:['包船要選有遮陽棚的，爸媽比較舒服','潛水體驗要先預約，前一晚不要喝太多酒','暈船藥出發前 30 分鐘吃'],
+   couple:'爸爸可以先跟船家講好幾點回港，時間比較好掌握。'},
+  {label:'1/28',date:'週四',t:'鯨鯊・兄弟溯溪・爸媽瀑布',
+   segs:[S('resort','oslob','car','約 3.5 小時','3.5h','04:30 私人包車，沿東岸南下',COAST_E.concat([[123.59,9.88],[123.52,9.76],[123.47,9.63],[123.42,9.53]])),
+         S('oslob','canyon','car','約 1.5 小時','1.5h','繞到西岸；兄弟在溯溪起點下車，爸媽再坐 10 分鐘到卡瓦山',[[123.40,9.47],[123.37,9.43],[123.335,9.45],[123.325,9.53],[123.34,9.65],[123.37,9.78]]),
+         S('canyon','kawasan','walk','約 3–4 小時','溯溪','兄弟：Canyoneering 溯溪跳水（含嚮導），終點就是卡瓦山瀑布',[[123.383,9.823]]),
+         S('kawasan','moalboal','car','約 30 分鐘','30分','全家會合，包車往北',[[123.39,9.88]])],
+   tl:[['04:30','包車出發（車上補眠）'],['07:00','歐斯陸看鯨鯊（全家；不想下水可坐船看）'],['09:00','早午餐'],['10:30','往西岸'],['12:00','【兄弟】溯溪跳水【爸媽】卡瓦山瀑布竹筏、溪邊喝茶午餐'],['15:30','卡瓦山瀑布會合'],['16:30','墨寶 Check-in'],['18:00','海邊看夕陽晚餐']],
+   tips:['溯溪要穿防滑鞋、手機放防水袋，業者附嚮導和救生衣','看鯨鯊前不可擦一般防曬、不可觸摸','爸媽帶一套換洗衣物，瀑布邊會濕'],
+   couple:'侖侖負責聯絡包車司機和溯溪業者，確認會合時間。'},
+  {label:'1/29',date:'週五',t:'沙丁魚・市區・神殿夕陽',
+   segs:[S('moalboal','pescador','boat','約 20 分鐘','20分','兄弟：螃蟹船出海浮潛（爸媽海邊早餐）',[[123.365,9.945]]),
+         S('pescador','moalboal','boat','約 20 分鐘','20分','回 Panagsama',[[123.365,9.918]]),
+         S('moalboal','city','car','約 3 小時','3h','包車回宿霧市區',[[123.41,10.0],[123.51,10.11],[123.64,10.11],[123.71,10.16],[123.76,10.21],[123.84,10.25]]),
+         S('city','leah','car','約 40 分鐘','40分','兄弟：Grab 上山看夕陽；爸媽 Grab 去 Ayala',[[123.88,10.33]]),
+         S('leah','ayala','car','約 40 分鐘','40分','下山到 Ayala 和爸媽會合吃晚餐',[[123.89,10.345]])],
+   tl:[['07:00','【兄弟】岸邊看沙丁魚、海龜，坐船到 Pescador【爸媽】海邊早餐'],['11:30','退房，包車回市區'],['15:00','聖嬰教堂、麥哲倫十字架（全家）'],['16:00','【爸媽】Ayala 逛街、按摩【兄弟】Leah 神殿看夕陽拍照'],['19:00','Ayala 會合，吃烤乳豬晚餐']],
+   tips:['教堂要穿有袖上衣、過膝褲','Leah 神殿要門票，傍晚人多','Ayala 的按摩店可先預約'],
+   couple:'弘利可以在神殿拍一張全家合照當這趟的封面。'},
+  {label:'1/30',date:'週六',t:'薄荷島一日・螢火蟲',
+   segs:[S('port','tag','boat','約 2 小時','2h','快船（侖侖保管電子船票）',SEG_PORT_TAG),
+         S('tag','blood','car','約 10 分鐘','10分','全天同一台包車'),
+         S('blood','bac','car','約 10 分鐘','10分','包車'),
+         S('bac','loboc','car','約 30 分鐘','30分','包車',[[123.97,9.628]]),
+         S('loboc','tarsier','car','約 15 分鐘','15分','包車'),
+         S('tarsier','forest','car','約 20 分鐘','20分','包車'),
+         S('forest','choco','car','約 30 分鐘','30分','包車',[[124.13,9.77]]),
+         S('choco','firefly','car','約 1.3 小時','1.3h','包車往西，傍晚到 Abatan 河',[[124.10,9.73],[124.0,9.70],[123.92,9.70]]),
+         S('firefly','alona','car','約 40 分鐘','40分','包車到邦勞島',[[123.84,9.66],[123.80,9.585]])],
+   tl:[['07:00','快船到塔比拉蘭'],['09:30','血盟紀念碑、巴克雷恩教堂'],['11:30','羅博河遊船午餐'],['13:30','眼鏡猴、人造森林'],['15:30','巧克力山（爸媽可在下方休息）'],['18:30','Abatan 河螢火蟲遊船（坐船，約 1 小時）'],['20:30','入住 Alona']],
+   tips:['這天比較長，包車上可以補眠','螢火蟲要穿長袖長褲、噴防蚊液','巧克力山 200 階，爸媽可分段走'],
+   couple:'整棵樹都在發光的螢火蟲，是這天的壓軸。'},
+  {label:'1/31',date:'週日',t:'巴里卡薩・各自放鬆',
+   segs:[S('alona','dolphin','boat','約 30 分鐘','30分','清晨包船出海'),
+         S('dolphin','bal','boat','約 20 分鐘','20分','同一艘船'),
+         S('bal','alona','boat','約 30 分鐘','30分','回 Alona',[[123.73,9.545]])],
+   tl:[['06:00','出海看海豚（全家）'],['08:00','【兄弟】巴里卡薩浮潛看海龜【爸媽】在船上或島上休息'],['11:30','回飯店'],['14:00','【爸媽】按摩【兄弟】海灘、潛水'],['17:30','全家在海邊吃晚餐看夕陽（媽媽先訂靠海位子）']],
+   tips:['爸媽想多睡可以只參加後半段','海龜保持距離、不追逐','最後一晚可以訂好一點的餐廳'],
+   couple:'晚餐時間可以讓每個人說這趟最喜歡的一件事。'},
+  {label:'2/1',date:'週一',t:'回程',
+   segs:[S('alona','tag','car','約 30–40 分鐘','35分','飯店接送或包車',[[123.80,9.585]]),
+         S('tag','port','boat','約 2 小時','2h','快船回宿霧',SEG_PORT_TAG.slice().reverse()),
+         S('port','sm','car','約 20 分鐘','20分','Grab'),
+         S('sm','airport','car','約 40 分鐘','40分','Grab，尖峰易塞車',[[123.92,10.322],[123.96,10.322]])],
+   tl:[['08:00','快船回宿霧'],['11:00','SM Seaside 午餐、買伴手禮'],['航班前 3h','到麥克坦機場']],
+   tips:['遇大浪停航可改搭國內線','伴手禮：芒果乾、花生糖','爸爸再確認一次航班號與航廈'],
+   couple:'媽媽可以在回程把相簿整理好，分享給大家。'}
+ ],
+ extra:[{h:'A 版要先預訂',items:['溯溪 Canyoneering 業者（含嚮導）','麥克坦潛水體驗','Abatan 河螢火蟲遊船','每天的按摩／Spa 時段']}]},
+{id:'together',c:'--r1',name:'B 全家從容版',short:'B 從容版',tag:'不摸黑早起・每天午休・全程包車',
+ sub:'住：麥克坦 2・歐斯陸 1・市區 1・邦勞 2',
+ desc:'全家一起行動、步調放慢。前一晚住歐斯陸，看鯨鯊不用凌晨出發；每天下午 2–4 點回飯店休息；景點少而精，交通全用包車與私人船。',
+ stats:[['節奏','每天下午午休'],['最早起床','1/29 早上 5:30'],['適合','全家都在一起、不想太累'],['參考花費','約 NT$42,000–55,000／人（含機票）']],
+ days:[
+  {label:'1/26',date:'週二',t:'抵達・飯店休息',
+   segs:[S('airport','resort','car','約 20–30 分鐘','25分','飯店接送',[[124.0,10.295]])],
+   tl:[['午後','抵達、換匯、買 SIM'],['15:00','Check-in，泳池與海灘'],['17:00','全家 Spa 或按摩'],['19:00','飯店晚餐（先訂位）']],
+   tips:['第一天只休息','晚餐在飯店吃最省力','早點睡，隔天不趕'],
+   couple:'媽媽可以先訂好飯店 Spa 的家庭時段。'},
+  {label:'1/27',date:'週三',t:'跳島浮潛（半天）',
+   segs:[S('resort','hil','boat','約 30–40 分鐘','35分','私人包船，9 點才出發',[[124.03,10.24]]),
+         S('hil','nal','boat','約 15–20 分鐘','15分','同一艘船'),
+         S('nal','resort','boat','約 30–40 分鐘','35分','14 點前回飯店',[[124.045,10.21],[124.036,10.25]])],
+   tl:[['09:00','私人包船出發'],['09:45','Hilutungan 浮潛或在船上看魚'],['12:00','Nalusuan 島午餐'],['13:30','回飯店'],['14:00','午休'],['16:30','池畔下午茶'],['18:30','海鮮餐廳晚餐（熟食為主）']],
+   tips:['半天行程，不趕','救生衣一定要穿好','不下水也能在棧橋看魚'],
+   couple:'下午茶時間，可以慢慢喝茶看海。'},
+  {label:'1/28',date:'週四',t:'西馬拉教堂・住歐斯陸',
+   segs:[S('resort','simala','car','約 2 小時','2h','10 點退房，私人包車往南',COAST_E),
+         S('simala','oslob','car','約 2 小時','2h','沿東岸到歐斯陸海邊度假村',[[123.59,9.88],[123.52,9.76],[123.47,9.63],[123.42,9.53]])],
+   tl:[['10:00','退房，包車出發'],['12:00','西馬拉教堂（城堡式教堂）'],['13:00','午餐'],['16:00','入住歐斯陸海邊度假村'],['16:30','泳池、海邊散步'],['18:00','海景晚餐，早點睡']],
+   tips:['教堂要穿過膝、有袖的衣服','歐斯陸住鯨鯊點附近，隔天走路就到','車程中途找咖啡店休息'],
+   couple:'住在鯨鯊點旁邊，就不用凌晨四點摸黑出發。'},
+  {label:'1/29',date:'週五',t:'鯨鯊・瀑布・回市區',
+   segs:[S('oslob','kawasan','car','約 1.5 小時','1.5h','早餐後包車繞到西岸',[[123.40,9.47],[123.37,9.43],[123.335,9.45],[123.325,9.53],[123.34,9.65],[123.375,9.76]]),
+         S('kawasan','city','car','約 3 小時','3h','包車回宿霧市區（車上午睡）',[[123.39,9.88],[123.41,10.0],[123.51,10.11],[123.64,10.11],[123.71,10.16],[123.76,10.21],[123.84,10.25]])],
+   tl:[['05:30','起床'],['06:00','走到鯨鯊報到處，搭第一批船'],['07:30','回飯店早餐、沖澡'],['09:30','包車往西岸'],['11:00','卡瓦山瀑布竹筏、溪邊午餐'],['13:30','包車回市區（車上午睡）'],['17:00','市區 Check-in'],['18:30','烤乳豬晚餐']],
+   tips:['第一批船人最少，也最涼','不下水的人可以坐船看','瀑布只走平緩步道，不溯溪'],
+   couple:'今天景點只有兩個，其他時間都在休息。'},
+  {label:'1/30',date:'週六',t:'薄荷島精華・住邦勞',
+   segs:[S('port','tag','boat','約 2 小時','2h','快船，搭 8 點後的班次',SEG_PORT_TAG),
+         S('tag','loboc','car','約 40 分鐘','40分','全天包車',[[123.91,9.622],[123.97,9.628]]),
+         S('loboc','tarsier','car','約 15 分鐘','15分','包車'),
+         S('tarsier','choco','car','約 50 分鐘','50分','包車，經過人造森林不下車也可以',[[124.10,9.71],[124.13,9.77]]),
+         S('choco','alona','car','約 1.5 小時','1.5h','包車到邦勞島',[[124.12,9.75],[124.04,9.67],[123.95,9.64],[123.86,9.615],[123.80,9.585]])],
+   tl:[['08:20','快船到塔比拉蘭'],['11:00','羅博河遊船午餐'],['13:00','眼鏡猴保護區'],['14:30','巧克力山（爸媽可在下方休息）'],['17:00','入住 Alona，晚餐']],
+   tips:['少排幾站，留體力','巧克力山階梯可分段走','包車先講好景點與價格'],
+   couple:'血盟紀念碑、巴克雷恩教堂可以坐在車上經過就好。'},
+  {label:'1/31',date:'週日',t:'海龜・午休・螢火蟲',
+   segs:[S('alona','bal','boat','約 40 分鐘','40分','8 點包船出海（不用 6 點）',[[123.73,9.53]]),
+         S('bal','alona','boat','約 40 分鐘','40分','回 Alona',[[123.73,9.545]]),
+         S('alona','firefly','car','約 40 分鐘','40分','傍晚包車',[[123.80,9.585],[123.84,9.66]]),
+         S('firefly','alona','car','約 40 分鐘','40分','回飯店',[[123.85,9.665],[123.805,9.59]])],
+   tl:[['08:00','出海到巴里卡薩，浮潛或在船上看海龜'],['11:00','回飯店'],['13:00','午休'],['15:00','全家按摩'],['17:30','海邊晚餐'],['18:30','Abatan 河螢火蟲遊船'],['20:30','回飯店']],
+   tips:['海龜保持距離','螢火蟲穿長袖、噴防蚊液','按摩先預約'],
+   couple:'坐在船上看螢火蟲，不用走路，爸媽也輕鬆。'},
+  {label:'2/1',date:'週一',t:'回程',
+   segs:[S('alona','tag','car','約 30–40 分鐘','35分','包車',[[123.80,9.585]]),
+         S('tag','port','boat','約 2 小時','2h','快船回宿霧',SEG_PORT_TAG.slice().reverse()),
+         S('port','sm','car','約 20 分鐘','20分','包車'),
+         S('sm','airport','car','約 40 分鐘','40分','包車',[[123.92,10.322],[123.96,10.322]])],
+   tl:[['08:00','快船回宿霧'],['11:00','SM Seaside 午餐、伴手禮'],['航班前 3h','到麥克坦機場']],
+   tips:['遇大浪停航可改搭國內線','最後一天全程包車最省事','爸爸再確認航班與航廈'],
+   couple:'回程不趕，留足時間給機場。'}
+ ],
+ extra:[{h:'B 版要先預訂',items:['歐斯陸海邊度假村（離鯨鯊點走路可到）','全程包車（可請飯店介紹）','Abatan 河螢火蟲遊船','巴里卡薩包船']}]}
+],
+base:{
+ polys:[
+  ['land',[[124.06,10.75],[124.03,10.52],[124.0,10.40],[123.95,10.35],[123.93,10.32],[123.90,10.29],[123.84,10.25],[123.76,10.21],[123.71,10.16],[123.64,10.11],[123.62,10.02],[123.60,9.88],[123.53,9.76],[123.48,9.63],[123.43,9.53],[123.40,9.46],[123.37,9.41],[123.33,9.42],[123.31,9.53],[123.32,9.58],[123.33,9.65],[123.36,9.76],[123.37,9.85],[123.38,9.94],[123.40,10.0],[123.51,10.12],[123.58,10.27],[123.64,10.38],[123.71,10.50],[123.72,10.57],[123.73,10.75]]],
+  ['land',[[123.955,10.335],[124.0,10.345],[124.04,10.31],[124.03,10.26],[123.99,10.25],[123.962,10.285]]],
+  ['land',[[124.045,10.275],[124.085,10.285],[124.095,10.235],[124.055,10.22]]],
+  ['land',[[123.85,9.65],[123.82,9.72],[123.79,9.80],[123.87,9.87],[123.96,9.95],[124.07,10.03],[124.20,10.10],[124.32,10.15],[124.40,10.12],[124.47,10.06],[124.55,9.92],[124.58,9.74],[124.49,9.76],[124.37,9.65],[124.29,9.61],[124.21,9.61],[124.10,9.59],[124.01,9.60],[123.91,9.615],[123.87,9.63]]],
+  ['land',[[123.73,9.58],[123.80,9.60],[123.86,9.62],[123.885,9.595],[123.80,9.54],[123.74,9.55]]],
+  ['hill',[[123.70,10.40],[123.82,10.32],[123.70,10.12],[123.55,9.90],[123.45,9.70],[123.40,9.60],[123.36,9.72],[123.42,9.95],[123.55,10.15],[123.62,10.30]]],
+  ['hill',[[124.05,9.95],[124.30,10.05],[124.45,9.95],[124.40,9.75],[124.20,9.70],[124.05,9.75]]]
+ ],
+ lines:[],
+ labels:[['CEBU',123.55,10.30,'region',-58],['BOHOL',124.28,9.85,'region'],['BOHOL STRAIT',123.62,9.60,'sea-name',-50],['CAMOTES SEA',124.35,10.45,'sea-name']]
+}};
+
+const {LON0,LAT1,K,W,H}=CFG; const AR=W/H;
 const X=lo=>(lo-LON0)*K, Y=la=>(LAT1-la)*K;
 const NS='http://www.w3.org/2000/svg';
 const svg=document.getElementById('svg'), chart=document.getElementById('chart'), tip=document.getElementById('tip');
-const el=(t,a,parent)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(parent||svg).appendChild(e);return e;};
+const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e;};
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const MODE={car:'車',boat:'船'}, MODEL={car:'車程',boat:'船程'};
-
-/* ---------- places ---------- */
-const PL={
- airport:{n:'麥克坦機場',lo:123.98,la:10.31,m:1,lp:'t',d:'宿霧國際機場（CEB），入境後可換匯、買 SIM 卡。'},
- resort:{n:'麥克坦度假村',lo:124.02,la:10.28,m:0,lp:'r',d:'住 2 晚，私人沙灘與泳池。'},
- sutukil:{n:'SuTuKil 海鮮',lo:123.965,la:10.303,m:0,lp:'l',d:'挑海鮮現點現做：烤、煮湯、醋漬。'},
- hil:{n:'Hilutungan',lo:124.02,la:10.205,m:1,lp:'l',d:'海洋保護區，水淺魚多，浮潛首選。'},
- nal:{n:'Nalusuan 島',lo:124.065,la:10.185,m:0,lp:'r',d:'長棧橋就能看魚，島上吃午餐。'},
- city:{n:'宿霧市區',lo:123.90,la:10.298,m:1,lp:'l',d:'聖嬰教堂、麥哲倫十字架、聖佩德羅堡，彼此步行 5–10 分鐘。'},
- port:{n:'宿霧碼頭',lo:123.912,la:10.287,m:0,lp:'r',d:'Pier 1 快船碼頭，往返薄荷島。'},
- sm:{n:'SM Seaside',lo:123.88,la:10.276,m:0,lp:'b',d:'大型商場，吃午餐、買伴手禮。'},
- oslob:{n:'歐斯陸 鯨鯊',lo:123.40,la:9.47,m:1,lp:'r',d:'清晨 6–8 點最佳，浮潛約 30 分鐘，不可觸摸鯨鯊。'},
- tumalog:{n:'Tumalog 瀑布',lo:123.392,la:9.50,m:0,lp:'r',d:'簾幕狀瀑布，搭摩托接駁上下坡（可選）。'},
- kawasan:{n:'卡瓦山瀑布',lo:123.385,la:9.81,m:1,lp:'r',d:'藍綠色瀑布潭，可搭竹筏到瀑布下，步道平緩。'},
- moalboal:{n:'墨寶',lo:123.395,la:9.94,m:1,lp:'r',d:'Panagsama 海灘，岸邊即可看沙丁魚風暴與海龜。'},
- pescador:{n:'Pescador 島',lo:123.335,la:9.925,m:0,lp:'l',d:'小島周圍的珊瑚牆，可選行程。'},
- tag:{n:'塔比拉蘭',lo:123.85,la:9.65,m:1,lp:'t',d:'薄荷島主要港口，包車司機在此接人。'},
- blood:{n:'血盟紀念碑',lo:123.875,la:9.628,m:0,lp:'b',d:'紀念 1565 年西菲結盟，停留約 15 分鐘。'},
- bac:{n:'巴克雷恩教堂',lo:123.91,la:9.622,m:0,lp:'t',d:'菲律賓最古老的石造教堂之一。'},
- loboc:{n:'羅博河遊船',lo:124.03,la:9.64,m:1,lp:'b',d:'河上自助午餐約 1 小時，有現場音樂。'},
- tarsier:{n:'眼鏡猴保護區',lo:124.06,la:9.665,m:0,lp:'r',d:'世界最小的靈長類之一，保持安靜、勿用閃光燈。'},
- forest:{n:'人造森林',lo:124.10,la:9.71,m:0,lp:'r',d:'約兩公里長的桃花心木林道，下車拍照。'},
- choco:{n:'巧克力山',lo:124.14,la:9.83,m:1,lp:'r',d:'1,200 多座圓錐小丘，觀景台約 200 階。'},
- alona:{n:'Alona 海灘',lo:123.77,la:9.553,m:1,lp:'t',d:'邦勞島最熱鬧的海灘，餐廳與按摩店多。'},
- dolphin:{n:'海豚觀賞',lo:123.72,la:9.50,m:0,lp:'b',d:'清晨出海，看運氣。'},
- bal:{n:'巴里卡薩島',lo:123.68,la:9.515,m:1,lp:'l',d:'海龜與珊瑚牆，浮潛勝地。'}
-};
-const S=(f,t,mode,dur,short,dist,how,mid)=>({f,t,mode,dur,short,dist,how,mid:mid||[]});
-
-const DAYS=[
- {d:'1/26',wk:'二',c:'--d1',t:'抵達宿霧・麥克坦',stay:'麥克坦度假村',
-  segs:[S('airport','resort','car','約 20–30 分鐘','25分','約 8 km','飯店接送或 Grab',[[124.0,10.295]]),
-        S('resort','sutukil','car','約 15 分鐘','15分','約 5 km','Grab 叫車',[[123.99,10.30]])],
-  tl:[['午後','抵達麥克坦機場（CEB），換匯、買 SIM 卡'],['15:00','度假村 Check-in，泳池與海灘放鬆'],['18:30','SuTuKil 海鮮市場挑海鮮晚餐']],
-  note:'第一天不排行程，好好休息、適應天氣。'},
- {d:'1/27',wk:'三',c:'--d2',t:'麥克坦跳島浮潛',stay:'麥克坦度假村',
-  segs:[S('resort','hil','boat','約 30–40 分鐘','35分','約 9 km','私人包船（螃蟹船 Bangka）',[[124.03,10.24]]),
-        S('hil','nal','boat','約 15–20 分鐘','15分','約 5 km','同一艘船'),
-        S('nal','resort','boat','約 30–40 分鐘','35分','約 12 km','同一艘船返回',[[124.045,10.21],[124.036,10.25]])],
-  tl:[['08:30','碼頭出發，包船跳島（私人船較舒服）'],['09:15','Hilutungan 海洋保護區浮潛，魚群多、水淺'],['12:00','Nalusuan 島或船上 BBQ 午餐'],['14:30','回飯店休息、Spa 按摩'],['19:00','度假村晚餐']],
-  note:'<b>小提醒：</b>不下水也可以在船上或棧橋看魚。'},
- {d:'1/28',wk:'四',c:'--d3',t:'南部：鯨鯊與瀑布',stay:'墨寶 Moalboal',
-  segs:[S('resort','oslob','car','約 3.5–4 小時','3.5h','約 140 km','清晨 4:00 包車出發，沿東岸南下',[[123.96,10.32],[123.90,10.29],[123.84,10.25],[123.76,10.21],[123.71,10.16],[123.64,10.11],[123.61,10.02],[123.59,9.88],[123.52,9.76],[123.47,9.63],[123.42,9.53]]),
-        S('oslob','tumalog','car','約 5 分鐘＋接駁','5分','約 2 km','停車場轉搭摩托接駁'),
-        S('tumalog','kawasan','car','約 1.5 小時','1.5h','約 50 km','繞過南端，走西岸公路',[[123.40,9.47],[123.37,9.43],[123.335,9.45],[123.325,9.53],[123.34,9.65],[123.375,9.76]]),
-        S('kawasan','moalboal','car','約 30 分鐘','30分','約 20 km','包車沿西岸往北',[[123.39,9.88]])],
-  tl:[['04:00','包車出發（車程約 3.5 小時，車上補眠）'],['07:30','歐斯陸看鯨鯊，浮潛約 30 分鐘；早到人少'],['09:30','早午餐；體力允許可去 Tumalog 瀑布'],['12:00','前往卡瓦山瀑布，竹筏到瀑布下'],['16:00','抵達墨寶 Check-in，海邊看夕陽']],
-  note:'<b>為什麼住墨寶：</b>一日來回要 10 小時以上，拆成兩天輕鬆許多。'},
- {d:'1/29',wk:'五',c:'--d4',t:'沙丁魚風暴・回市區',stay:'宿霧市區',
-  segs:[S('moalboal','pescador','boat','約 20 分鐘','20分','約 3 km','（可選）螃蟹船出海浮潛',[[123.365,9.945]]),
-        S('pescador','moalboal','boat','約 20 分鐘','20分','約 3 km','回 Panagsama 海灘',[[123.365,9.918]]),
-        S('moalboal','city','car','約 3 小時','3h','約 90 km','包車，經 Carcar 沿東岸北上',[[123.41,10.0],[123.51,10.11],[123.64,10.11],[123.71,10.16],[123.76,10.21],[123.84,10.25]])],
-  tl:[['07:30','岸邊下水就能看沙丁魚群，也有海龜'],['09:30','（可選）Pescador 島浮潛'],['11:30','退房，包車回宿霧市區'],['15:00','聖嬰教堂、麥哲倫十字架、聖佩德羅堡'],['18:30','Zubuchon 或 Rico\'s 烤乳豬晚餐']],
-  note:'市區景點彼此步行 5–10 分鐘，教堂內需穿有袖上衣。'},
- {d:'1/30',wk:'六',c:'--d5',t:'薄荷島經典一日',stay:'邦勞島 Panglao',
-  segs:[S('port','tag','boat','約 2 小時','2h','約 72 km','OceanJet／SuperCat 快船，建議提前訂票',[[123.86,10.15],[123.80,9.90],[123.75,9.75],[123.80,9.665]]),
-        S('tag','blood','car','約 10 分鐘','10分','約 4 km','包車（全天同一位司機）'),
-        S('blood','bac','car','約 10 分鐘','10分','約 3 km','包車'),
-        S('bac','loboc','car','約 30 分鐘','30分','約 18 km','包車',[[123.97,9.628]]),
-        S('loboc','tarsier','car','約 15 分鐘','15分','約 5 km','包車'),
-        S('tarsier','forest','car','約 20 分鐘','20分','約 10 km','包車'),
-        S('forest','choco','car','約 30 分鐘','30分','約 20 km','包車',[[124.13,9.77]]),
-        S('choco','alona','car','約 1.5 小時','1.5h','約 60 km','包車，經塔比拉蘭過橋到邦勞島',[[124.12,9.75],[124.04,9.67],[123.95,9.64],[123.86,9.615],[123.80,9.585]])],
-  tl:[['07:00','宿霧碼頭搭快船（約 2 小時）'],['09:30','包車：血盟紀念碑、巴克雷恩教堂'],['11:30','羅博河遊船自助午餐，有現場音樂'],['13:30','眼鏡猴保護區（保持安靜、勿用閃光燈）'],['14:30','人造桃花心木森林拍照'],['15:30','巧克力山，觀景台約 200 階，可慢慢走'],['18:00','入住邦勞島 Alona 海灘']],
-  note:'<b>小提醒：</b>巧克力山階梯可以分段休息，或在下方廣場欣賞即可。'},
- {d:'1/31',wk:'日',c:'--d6',t:'巴里卡薩島・海灘慢活',stay:'邦勞島 Panglao',
-  segs:[S('alona','dolphin','boat','約 30 分鐘','30分','約 6 km','清晨包船出海'),
-        S('dolphin','bal','boat','約 20 分鐘','20分','約 4 km','同一艘船'),
-        S('bal','alona','boat','約 30 分鐘','30分','約 10 km','回 Alona 海灘',[[123.73,9.545]])],
-  tl:[['06:00','出海看海豚（看運氣）'],['08:00','巴里卡薩島浮潛，海龜與珊瑚牆'],['11:30','回飯店休息'],['15:00','Alona 海灘散步、按摩'],['18:30','海灘餐廳晚餐看夕陽']],
-  note:'最輕鬆的一天，可視體力取消清晨出海。'},
- {d:'2/1',wk:'一',c:'--d7',t:'回程',stay:'—',
-  segs:[S('alona','tag','car','約 30–40 分鐘','35分','約 20 km','飯店接送或包車',[[123.80,9.585]]),
-        S('tag','port','boat','約 2 小時','2h','約 72 km','快船回宿霧',[[123.80,9.665],[123.75,9.75],[123.80,9.90],[123.86,10.15]]),
-        S('port','sm','car','約 20 分鐘','20分','約 6 km','Grab 叫車'),
-        S('sm','airport','car','約 40 分鐘','40分','約 15 km','Grab，尖峰時段容易塞車',[[123.92,10.322],[123.96,10.322]])],
-  tl:[['08:00','搭快船回宿霧'],['11:00','SM Seaside 午餐、買伴手禮'],['航班前 3h','前往麥克坦機場']],
-  note:'若遇大浪停航，可改搭國內線從薄荷島飛回宿霧。'}
-];
-const TIPS=[
- {tips:['入境前備妥 eTravel QR code、回程機票與住宿資料','機場先換少量披索應急，市區匯兌所匯率較好','SuTuKil 點菜前先問清楚秤重價格與烹調費','菲律賓電壓 220V，只標 110V 的電器不能直接插'],bring:['護照、eTravel QR code','少量披索現金','手機 SIM／eSIM','薄外套（機上冷）']},
- {tips:['使用珊瑚礁友善防曬，浮潛時不踩珊瑚、不餵魚','船上日曬強、風大，帽子要綁帶','暈船體質出發前 30 分鐘吃暈船藥','跳島船資與保護區門票先確認是否含在包船費內'],bring:['泳衣、毛巾、換洗衣物','防水袋、防水手機套','暈船藥','礁石友善防曬乳']},
- {tips:['04:00 出發，前一晚早睡，可請飯店準備早餐盒','看鯨鯊前不可擦防曬乳，保持距離、不可觸摸、禁用閃光燈','卡瓦山步道與岩石濕滑，請穿防滑涼鞋','車程長，準備零食、水與暈車藥，每 1.5 小時停車休息'],bring:['防滑涼鞋','乾衣服與塑膠袋','零錢（門票、置物櫃、竹筏）','暈車藥、零食']},
- {tips:['沙丁魚群就在岸邊不遠，可現場租浮潛裝備','退房前與司機確認出發時間，回市區約 3 小時','進聖嬰教堂需穿有袖上衣、避免太短的短褲','市區人多，手機與錢包放前方、留意扒手'],bring:['披肩或有袖上衣','小額現金','浮潛面鏡（自備較衛生）']},
- {tips:['快船需提前 30–60 分鐘到碼頭，現場另付碼頭費，大件行李需託運','買船票需出示護照','眼鏡猴怕光與聲音，禁用閃光、輕聲說話','包車事先講好景點、時間與價格，含不含門票'],bring:['護照','帽子、飲用水','暈船藥','小額現金（門票、小費）']},
- {tips:['海豚看運氣，浪大時船家會取消，不要勉強','巴里卡薩有海龜，保持距離不追逐','中午太陽最大，安排回飯店休息','傍晚 Alona 海灘看夕陽，餐廳可先訂位'],bring:['浮潛用具','防水手機套','防曬、帽子']},
- {tips:['冬季偶有停航，前一天先確認船班；必要時改搭國內線','國際線建議起飛前 3 小時到機場','剩下的披索可在商場花完或機場換回','芒果乾等伴手禮放託運行李'],bring:['護照與登機證','伴手禮行李','回台用的悠遊卡、台幣']}
-];
+const MODE={car:'包車',hsr:'高鐵',train:'火車',mrt:'捷運',lrt:'輕軌',bus:'公車',walk:'步行',bike:'單車',shuttle:'接駁',taxi:'計程車',ferry:'渡輪',boat:'遊船'};
+const MS={car:'車',hsr:'高鐵',train:'火車',mrt:'捷運',lrt:'輕軌',bus:'公車',walk:'走',bike:'騎',shuttle:'接駁',taxi:'車',ferry:'船',boat:'船'};
+const PL=CFG.places, ROUTES=CFG.routes;
+ROUTES.forEach(r=>{r.days=r.days.map(d=>JSON.parse(JSON.stringify(d)));});
 const SEG=[];
-DAYS.forEach((d,i)=>d.segs.forEach(s=>{s.day=i;s.id=SEG.length;s.pts=[[PL[s.f].lo,PL[s.f].la],...s.mid,[PL[s.t].lo,PL[s.t].la]].map(p=>[X(p[0]),Y(p[1])]);SEG.push(s);}));
-DAYS.forEach((d,i)=>{d.stops=[d.segs[0].f,...d.segs.map(s=>s.t)];Object.assign(d,TIPS[i]);});
+ROUTES.forEach((r,ri)=>r.days.forEach((d,di)=>d.segs.forEach(s=>{
+  s.r=ri;s.d=di;s.id=SEG.length;
+  s.pts=[[PL[s.f].lo,PL[s.f].la],...(s.mid||[]),[PL[s.t].lo,PL[s.t].la]].map(p=>[X(p[0]),Y(p[1])]);
+  s.len=s.pts.slice(1).reduce((a,q,k)=>a+Math.hypot(q[0]-s.pts[k][0],q[1]-s.pts[k][1]),0);
+  SEG.push(s);})));
+ROUTES.forEach(r=>r.days.forEach(d=>{d.stops=[d.segs[0].f,...d.segs.map(s=>s.t)];}));
 
-/* ---------- base map ---------- */
-const islands={
- cebu:[[124.06,10.75],[124.03,10.52],[124.0,10.40],[123.95,10.35],[123.93,10.32],[123.90,10.29],[123.84,10.25],[123.76,10.21],[123.71,10.16],[123.64,10.11],[123.62,10.02],[123.60,9.88],[123.53,9.76],[123.48,9.63],[123.43,9.53],[123.40,9.46],[123.37,9.41],[123.33,9.42],[123.31,9.53],[123.32,9.58],[123.33,9.65],[123.36,9.76],[123.37,9.85],[123.38,9.94],[123.40,10.0],[123.51,10.12],[123.58,10.27],[123.64,10.38],[123.71,10.50],[123.72,10.57],[123.73,10.75]],
- mactan:[[123.955,10.335],[124.0,10.345],[124.04,10.31],[124.03,10.26],[123.99,10.25],[123.962,10.285]],
- olango:[[124.045,10.275],[124.085,10.285],[124.095,10.235],[124.055,10.22]],
- bohol:[[123.85,9.65],[123.82,9.72],[123.79,9.80],[123.87,9.87],[123.96,9.95],[124.07,10.03],[124.20,10.10],[124.32,10.15],[124.40,10.12],[124.47,10.06],[124.55,9.92],[124.58,9.74],[124.49,9.76],[124.37,9.65],[124.29,9.61],[124.21,9.61],[124.10,9.59],[124.01,9.60],[123.91,9.615],[123.87,9.63]],
- panglao:[[123.73,9.58],[123.80,9.60],[123.86,9.62],[123.885,9.595],[123.80,9.54],[123.74,9.55]]
-};
-el('rect',{x:-2000,y:-2000,width:5000,height:5000,fill:'var(--sea)'});
-const g=el('g',{class:'grid'});
-for(let lo=122.8;lo<=124.8;lo+=0.2){const x=X(lo);el('line',{x1:x,y1:-1000,x2:x,y2:2000},g);}
-for(let la=8.8;la<=11.2;la+=0.2){const y=Y(la);el('line',{x1:-1000,y1:y,x2:2000,y2:y},g);}
-const poly=pts=>pts.map(p=>X(p[0]).toFixed(1)+','+Y(p[1]).toFixed(1)).join(' ');
-for(const k in islands) el('polygon',{class:'island',points:poly(islands[k])});
-[[124.02,10.205,.008],[124.065,10.185,.006],[123.335,9.925,.006],[123.68,9.515,.009]].forEach(([lo,la,r])=>el('circle',{class:'island',cx:X(lo),cy:Y(la),r:r*K}));
+/* base map */
+const P=pts=>pts.map(p=>X(p[0]).toFixed(1)+','+Y(p[1]).toFixed(1)).join(' ');
+const D=pts=>pts.map((p,i)=>(i?'L':'M')+X(p[0]).toFixed(1)+','+Y(p[1]).toFixed(1)).join(' ');
+el('rect',{x:-5000,y:-5000,width:12000,height:12000,fill:'var(--sea)'});
+const g=el('g',{class:'grid'});const GS=CFG.grid;
+for(let lo=Math.floor(LON0)-1;lo<=LON0+W/K+1;lo+=GS){const x=X(lo);el('line',{x1:x,y1:-5000,x2:x,y2:5000},g);}
+for(let la=Math.floor(LAT1-H/K)-1;la<=LAT1+1;la+=GS){const y=Y(la);el('line',{x1:-5000,y1:y,x2:5000,y2:y},g);}
+CFG.base.polys.forEach(([cls,pts])=>el('polygon',{class:cls,points:P(pts)}));
+CFG.base.lines.forEach(([cls,pts])=>el('path',{class:cls,d:D(pts)}));
+const scaled=[];const addS=(n,x,y,r)=>scaled.push({el:n,x,y,r:r||0});
+CFG.base.labels.forEach(([t,lo,la,c,rot])=>{const gg=el('g',{class:'lbl'});const e=el('text',{class:c,'text-anchor':'middle'},gg);e.textContent=t;addS(gg,X(lo),Y(la),rot);});
 
-const scaled=[]; // elements that keep constant screen size
-const addScaled=(node,x,y,r)=>{scaled.push({el:node,x,y,r:r||0});};
-const lab=(t,lo,la,c,rot)=>{const gg=el('g',{class:'lbl'});const e=el('text',{class:c,'text-anchor':'middle'},gg);e.textContent=t;addScaled(gg,X(lo),Y(la),rot);};
-lab('CEBU',123.55,10.30,'isl-name',-58);lab('BOHOL',124.28,9.85,'isl-name',0);
-lab('BOHOL STRAIT',123.62,9.60,'sea-name',-50);lab('CAMOTES SEA',124.35,10.45,'sea-name',0);
-
-/* ---------- routes ---------- */
+/* routes */
 const pathD=pts=>pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
-const midOf=pts=>{let L=[0];for(let i=1;i<pts.length;i++)L.push(L[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));const h=L[L.length-1]/2;for(let i=1;i<pts.length;i++){if(L[i]>=h){const t=(h-L[i-1])/(L[i]-L[i-1]||1);return[pts[i-1][0]+(pts[i][0]-pts[i-1][0])*t,pts[i-1][1]+(pts[i][1]-pts[i-1][1])*t];}}return pts[0];};
-const rLayer=el('g',{}), pLayer=el('g',{}), bLayer=el('g',{});
+const midOf=pts=>{let L=[0];for(let i=1;i<pts.length;i++)L.push(L[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));const h=L[L.length-1]/2;for(let i=1;i<pts.length;i++)if(L[i]>=h){const t=(h-L[i-1])/(L[i]-L[i-1]||1);return[pts[i-1][0]+(pts[i][0]-pts[i-1][0])*t,pts[i-1][1]+(pts[i][1]-pts[i-1][1])*t];}return pts[0];};
+const rLayer=el('g',{}),pLayer=el('g',{}),bLayer=el('g',{});
 SEG.forEach(s=>{
-  const c=`var(${DAYS[s.day].c})`;
-  const sg=el('g',{class:'seg'},rLayer);
-  const d=pathD(s.pts);
-  el('path',{d,class:'route'+(s.mode==='boat'?' boat':''),stroke:c},sg);
+  const c=`var(${ROUTES[s.r].c})`;
+  const sg=el('g',{class:'seg'},rLayer);const d=pathD(s.pts);
+  el('path',{d,class:'route '+s.mode,stroke:c},sg);
   const hit=el('path',{d,class:'hit'},sg);
-  s.g=sg; s.midW=midOf(s.pts); s.len=s.pts.slice(1).reduce((a,q,k)=>a+Math.hypot(q[0]-s.pts[k][0],q[1]-s.pts[k][1]),0);
+  s.g=sg;s.midW=midOf(s.pts);
   const bg=el('g',{class:'badge',style:`--bc:${c}`},bLayer);
-  const label=`${MODE[s.mode]} ${s.short}`;
+  const label=`${MS[s.mode]} ${s.short}`;
   const w=[...label].reduce((a,ch)=>a+(/[　-鿿]/.test(ch)?10.5:6.3),0)+12;
   el('rect',{x:-w/2,y:-9.5,width:w,height:19,rx:9.5},bg);
   const t=el('text',{'text-anchor':'middle',y:3.8},bg);t.textContent=label;
-  addScaled(bg,s.midW[0],s.midW[1]); s.badge=bg;
+  addS(bg,s.midW[0],s.midW[1]);s.badge=bg;
   [hit,bg].forEach(n=>bindHover(n,ev=>segTip(s,ev.clientX,ev.clientY),()=>hlSeg(s,true),()=>hlSeg(s,false)));
 });
 const OFF={r:[8,4,'start'],l:[-8,4,'end'],t:[0,-9,'middle'],b:[0,17,'middle']};
 const pinEls={};
-for(const id in PL){const p=PL[id];const pg=el('g',{class:'pin '+(p.m?'major':'minor')},pLayer);
-  el('circle',{r:p.m?5.5:4},pg);const [dx,dy,an]=OFF[p.lp];const t=el('text',{x:dx,y:dy,'text-anchor':an},pg);t.textContent=p.n;
-  addScaled(pg,X(p.lo),Y(p.la));pinEls[id]=pg;
-  bindHover(pg,ev=>placeTip(id,ev.clientX,ev.clientY),()=>pg.classList.add('hl'),()=>pg.classList.remove('hl'));
-}
-pLayer.after(bLayer);
+for(const id in PL){const p=PL[id];const pg=el('g',{class:'pin '+(p.m?'major':'minor')+(p.s?' stn':'')},pLayer);
+  el('circle',{r:p.m?5.5:4},pg);const [dx,dy,an]=OFF[p.lp||'r'];const t=el('text',{x:dx,y:dy,'text-anchor':an},pg);t.textContent=p.n;
+  addS(pg,X(p.lo),Y(p.la));pinEls[id]=pg;
+  bindHover(pg,ev=>placeTip(id,ev.clientX,ev.clientY),()=>pg.classList.add('hl'),()=>pg.classList.remove('hl'));}
 
-const ADDR={"airport": {"pid": "ChIJ3yW9O2GXqTMRwTKES0Vh0Is", "q": "Mactan-Cebu International Airport", "a": "Lapu-Lapu Airport Rd, Lapu-Lapu, 6016 Cebu, Philippines", "lat": 10.31362, "lon": 123.98336}, "resort": {"q": "Mactan Island resort", "a": "依實際預訂的度假村為準"}, "sutukil": {"q": "Sutukil Mactan Lapu-Lapu"}, "hil": {"pid": "ChIJiTTaHzqPqTMR3h4IOZ5r_LE", "q": "Gilutongan Marine Sanctuary", "a": "Cordova, Cebu, Philippines", "lat": 10.20883, "lon": 123.98594}, "nal": {"pid": "ChIJc351EfWaqTMREUVrt-BEk9s", "q": "Nalusuan Island Resort and Marine Sanctuary", "a": "Olango Reef, Cordova, 6017 Cebu, Philippines", "lat": 10.19074, "lon": 124.00036}, "city": {"pid": "ChIJp45-1uObqTMRKiyk55UEjGY", "q": "Basilica Minore del Sto. Niño de Cebu", "a": "Pilgrim’s Center, Osmeña Blvd, Cebu City, 6000 Cebu, Philippines", "lat": 10.29411, "lon": 123.90211}, "port": {"pid": "ChIJ2TImteCbqTMRtRck6dNcgEM", "q": "Cebu Pier 1", "a": "Cebu City, 6000 Cebu, Philippines", "lat": 10.29232, "lon": 123.90899}, "sm": {"pid": "ChIJI4dr1eOdqTMRVEQyfXaBtoY", "q": "SM Seaside City Cebu", "a": "Cebu South Coastal Rd, Antuwanga, Cebu City, 6000 Cebu, Philippines", "lat": 10.28185, "lon": 123.88158}, "oslob": {"pid": "ChIJBwm4UkR0qzMR1yMRjqgTPUQ", "q": "Oslob Whale Shark Watching", "a": "Natalio Bacalso Avenue, Oslob, 6023 Cebu, Philippines", "lat": 9.46336, "lon": 123.37973}, "tumalog": {"pid": "ChIJg2E9ZfN1qzMR1N-Xe5V3dzo", "q": "Tumalog Falls", "a": "Natalio Bacalso Avenue, Oslob, Cebu, Philippines", "lat": 9.48601, "lon": 123.36963}, "kawasan": {"pid": "ChIJzaFdmHHAqzMRzyRjfu-ZeDU", "q": "Kawasan Falls", "a": "Badian, Cebu, Philippines", "lat": 9.8035, "lon": 123.37433}, "moalboal": {"pid": "ChIJjdOKTMLoqzMR8s8ab7MnfKs", "q": "Panagsama Beach", "a": "Panagsama Beach, Basdiot, Moalboal, Cebu, Philippines", "lat": 9.94642, "lon": 123.36855}, "pescador": {"pid": "ChIJG-cmH8zuqzMRguQH6Do5VIc", "q": "Pescador Island", "a": "Pescador Island, Moalboal, Cebu, Philippines", "lat": 9.92311, "lon": 123.34353}, "tag": {"pid": "ChIJ92fssaxNqjMRzuO0NW5s10U", "q": "Tagbilaran City Tourist Port", "a": "Tagbilaran Wharf Road, Tagbilaran City, Bohol, Philippines", "lat": 9.64888, "lon": 123.84676}, "blood": {"pid": "ChIJTS6i9t1NqjMRd2Zq2VhChxw", "q": "Blood Compact Shrine", "a": "J.P EK Inting St, Tagbilaran City, 6300 Bohol, Philippines", "lat": 9.62732, "lon": 123.87877}, "bac": {"pid": "ChIJw_CRaj9OqjMRSbQIIGXN6uI", "q": "Baclayon Church", "a": "Baclayon, Bohol, Philippines", "lat": 9.62262, "lon": 123.91222}, "loboc": {"pid": "ChIJmx0VqFBEqjMR-6rgBqOEo4A", "q": "Loboc River Cruise", "a": "Loboc, Bohol, Philippines", "lat": 9.6348, "lon": 124.02983}, "tarsier": {"pid": "ChIJORwIIvxDqjMREtkvm-C7978", "q": "Bohol Tarsier Conservation Area", "a": "Villa Aurora, Bilar, 6317 Bohol, Philippines", "lat": 9.67621, "lon": 124.09121}, "forest": {"pid": "ChIJV3MW-lhBqjMRYdXbTWLZk-8", "q": "Bilar Man-Made Forest", "a": "Loay Interior Road, Bilar, Bohol, Philippines", "lat": 9.66721, "lon": 124.08452}, "choco": {"pid": "ChIJ7bQymfgWqjMRsIML34Cnk_g", "q": "Chocolate Hills Complex", "a": "Loay Interior Road, Carmen, Bohol, Philippines", "lat": 9.79864, "lon": 124.16746}, "alona": {"pid": "ChIJp3TlMp-sqzMR4VhodDXL50g", "q": "Alona Beach", "a": "Alona Beach, Panglao, Bohol, Philippines", "lat": 9.54855, "lon": 123.77403}, "dolphin": {"q": "Panglao dolphin watching"}, "bal": {"pid": "ChIJNc3x1QqpqzMRc2ZmceWAGIo", "q": "Balicasag Island", "a": "Balicasag Island, Panglao, Bohol, Philippines", "lat": 9.51611, "lon": 123.6833}};
+const ADDR={"airport": {"pid": "ChIJ3yW9O2GXqTMRwTKES0Vh0Is", "q": "Mactan-Cebu International Airport", "a": "Lapu-Lapu Airport Rd, Lapu-Lapu, 6016 Cebu, Philippines", "lat": 10.31362, "lon": 123.98336}, "resort": {"q": "Mactan Island resort", "a": "依實際預訂的度假村為準"}, "sutukil": {"q": "Sutukil Mactan Lapu-Lapu"}, "hil": {"pid": "ChIJiTTaHzqPqTMR3h4IOZ5r_LE", "q": "Gilutongan Marine Sanctuary", "a": "Cordova, Cebu, Philippines", "lat": 10.20883, "lon": 123.98594}, "nal": {"pid": "ChIJc351EfWaqTMREUVrt-BEk9s", "q": "Nalusuan Island Resort and Marine Sanctuary", "a": "Olango Reef, Cordova, 6017 Cebu, Philippines", "lat": 10.19074, "lon": 124.00036}, "city": {"pid": "ChIJp45-1uObqTMRKiyk55UEjGY", "q": "Basilica Minore del Sto. Niño de Cebu", "a": "Pilgrim’s Center, Osmeña Blvd, Cebu City, 6000 Cebu, Philippines", "lat": 10.29411, "lon": 123.90211}, "port": {"pid": "ChIJ2TImteCbqTMRtRck6dNcgEM", "q": "Cebu Pier 1", "a": "Cebu City, 6000 Cebu, Philippines", "lat": 10.29232, "lon": 123.90899}, "sm": {"pid": "ChIJI4dr1eOdqTMRVEQyfXaBtoY", "q": "SM Seaside City Cebu", "a": "Cebu South Coastal Rd, Antuwanga, Cebu City, 6000 Cebu, Philippines", "lat": 10.28185, "lon": 123.88158}, "oslob": {"pid": "ChIJBwm4UkR0qzMR1yMRjqgTPUQ", "q": "Oslob Whale Shark Watching", "a": "Natalio Bacalso Avenue, Oslob, 6023 Cebu, Philippines", "lat": 9.46336, "lon": 123.37973}, "tumalog": {"pid": "ChIJg2E9ZfN1qzMR1N-Xe5V3dzo", "q": "Tumalog Falls", "a": "Natalio Bacalso Avenue, Oslob, Cebu, Philippines", "lat": 9.48601, "lon": 123.36963}, "kawasan": {"pid": "ChIJzaFdmHHAqzMRzyRjfu-ZeDU", "q": "Kawasan Falls", "a": "Badian, Cebu, Philippines", "lat": 9.8035, "lon": 123.37433}, "moalboal": {"pid": "ChIJjdOKTMLoqzMR8s8ab7MnfKs", "q": "Panagsama Beach", "a": "Panagsama Beach, Basdiot, Moalboal, Cebu, Philippines", "lat": 9.94642, "lon": 123.36855}, "pescador": {"pid": "ChIJG-cmH8zuqzMRguQH6Do5VIc", "q": "Pescador Island", "a": "Pescador Island, Moalboal, Cebu, Philippines", "lat": 9.92311, "lon": 123.34353}, "tag": {"pid": "ChIJ92fssaxNqjMRzuO0NW5s10U", "q": "Tagbilaran City Tourist Port", "a": "Tagbilaran Wharf Road, Tagbilaran City, Bohol, Philippines", "lat": 9.64888, "lon": 123.84676}, "blood": {"pid": "ChIJTS6i9t1NqjMRd2Zq2VhChxw", "q": "Blood Compact Shrine", "a": "J.P EK Inting St, Tagbilaran City, 6300 Bohol, Philippines", "lat": 9.62732, "lon": 123.87877}, "bac": {"pid": "ChIJw_CRaj9OqjMRSbQIIGXN6uI", "q": "Baclayon Church", "a": "Baclayon, Bohol, Philippines", "lat": 9.62262, "lon": 123.91222}, "loboc": {"pid": "ChIJmx0VqFBEqjMR-6rgBqOEo4A", "q": "Loboc River Cruise", "a": "Loboc, Bohol, Philippines", "lat": 9.6348, "lon": 124.02983}, "tarsier": {"pid": "ChIJORwIIvxDqjMREtkvm-C7978", "q": "Bohol Tarsier Conservation Area", "a": "Villa Aurora, Bilar, 6317 Bohol, Philippines", "lat": 9.67621, "lon": 124.09121}, "forest": {"pid": "ChIJV3MW-lhBqjMRYdXbTWLZk-8", "q": "Bilar Man-Made Forest", "a": "Loay Interior Road, Bilar, Bohol, Philippines", "lat": 9.66721, "lon": 124.08452}, "choco": {"pid": "ChIJ7bQymfgWqjMRsIML34Cnk_g", "q": "Chocolate Hills Complex", "a": "Loay Interior Road, Carmen, Bohol, Philippines", "lat": 9.79864, "lon": 124.16746}, "alona": {"pid": "ChIJp3TlMp-sqzMR4VhodDXL50g", "q": "Alona Beach", "a": "Alona Beach, Panglao, Bohol, Philippines", "lat": 9.54855, "lon": 123.77403}, "dolphin": {"q": "Panglao dolphin watching"}, "simala": {"pid": "ChIJeYNtDozaqzMRQhw7yUZhvWI", "q": "Monastery of the Holy Eucharist Simala", "a": "Sibonga, Cebu, Philippines", "lat": 9.97927, "lon": 123.60115}, "leah": {"pid": "ChIJPwVVvlqfqTMR8k8YW0-7Luo", "q": "Temple of Leah", "a": "Cebu Transcentral Hwy, Cebu City, 6000 Cebu, Philippines", "lat": 10.36886, "lon": 123.87325}, "ayala": {"pid": "ChIJa9Ru7kCZqTMRxxXvO_Ddfb0", "q": "Ayala Center Cebu", "a": "Cebu City, 6000 Cebu, Philippines", "lat": 10.31824, "lon": 123.90523}, "firefly": {"pid": "ChIJB-_x5M9LqjMR1UYvyVf3jIo", "q": "Abatan River Community Life Tour", "a": "Cortes, Bohol, Philippines", "lat": 9.71462, "lon": 123.87405}, "canyon": {"pid": "ChIJ0Q68zeKbqTMR2CgRz-Lsfgg", "q": "Canyoneering Cebu Badian Adventure", "a": "Alegria, 6031 Cebu, Philippines（業者集合點，依預訂的業者為準）", "lat": 9.81242, "lon": 123.36833}, "bal": {"pid": "ChIJNc3x1QqpqzMRc2ZmceWAGIo", "q": "Balicasag Island", "a": "Balicasag Island, Panglao, Bohol, Philippines", "lat": 9.51611, "lon": 123.6833}};
 const enc=encodeURIComponent;
 function mapUrls(id){const p=PL[id],a=ADDR[id]||{};const q=a.q||p.n;
   const g='https://www.google.com/maps/search/?api=1&query='+enc(q)+(a.pid?'&query_place_id='+a.pid:'');
   const ap='https://maps.apple.com/?q='+enc(q)+'&ll='+(a.lat||p.la)+','+(a.lon||p.lo);return{g,ap,addr:a.a||''};}
 function mlinks(id){const u=mapUrls(id);return `<span class="ml"><a href="${u.g}" target="_blank" rel="noopener">Google 地圖</a><a href="${u.ap}" target="_blank" rel="noopener">Apple 地圖</a></span>`;}
 const PLACE_LIST=ids=>`<details class="pd"><summary>地點・地址・導航</summary><ul class="plist">${[...new Set(ids)].map(id=>{const u=mapUrls(id);return `<li><b>${PL[id].n}</b>${u.addr?`<span class="ad">${u.addr}</span>`:''}${mlinks(id)}</li>`;}).join('')}</ul></details>`;
-/* ---------- tooltip ---------- */
+/* tooltip */
 let tipLock=false;
 function showTip(html,cx,cy){const r=chart.getBoundingClientRect();tip.innerHTML=html;tip.hidden=false;
   let x=cx-r.left,y=cy-r.top;const tw=tip.offsetWidth,th=tip.offsetHeight;
@@ -505,7 +485,7 @@ function showTip(html,cx,cy){const r=chart.getBoundingClientRect();tip.innerHTML
   tip.style.transform=(y-th-20<0)?'translate(-50%,16px)':'translate(-50%,calc(-100% - 14px))';
   tip.style.left=x+'px';tip.style.top=y+'px';}
 function hideTip(){tip.hidden=true;tipLock=false;tip.classList.remove('lock');}
-function segTip(s,cx,cy){showTip(`<b><span class="k">${MODEL[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}</b><div>${s.dur}・${s.dist}</div><div class="m">${s.how}　｜　Day ${s.day+1}</div>`,cx,cy);}
+function segTip(s,cx,cy){const r=ROUTES[s.r];showTip(`<b><span class="k">${MODE[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}</b><div>${s.dur}</div><div class="m">${s.how}</div><div class="m">${r.short}・${r.days[s.d].label||('第 '+(s.d+1)+' 天')}</div>`,cx,cy);}
 function placeTip(id,cx,cy){const p=PL[id],u=mapUrls(id);showTip(`<b>${p.n}</b><div class="m">${p.d}</div>${u.addr?`<div class="ad">${u.addr}</div>`:''}${mlinks(id)}`,cx,cy);}
 function worldToClient(wx,wy){const r=svg.getBoundingClientRect();return[r.left+(wx-view.x)/view.w*r.width,r.top+(wy-view.y)/view.h*r.height];}
 function bindHover(node,show,on,off){
@@ -514,134 +494,129 @@ function bindHover(node,show,on,off){
   node.addEventListener('pointerleave',e=>{if(e.pointerType!=='mouse')return;off();if(!tipLock)hideTip();});
   node.addEventListener('click',e=>{if(moved)return;e.stopPropagation();on();show(e);tipLock=true;tip.classList.add('lock');setTimeout(off,1500);});
 }
-function hlSeg(s,on){s.g.classList.toggle('hl',on);s.badge.classList.toggle('hl',on);const row=document.querySelector(`.hop[data-s="${s.id}"]`);if(row)row.classList.toggle('hl',on);}
+function hlSeg(s,on){s.g.classList.toggle('hl',on);s.badge.classList.toggle('hl',on);document.querySelectorAll(`[data-s="${s.id}"]`).forEach(n=>n.classList.toggle('hl',on));}
 
-/* ---------- view: pan / zoom ---------- */
-let view={x:0,y:0,w:W,h:H}, anim=0;
+/* view */
+const allW=SEG.flatMap(s=>s.pts).concat(Object.values(PL).map(p=>[X(p.lo),Y(p.la)]));
+const BX=[Math.min(...allW.map(p=>p[0]))-150,Math.max(...allW.map(p=>p[0]))+150,Math.min(...allW.map(p=>p[1]))-150,Math.max(...allW.map(p=>p[1]))+150];
+let view={x:0,y:0,w:W,h:H},anim=0;
 const scaleEl=document.getElementById('scale');
+const KMU=111*Math.cos((LAT1-H/K/2)*Math.PI/180)/K;
 function setView(v){
-  const w=Math.max(28,Math.min(1100,v.w)),h=w/AR;
-  const cx=Math.max(-150,Math.min(W+150,v.x+v.w/2)),cy=Math.max(-150,Math.min(H+150,v.y+v.h/2));
+  const w=Math.max(6,Math.min(CFG.maxW||1400,v.w)),h=w/AR;
+  const cx=Math.max(BX[0],Math.min(BX[1],v.x+v.w/2)),cy=Math.max(BX[2],Math.min(BX[3],v.y+v.h/2));
   view={x:cx-w/2,y:cy-h/2,w,h};
   svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`);
   const s=view.w/W;
   scaled.forEach(o=>o.el.setAttribute('transform',`translate(${o.x},${o.y}) scale(${s})${o.r?` rotate(${o.r})`:''}`));
-  svg.classList.toggle('far',view.w>400);
+  svg.classList.toggle('far',view.w>(CFG.farW||300));
   const r=svg.getBoundingClientRect();if(!r.width)return;
-  const ppu=r.width/view.w; SEG.forEach(q=>q.badge.classList.toggle('tiny',q.len*ppu<58));
-  const pxPerKm=r.width/view.w*K/111;const nice=[1,2,5,10,20,50,100,200].find(n=>n*pxPerKm>=60)||200;
-  scaleEl.firstChild.textContent=nice+' km';scaleEl.lastChild.style.width=(nice*pxPerKm).toFixed(0)+'px';
+  const ppu=r.width/view.w;SEG.forEach(q=>q.badge.classList.toggle('tiny',q.len*ppu<56));
+  const pxPerKm=ppu/KMU;const nice=[0.2,0.5,1,2,5,10,20,50,100,200].find(n=>n*pxPerKm>=60)||200;
+  scaleEl.firstChild.textContent=(nice<1?nice*1000+' m':nice+' km');scaleEl.lastChild.style.width=(nice*pxPerKm).toFixed(0)+'px';
 }
 function animateTo(t){cancelAnimationFrame(anim);if(reduce){setView(t);return;}
-  const f={...view},t0=performance.now(),D=750;const ease=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
-  const step=now=>{const p=Math.min(1,(now-t0)/D),e=ease(p);setView({x:f.x+(t.x-f.x)*e,y:f.y+(t.y-f.y)*e,w:f.w+(t.w-f.w)*e,h:f.h+(t.h-f.h)*e});if(p<1)anim=requestAnimationFrame(step);};
+  const f={...view},t0=performance.now(),Dur=800,ease=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+  const step=now=>{const p=Math.min(1,(now-t0)/Dur),e=ease(p);setView({x:f.x+(t.x-f.x)*e,y:f.y+(t.y-f.y)*e,w:f.w+(t.w-f.w)*e,h:f.h+(t.h-f.h)*e});if(p<1)anim=requestAnimationFrame(step);};
   anim=requestAnimationFrame(step);}
 function fit(pts,minW){let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;pts.forEach(([x,y])=>{x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);});
-  const bw=x1-x0,bh=y1-y0;let w=Math.max(bw*1.35+30,bh*1.35*AR+30*AR,minW||60);return{x:(x0+x1)/2-w/2,y:(y0+y1)/2-w/AR/2,w,h:w/AR};}
+  const bw=x1-x0,bh=y1-y0;const w=Math.max(bw*1.4+12,(bh*1.4+12)*AR,minW||16);return{x:(x0+x1)/2-w/2,y:(y0+y1)/2-w/AR/2,w,h:w/AR};}
 function zoomAt(cx,cy,f){const r=svg.getBoundingClientRect();const wx=view.x+(cx-r.left)/r.width*view.w,wy=view.y+(cy-r.top)/r.height*view.h;
-  const w=Math.max(28,Math.min(1100,view.w/f)),h=w/AR;setView({x:wx-(cx-r.left)/r.width*w,y:wy-(cy-r.top)/r.height*h,w,h});}
-
+  const w=Math.max(6,Math.min(CFG.maxW||1400,view.w/f)),h=w/AR;setView({x:wx-(cx-r.left)/r.width*w,y:wy-(cy-r.top)/r.height*h,w,h});}
 const ptrs=new Map();let dragging=false,moved=false,start=null,lastPinch=null;
-svg.addEventListener('pointerdown',e=>{cancelAnimationFrame(anim);stopTour();ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=false;start={x:e.clientX,y:e.clientY};if(ptrs.size===2)lastPinch=null;});
+svg.addEventListener('pointerdown',e=>{cancelAnimationFrame(anim);ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=false;start={x:e.clientX,y:e.clientY};if(ptrs.size===2)lastPinch=null;});
 svg.addEventListener('pointermove',e=>{if(!ptrs.has(e.pointerId))return;const p=ptrs.get(e.pointerId);const r=svg.getBoundingClientRect();
   if(ptrs.size===1){if(!dragging&&Math.hypot(e.clientX-start.x,e.clientY-start.y)>4){dragging=moved=true;svg.setPointerCapture(e.pointerId);svg.classList.add('grabbing');hideTip();}
-    if(dragging){setView({...view,x:view.x-(e.clientX-p.x)*view.w/r.width,y:view.y-(e.clientY-p.y)*view.h/r.height});}}
+    if(dragging)setView({...view,x:view.x-(e.clientX-p.x)*view.w/r.width,y:view.y-(e.clientY-p.y)*view.h/r.height});}
   ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
   if(ptrs.size===2){moved=true;hideTip();const [a,b]=[...ptrs.values()];const d=Math.hypot(a.x-b.x,a.y-b.y),mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
-    if(lastPinch){setView({...view,x:view.x-(mx-lastPinch.mx)*view.w/r.width,y:view.y-(my-lastPinch.my)*view.h/r.height});zoomAt(mx,my,d/lastPinch.d);}lastPinch={d,mx,my};}
-});
+    if(lastPinch){setView({...view,x:view.x-(mx-lastPinch.mx)*view.w/r.width,y:view.y-(my-lastPinch.my)*view.h/r.height});zoomAt(mx,my,d/lastPinch.d);}lastPinch={d,mx,my};}});
 const endPtr=e=>{ptrs.delete(e.pointerId);if(ptrs.size<2)lastPinch=null;if(!ptrs.size){dragging=false;svg.classList.remove('grabbing');}};
 ['pointerup','pointercancel'].forEach(t=>svg.addEventListener(t,endPtr));
 svg.addEventListener('click',()=>{if(!moved)hideTip();});
 svg.addEventListener('wheel',e=>{e.preventDefault();cancelAnimationFrame(anim);hideTip();zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*0.0018));},{passive:false});
-const cz=f=>{const r=svg.getBoundingClientRect();cancelAnimationFrame(anim);const c={...view};const w=view.w/f;animateTo({x:c.x+c.w/2-w/2,y:c.y+c.h/2-w/AR/2,w,h:w/AR});};
+const cz=f=>{const c={...view};const w=view.w/f;animateTo({x:c.x+c.w/2-w/2,y:c.y+c.h/2-w/AR/2,w,h:w/AR});};
 document.getElementById('zin').onclick=()=>cz(1.6);
 document.getElementById('zout').onclick=()=>cz(1/1.6);
-document.getElementById('zfit').onclick=()=>show(cur,true);
+document.getElementById('zfit').onclick=()=>applyMap();
 
-/* ---------- day selection ---------- */
-const tabs=document.getElementById('tabs'),legend=document.getElementById('legend');
-let cur=-1,tour=0;
-tabs.innerHTML='<div class="side-h">行程分頁</div>';
-const mk=(html,color,idx)=>{const b=document.createElement('button');b.className='tab';b.type='button';b.innerHTML=(color?`<i style="background:var(${color});flex:none"></i>`:'')+`<span>${html}</span>`;b.onclick=()=>{stopTour();show(idx);if(matchMedia('(max-width:860px)').matches)document.getElementById('map').scrollIntoView({behavior:reduce?'auto':'smooth'});};tabs.appendChild(b);return b;};
-const btns=[mk('總覽<small>全部路線・出發準備</small>',null,-1),...DAYS.map((d,i)=>mk(`<span class="dd">D${i+1} ${d.d}</span><small>${d.t}</small>`,d.c,i))];
-const playBtn=document.createElement('button');playBtn.className='tab play';playBtn.type='button';playBtn.textContent='▶ 自動導覽';playBtn.setAttribute('aria-pressed','false');
-playBtn.onclick=()=>{if(tour){stopTour();return;}playBtn.setAttribute('aria-pressed','true');playBtn.textContent='■ 停止導覽';show(cur>=DAYS.length-1?0:cur+1);tour=setInterval(()=>{if(cur>=DAYS.length-1){stopTour();show(-1);return;}show(cur+1);},4500);};
-tabs.appendChild(playBtn);
-function stopTour(){if(!tour)return;clearInterval(tour);tour=0;playBtn.setAttribute('aria-pressed','false');playBtn.textContent='▶ 自動導覽';}
-const allPts=SEG.flatMap(s=>s.pts);
-const KEY=`<div class="key"><span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/></svg>車程</span><span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="var(--ink)" stroke-width="3" stroke-dasharray="4 5" stroke-linecap="round"/></svg>船程</span><span><svg width="12" height="12"><circle cx="6" cy="6" r="5" fill="var(--accent)" stroke="var(--ink)"/></svg>主要景點</span></div>`;
-
-function show(i,refit){
-  cur=i;hideTip();
-  btns.forEach((b,j)=>b.setAttribute('aria-pressed',String(j===i+1)));
-  svg.classList.toggle('dim',i>=0);
-  SEG.forEach(s=>{const on=s.day===i;s.g.classList.toggle('on',on);s.badge.classList.toggle('on',on);s.g.classList.remove('hl');s.badge.classList.remove('hl');});
-  const onStops=i>=0?new Set(DAYS[i].stops):new Set();
-  for(const id in pinEls)pinEls[id].classList.toggle('on',onStops.has(id));
-  if(i>=0){const segs=DAYS[i].segs;rLayer.append(...segs.map(s=>s.g));}
-  animateTo(i<0?fit(allPts):fit(DAYS[i].segs.flatMap(s=>s.pts),70));
-  if(refit)return;
-  renderPane(i);
-  if(i<0){
-    legend.style.removeProperty('--c');
-    legend.innerHTML=`<div><h3>七天路線總覽</h3><p class="sub">從麥克坦出發，沿宿霧東岸南下看鯨鯊，再走西岸經墨寶回市區，最後搭船到薄荷島。點選任一天看詳細路線。</p></div><ul class="daylist">${DAYS.map((d,j)=>`<li><button type="button" data-day="${j}"><b style="color:var(${d.c})">${d.d}</b><span>${d.t}</span></button></li>`).join('')}</ul>`+KEY;
-    legend.querySelectorAll('[data-day]').forEach(b=>b.onclick=()=>show(+b.dataset.day));
-  }else{
-    const d=DAYS[i];legend.style.setProperty('--c',`var(${d.c})`);
-    let h=`<div><h3 style="color:var(${d.c})">Day ${i+1}・${d.d}（${d.wk}）</h3><p class="sub">${d.t}　｜　住：${d.stay}</p></div><ol class="iti">`;
+/* state & render */
+const st={r:-1,d:-1};
+const side=document.getElementById('side'),legend=document.getElementById('legend'),pane=document.getElementById('pane');
+side.innerHTML=`<div class="side-h">${CFG.sideH}</div>`;
+const sbtn=(html,i,color)=>{const b=document.createElement('button');b.type='button';b.className='tab';b.innerHTML=(color?`<span class="sw" style="background:var(${color})"></span>`:'')+`<span>${html}</span>`;b.onclick=()=>go(i,-1);side.appendChild(b);return b;};
+const sideBtns=[sbtn(`總覽<small>${CFG.ovSub}</small>`,-1),...ROUTES.map((r,i)=>sbtn(`${r.short}<small>${r.tag}</small>`,i,r.c))];
+const toMap=()=>document.getElementById('map').scrollIntoView({behavior:reduce?'auto':'smooth'});
+function go(r,d,noScroll){st.r=r;st.d=d;render();if(!noScroll&&matchMedia('(max-width:880px)').matches)toMap();}
+const KEY=`<div class="key"><span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/></svg>車・鐵路・捷運</span><span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="var(--ink)" stroke-width="3" stroke-dasharray="7 5"/></svg>船・計程車</span><span><svg width="26" height="6"><line x1="2" y1="3" x2="25" y2="3" stroke="var(--ink)" stroke-width="3.5" stroke-dasharray="1 6" stroke-linecap="round"/></svg>步行・單車</span></div>`;
+function applyMap(){
+  hideTip();
+  const act=s=>st.r>=0&&s.r===st.r&&(st.d<0||s.d===st.d);
+  svg.classList.toggle('dim',st.r>=0);
+  SEG.forEach(s=>{const on=act(s);s.g.classList.toggle('on',on);s.badge.classList.toggle('on',on);s.g.classList.remove('hl');s.badge.classList.remove('hl');if(on)rLayer.append(s.g);});
+  const stops=new Set();if(st.r>=0)ROUTES[st.r].days.forEach((d,i)=>{if(st.d<0||st.d===i)d.stops.forEach(x=>stops.add(x));});
+  for(const id in pinEls)pinEls[id].classList.toggle('on',stops.has(id));
+  const actS=SEG.filter(act),loc=actS.filter(s=>s.mode!=='hsr');
+  const pts=st.r<0?SEG.flatMap(s=>s.pts):(loc.length?loc:actS).flatMap(s=>s.pts);
+  animateTo(fit(pts,CFG.minFit||16));
+}
+function renderLegend(){
+  if(st.r<0){
+    legend.innerHTML=`<div><h3>${CFG.ovTitle}</h3><p class="sub">${CFG.ovText}</p></div>
+    <ul class="rlist">${ROUTES.map((r,i)=>`<li><button type="button" data-r="${i}"><span class="sw" style="background:var(${r.c})"></span><span><b>${r.name}</b><small>${r.tag}</small></span></button></li>`).join('')}</ul>`+KEY;
+    legend.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>go(+b.dataset.r,-1,true));return;}
+  const r=ROUTES[st.r];legend.style.setProperty('--c',`var(${r.c})`);
+  let h=`<div><h3 style="color:var(${r.c})">${r.name}</h3><p class="sub">${r.sub||''}</p></div>
+  <div class="dayseg">${['全部',...r.days.map((d,i)=>d.label||('第 '+(i+1)+' 天'))].map((t,i)=>`<button class="tab" type="button" data-d="${i-1}" aria-pressed="${st.d===i-1}">${t}</button>`).join('')}</div><ol class="iti">`;
+  r.days.forEach((d,di)=>{if(st.d>=0&&st.d!==di)return;
     const stop=id=>`<li class="stop ${PL[id].m?'major':''}"><button type="button" data-p="${id}"><span class="dot"></span>${PL[id].n}</button>${mlinks(id)}</li>`;
-    h+=stop(d.segs[0].f);
-    d.segs.forEach(s=>{h+=`<li class="hop" tabindex="0" data-s="${s.id}"><span class="chip ${s.mode}">${MODEL[s.mode]}</span><span>${s.dur}・${s.dist}</span><small>${s.how}</small></li>`+stop(s.t);});
-    legend.innerHTML=h+'</ol>'+KEY;
-    legend.querySelectorAll('.hop').forEach(row=>{const s=SEG[+row.dataset.s];
-      const on=()=>{hlSeg(s,true);const [cx,cy]=worldToClient(...s.midW);const r=chart.getBoundingClientRect();if(cx>r.left&&cx<r.right&&cy>r.top&&cy<r.bottom)segTip(s,cx,cy);};
-      const off=()=>{hlSeg(s,false);hideTip();};
-      row.addEventListener('mouseenter',on);row.addEventListener('mouseleave',off);row.addEventListener('focus',on);row.addEventListener('blur',off);
-      row.addEventListener('click',()=>{stopTour();animateTo(fit(s.pts,50));setTimeout(on,reduce?0:800);});
-      row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();row.click();}});
-    });
-    legend.querySelectorAll('[data-p]').forEach(b=>{const id=b.dataset.p,p=PL[id];
-      b.onmouseenter=()=>pinEls[id].classList.add('hl');b.onmouseleave=()=>pinEls[id].classList.remove('hl');
-      b.onclick=()=>{stopTour();animateTo(fit([[X(p.lo),Y(p.la)]],45));setTimeout(()=>{const [cx,cy]=worldToClient(X(p.lo),Y(p.la));placeTip(id,cx,cy);tipLock=true;tip.classList.add('lock');},reduce?0:800);};
-    });
-  }
+    h+=`<li class="dh">${d.label?d.label.toUpperCase():'DAY '+(di+1)}・${d.t}</li>`+stop(d.segs[0].f);
+    d.segs.forEach(s=>{h+=`<li class="hop" tabindex="0" data-s="${s.id}"><span class="chip ${s.mode}">${MODE[s.mode]}</span><span>${s.dur}</span><small>${s.how}</small></li>`+stop(s.t);});});
+  legend.innerHTML=h+'</ol>'+KEY;
+  legend.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{st.d=+b.dataset.d;applyMap();renderLegend();});
+  legend.querySelectorAll('.hop').forEach(row=>{const s=SEG[+row.dataset.s];
+    const on=()=>{hlSeg(s,true);const [cx,cy]=worldToClient(...s.midW);const rc=chart.getBoundingClientRect();if(cx>rc.left&&cx<rc.right&&cy>rc.top&&cy<rc.bottom)segTip(s,cx,cy);};
+    const off=()=>{hlSeg(s,false);hideTip();};
+    row.addEventListener('mouseenter',on);row.addEventListener('mouseleave',off);row.addEventListener('focus',on);row.addEventListener('blur',off);
+    row.addEventListener('click',()=>{animateTo(fit(s.pts,10));setTimeout(on,reduce?0:850);});
+    row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();row.click();}});});
+  legend.querySelectorAll('[data-p]').forEach(b=>{const id=b.dataset.p,p=PL[id];
+    b.onmouseenter=()=>pinEls[id].classList.add('hl');b.onmouseleave=()=>pinEls[id].classList.remove('hl');
+    b.onclick=()=>{animateTo(fit([[X(p.lo),Y(p.la)]],10));setTimeout(()=>{const [cx,cy]=worldToClient(X(p.lo),Y(p.la));placeTip(id,cx,cy);tipLock=true;tip.classList.add('lock');},reduce?0:850);};});
 }
-document.addEventListener('keydown',e=>{if(e.target.closest('input,textarea'))return;if(e.key==='ArrowRight'&&cur<DAYS.length-1){stopTour();show(cur+1);}if(e.key==='ArrowLeft'&&cur>-1){stopTour();show(cur-1);}});
-
-/* ---------- day pane / overview ---------- */
-const pane=document.getElementById('dayPane'),ov=document.getElementById('ov');
-document.getElementById('ovDays').innerHTML=DAYS.map((d,j)=>`<button class="ovd" type="button" data-day="${j}" style="--c:var(${d.c})"><span class="mono">DAY ${j+1}・${d.d}（${d.wk}）</span><b>${d.t}</b><span>住：${d.stay}</span></button>`).join('');
-document.querySelectorAll('#ovDays [data-day]').forEach(b=>b.onclick=()=>{show(+b.dataset.day);document.getElementById('map').scrollIntoView({behavior:reduce?'auto':'smooth'});});
-function renderPane(i){
-  ov.hidden=i>=0;pane.hidden=i<0;if(i<0)return;
-  const d=DAYS[i];pane.style.setProperty('--c',`var(${d.c})`);
-  const prev=i>0?`<button class="tab" type="button" data-go="${i-1}">← D${i} ${DAYS[i-1].t}</button>`:`<button class="tab" type="button" data-go="-1">← 總覽</button>`;
-  const next=i<DAYS.length-1?`<button class="tab" type="button" data-go="${i+1}">D${i+2} ${DAYS[i+1].t} →</button>`:`<button class="tab" type="button" data-go="-1">回總覽 →</button>`;
-  pane.innerHTML=`<div class="pane-head"><span class="big mono">${d.d}</span><div><h2>Day ${i+1}・${d.t}</h2><p>星期${d.wk}　｜　住宿：${d.stay}</p></div></div>
-  <div class="pgrid">
-    <div class="pcol">
-      <div class="card"><h3>時間表</h3><ul class="tl">${d.tl.map(([t,x])=>`<li><time>${t}</time><span>${x}</span></li>`).join('')}</ul></div>
-      <div class="card"><h3>當天交通</h3><div class="hops">${d.segs.map(s=>`<span data-hs="${s.id}"><span class="chip ${s.mode}">${MODE[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}・${s.dur}</span>`).join('')}</div></div>
-      <div class="card"><h3>景點介紹</h3><ul>${[...new Set(d.stops)].map(id=>{const u=mapUrls(id);return `<li><b>${PL[id].n}：</b>${PL[id].d}${u.addr?`<br><span class="ad">${u.addr}</span>`:''}<br>${mlinks(id)}</li>`;}).join('')}</ul></div>
-    </div>
-    <div class="pcol">
-      ${d.note?`<div class="note">${d.note}</div>`:''}
-      <div class="card"><h3>注意事項</h3><ul class="warn">${d.tips.map(t=>`<li>${t}</li>`).join('')}</ul></div>
-      <div class="card"><h3>建議攜帶</h3><ul>${d.bring.map(t=>`<li>${t}</li>`).join('')}</ul></div>
-    </div>
-  </div>
-  <div class="pager">${prev}${next}</div>`;
-  pane.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{show(+b.dataset.go);document.getElementById('map').scrollIntoView({behavior:reduce?'auto':'smooth'});});
-  pane.querySelectorAll('[data-hs]').forEach(c=>{const s=SEG[+c.dataset.hs];c.style.cursor='pointer';c.onmouseenter=()=>hlSeg(s,true);c.onmouseleave=()=>hlSeg(s,false);c.onclick=()=>{animateTo(fit(s.pts,50));document.getElementById('map').scrollIntoView({behavior:reduce?'auto':'smooth'});};});
+const list=(items,cls)=>`<ul${cls?` class="${cls}"`:''}>${items.map(t=>`<li>${t}</li>`).join('')}</ul>`;
+function renderPane(){
+  if(st.r<0){
+    pane.innerHTML=`<section><div class="sec-h"><h2>${CFG.cmpTitle}</h2><p>點一張卡片看細節</p></div><div class="rgrid">${ROUTES.map((r,i)=>`<button class="rcard" type="button" data-r="${i}" style="--c:var(${r.c})"><b>${r.name}</b><span>${r.desc}</span>${r.stats.map(([k,v])=>`<span class="mini">${k}：${v}</span>`).join('')}</button>`).join('')}</div></section>
+    ${CFG.info&&CFG.info.length?`<section><div class="sec-h"><h2>${CFG.infoTitle}</h2></div><div class="info">${CFG.info.map(c=>`<div class="card"><h3>${c.h}</h3>${list(c.items)}</div>`).join('')}</div></section>`:''}`;
+    pane.querySelectorAll('.rcard[data-r]').forEach(b=>b.onclick=()=>{go(+b.dataset.r,-1,true);toMap();});
+    return;}
+  const r=ROUTES[st.r];
+  pane.innerHTML=`<div style="--c:var(${r.c});display:grid;gap:16px">
+  <div class="rhead"><h2>${r.name}</h2><p>${r.desc}</p></div>
+  <div class="stats">${r.stats.map(([k,v])=>`<div class="stat"><span>${k}</span><b>${v}</b></div>`).join('')}</div>
+  <div class="pgrid">${r.days.map((d,di)=>`<article class="card"><span class="ctag">${d.label?d.label.toUpperCase():'DAY '+(di+1)}${d.date?'・'+d.date:''}</span><h3>${d.t}</h3>
+    <ul class="tl">${d.tl.map(([t,x])=>`<li><time>${t}</time><span>${x}</span></li>`).join('')}</ul>
+    <div class="hops">${d.segs.map(s=>`<span class="h" data-s="${s.id}" data-zs="${s.id}"><span class="chip ${s.mode}">${MODE[s.mode]}</span>${PL[s.f].n} → ${PL[s.t].n}・${s.dur}</span>`).join('')}</div>
+    ${PLACE_LIST(d.stops)}
+    <h3 style="font-size:15px">注意事項</h3>${list(d.tips,'warn')}
+    ${d.couple?`<div class="couple">${d.couple}</div>`:''}
+    <button class="tab" type="button" data-showd="${di}" style="justify-self:start">在地圖上看這一天</button></article>`).join('')}</div>
+  <div class="info">${(r.extra||[]).map(c=>`<div class="card"><h3>${c.h}</h3>${list(c.items)}</div>`).join('')}</div></div>`;
+  pane.querySelectorAll('[data-zs]').forEach(c=>{const s=SEG[+c.dataset.zs];c.onmouseenter=()=>hlSeg(s,true);c.onmouseleave=()=>hlSeg(s,false);c.onclick=()=>{animateTo(fit(s.pts,10));toMap();};});
+  pane.querySelectorAll('[data-showd]').forEach(b=>b.onclick=()=>{st.d=+b.dataset.showd;applyMap();renderLegend();toMap();});
 }
-
+function render(){
+  sideBtns.forEach((b,j)=>b.setAttribute('aria-pressed',String(j===st.r+1)));
+  document.getElementById('mapTitle').textContent=st.r<0?'路線地圖':ROUTES[st.r].short+'路線圖';
+  applyMap();renderLegend();renderPane();
+}
 setView({x:0,y:0,w:W,h:H});
-const m=/^#d([1-7])$/.exec(location.hash);
-show(m?+m[1]-1:-1);
+const hm=new RegExp('^#('+ROUTES.map(r=>r.id).join('|')+')$').exec(location.hash);
+st.r=hm?ROUTES.findIndex(r=>r.id===hm[1]):-1;
+render();
 new ResizeObserver(()=>setView(view)).observe(svg);
 })();
 </script>
-
 </body>
 </html>
